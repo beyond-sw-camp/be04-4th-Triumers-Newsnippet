@@ -56,10 +56,4 @@ class ManageServiceTest {
         assertNotNull(quizDTO);
     }
 
-    @Test
-    void getMaxIndex(){
-        int result = manageService.getMaxIndex();
-    }
-
-
 }

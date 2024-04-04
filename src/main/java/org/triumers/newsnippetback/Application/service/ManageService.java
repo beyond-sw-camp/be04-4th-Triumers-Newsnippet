@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 @Service
 public class ManageService {
 
-    QuizRepository quizRepository;
-    CrawlingQuizRepository crawlingQuizRepository;
-    CategoryRepository categoryRepository;
-    ModelMapper mapper;
+    private final QuizRepository quizRepository;
+    private final CrawlingQuizRepository crawlingQuizRepository;
+    private final CategoryRepository categoryRepository;
+    private final ModelMapper mapper;
 
     @Autowired
     public ManageService(QuizRepository quizRepository, CrawlingQuizRepository crawlingQuizRepository,

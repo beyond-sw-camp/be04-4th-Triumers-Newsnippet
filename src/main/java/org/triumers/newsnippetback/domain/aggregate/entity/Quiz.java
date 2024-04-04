@@ -49,11 +49,9 @@ public class Quiz {
     @Column(name = "CORRECT_CNT", nullable = false)
     private int correctCnt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_ID")
-    private Category category;
+    @Column(name = "CATEGORY_ID")
+    private int categoryId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORIGIN_QUIZ_ID")
-    private CrawlingQuiz originQuiz;
+    @Column(name = "ORIGIN_QUIZ_ID")
+    private int originQuizId;
 }

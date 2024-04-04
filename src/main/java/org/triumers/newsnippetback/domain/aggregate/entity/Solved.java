@@ -17,11 +17,9 @@ public class Solved {
     @Column(name = "SELECTED_OPTION")
     private String selectedOption;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @Column(name = "USER_ID")
+    private int userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "QUIZ_ID")
-    private Quiz quiz;
+    @Column(name = "QUIZ_ID")
+    private int quizId;
 }

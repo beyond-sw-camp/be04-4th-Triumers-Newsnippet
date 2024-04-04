@@ -40,7 +40,6 @@ public class CrawlingQuiz {
     @Column(name = "NEWS_DATE", nullable = false)
     private LocalDate newsDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_ID")
-    private Category category;
+    @Column(name = "CATEGORY_ID")
+    private int categoryId;
 }

@@ -21,7 +21,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'corretto'
-          cache: gradle
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -29,9 +28,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USER_NAME: ${{ secrets.DB_USER_NAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URL: DB URL = ${{ secrets.DB_URL }}
+          DB_USER_NAME: USER = ${{ secrets.DB_USER_NAME }}
+          DB_PASSWORD: PSW = ${{ secrets.DB_PASSWORD }}
 
 
   dependency-submission:

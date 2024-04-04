@@ -36,4 +36,7 @@ public class QuizDTO {
     private Category category;
 
     private int originQuizId;
+
+    private String categoryName;
+    private double correctRate;
 }

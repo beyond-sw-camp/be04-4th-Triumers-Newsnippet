@@ -1,5 +1,4 @@
 package org.triumers.newsnippetback;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,7 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class NewsnippetBackApplicationTests {
 
     @Test
-    void testCode(){
+    void githubActionTestSuccess(){
         assertTrue(true);
     }
+
+    @Test
+    void githubActionTestFail(){
+        assertTrue(false);
+    }
+
 }

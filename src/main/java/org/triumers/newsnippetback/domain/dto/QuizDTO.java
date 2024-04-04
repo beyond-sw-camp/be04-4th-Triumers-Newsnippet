@@ -1,11 +1,11 @@
 package org.triumers.newsnippetback.domain.dto;
 
-import jakarta.persistence.*;
+import lombok.Data;
 import org.triumers.newsnippetback.domain.aggregate.entity.Category;
-import org.triumers.newsnippetback.domain.aggregate.entity.CrawlingQuiz;
 
 import java.time.LocalDate;
 
+@Data
 public class QuizDTO {
     private int id;
 

@@ -82,4 +82,20 @@ public class ManageService {
         }
         return quizRepository.saveAll(quizList);
     }
+
+    public List<QuizDTO> selectQuizListByDate(LocalDate date) {
+        List<Quiz> quizList = quizRepository.findByDateOrderByNoAsc(date);
+
+        List<QuizDTO> quizDTOList = quizList.stream()
+                .map(quiz -> mapper.map(quiz, QuizDTO.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < quizList.size(); i++) {
+            Category category = categoryRepository.findById(quizList.get(i).getCategoryId())
+                    .orElseThrow(IllegalAccessError::new);
+            quizDTOList.get(i).setCategory(category);
+        }
+
+        return quizDTOList;
+    }
 }

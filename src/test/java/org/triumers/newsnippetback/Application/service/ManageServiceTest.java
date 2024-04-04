@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
 import org.triumers.newsnippetback.domain.dto.CrawlingQuizDTO;
+import org.triumers.newsnippetback.domain.dto.QuizDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,6 +42,12 @@ class ManageServiceTest {
         List<Quiz> savedQuizList = manageService.insertSelectedQuiz(selectedCrawlingQuizList);
 
         assertNotNull(savedQuizList);
+    }
+
+    @Test
+    void selectQuizListByDate(){
+        List<QuizDTO> savedQuizList = manageService.selectQuizListByDate(LocalDate.of(2024,4,5));
+
     }
 
 }

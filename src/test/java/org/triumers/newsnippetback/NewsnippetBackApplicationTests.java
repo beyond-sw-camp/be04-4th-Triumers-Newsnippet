@@ -8,4 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class NewsnippetBackApplicationTests {
 
+    @Test
+    void testCode(){
+        assertTrue(true);
+    }
 }

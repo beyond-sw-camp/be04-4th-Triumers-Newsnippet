@@ -11,10 +11,10 @@ import org.triumers.newsnippetGPT.domain.dto.NewsDTO;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class OpenAIServiceTest {
+class PromptServiceTest {
 
     @Autowired
-    private OpenAIService openAIService;
+    private PromptService promptService;
 
     @DisplayName("프롬프트 생성 테스트")
     @Test
@@ -26,7 +26,7 @@ class OpenAIServiceTest {
         news.setContent("뉴스 내용");
 
         // when
-        String prompt = openAIService.createPrompt(news);
+        String prompt = promptService.createPrompt(news);
 
         //then
         assertEquals(prompt, "너는 시사 평론가이고 나는 너에게 시사 뉴스 기사를 제공해 해당 시사에 대한 문제를 만들고자 한다." +
@@ -69,7 +69,7 @@ class OpenAIServiceTest {
 
         // when, then
         assertThrows(NewsTitleNullException.class, () -> {
-            openAIService.createPrompt(news);
+            promptService.createPrompt(news);
         });
     }
     @DisplayName("뉴스 내용 null exception 테스트")
@@ -82,7 +82,7 @@ class OpenAIServiceTest {
 
         // when, then
         assertThrows(NewsContentNullException.class, () -> {
-            openAIService.createPrompt(news);
+            promptService.createPrompt(news);
         });
     }
 }

@@ -1,11 +1,15 @@
 package org.triumers.newsnippetback.Application.service;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.domain.aggregate.entity.Category;
 import org.triumers.newsnippetback.domain.aggregate.entity.CrawlingQuiz;
+import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
 import org.triumers.newsnippetback.domain.dto.CrawlingQuizDTO;
+import org.triumers.newsnippetback.domain.dto.QuizDTO;
 import org.triumers.newsnippetback.domain.repository.CategoryRepository;
 import org.triumers.newsnippetback.domain.repository.CrawlingQuizRepository;
 import org.triumers.newsnippetback.domain.repository.QuizRepository;
@@ -57,5 +61,25 @@ public class ManageService {
         crawlingQuizDTO.setCategory(category);
 
         return crawlingQuizDTO;
+    }
+
+    @Transactional
+    public List<Quiz> insertSelectedQuiz(List<CrawlingQuizDTO> crawlingQuizDTOList) {
+
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        List<Quiz> quizList = crawlingQuizDTOList.stream()
+                .map(crawlingQuizDTO -> mapper.map(crawlingQuizDTO, Quiz.class))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < crawlingQuizDTOList.size(); i++) {
+            
+            CrawlingQuizDTO seletedQuiz = crawlingQuizDTOList.get(i);
+            
+            quizList.get(i).setNo(i+1);
+            quizList.get(i).setDate(LocalDate.now());
+            quizList.get(i).setCategoryId(seletedQuiz.getCategory().getId());
+            quizList.get(i).setOriginQuizId(seletedQuiz.getId());
+        }
+        return quizRepository.saveAll(quizList);
     }
 }

@@ -71,6 +71,26 @@ public class QuizServiceImpl implements QuizService {
     }
 
 
+    // 2
+    @Override
+    public QuizDTO findQuizAnswerByDateAndNo(QuizRequest quizRequest) {
+        LocalDate date = quizRequest.getDate();
+        int no = quizRequest.getNo();
+
+        Quiz quiz = quizRepository.findByDateAndNo(date, no);
+
+        if (quiz == null) {
+            throw new NoSuchElementException("Quiz not found for date: " + date + " and no: " + no);
+        }
+
+        QuizDTO quizDTO = new QuizDTO();
+        quizDTO.setAnswer(quiz.getAnswer());
+        quizDTO.setExplanation(quiz.getExplanation());
+        quizDTO.setNewsLink(quiz.getNewsLink());
+
+        return quizDTO;
+    }
+
 
 
 

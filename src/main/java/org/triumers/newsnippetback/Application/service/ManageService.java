@@ -16,6 +16,7 @@ import org.triumers.newsnippetback.domain.repository.QuizRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,28 +40,36 @@ public class ManageService {
 
         List<CrawlingQuiz> crawlingQuizList = crawlingQuizRepository.findByNewsDate(date);
 
-        List<CrawlingQuizDTO> crawlingQuizDTOList = crawlingQuizList.stream()
-                .map(crawlingQuiz -> mapper.map(crawlingQuiz, CrawlingQuizDTO.class))
-                .collect(Collectors.toList());
+        if (crawlingQuizList != null) {
+            List<CrawlingQuizDTO> crawlingQuizDTOList = crawlingQuizList.stream()
+                    .map(crawlingQuiz -> mapper.map(crawlingQuiz, CrawlingQuizDTO.class))
+                    .collect(Collectors.toList());
 
-        for (int i = 0; i < crawlingQuizList.size(); i++) {
-            Category category = categoryRepository.findById(crawlingQuizList.get(i).getCategoryId())
-                    .orElseThrow(IllegalAccessError::new);
-            crawlingQuizDTOList.get(i).setCategory(category);
+            for (int i = 0; i < crawlingQuizList.size(); i++) {
+                Category category = categoryRepository.findById(crawlingQuizList.get(i).getCategoryId())
+                        .orElseThrow(IllegalAccessError::new);
+                crawlingQuizDTOList.get(i).setCategory(category);
+            }
+            return crawlingQuizDTOList;
+        } else {
+            // 이후에 크롤링 서버에 문제 생성 요청하기
+            throw new IllegalAccessError("문제 정보를 불러올 수 없음");
         }
-
-        return crawlingQuizDTOList;
     }
 
     public CrawlingQuizDTO selectCrawlingQuizByID(int id) {
         CrawlingQuiz crawlingQuiz = crawlingQuizRepository.findById(id).orElseThrow(IllegalAccessError::new);
-        CrawlingQuizDTO crawlingQuizDTO = mapper.map(crawlingQuiz, CrawlingQuizDTO.class);
 
-        Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
-                .orElseThrow(IllegalAccessError::new);
-        crawlingQuizDTO.setCategory(category);
+        if (crawlingQuiz != null) {
+            CrawlingQuizDTO crawlingQuizDTO = mapper.map(crawlingQuiz, CrawlingQuizDTO.class);
 
-        return crawlingQuizDTO;
+            Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
+                    .orElseThrow(IllegalAccessError::new);
+            crawlingQuizDTO.setCategory(category);
+
+            return crawlingQuizDTO;
+        }
+        throw new IllegalAccessError("문제 정보를 불러올 수 없음");
     }
 
     @Transactional
@@ -92,16 +101,19 @@ public class ManageService {
     public List<QuizDTO> selectQuizListByDate(LocalDate date) {
         List<Quiz> quizList = quizRepository.findByDateOrderByNoAsc(date);
 
-        List<QuizDTO> quizDTOList = quizList.stream()
-                .map(quiz -> mapper.map(quiz, QuizDTO.class))
-                .collect(Collectors.toList());
+        if (quizList != null) {
+            List<QuizDTO> quizDTOList = quizList.stream()
+                    .map(quiz -> mapper.map(quiz, QuizDTO.class))
+                    .collect(Collectors.toList());
 
-        for (int i = 0; i < quizList.size(); i++) {
-            Category category = categoryRepository.findById(quizList.get(i).getCategoryId())
-                    .orElseThrow(IllegalAccessError::new);
-            quizDTOList.get(i).setCategory(category);
+            for (int i = 0; i < quizList.size(); i++) {
+                Category category = categoryRepository.findById(quizList.get(i).getCategoryId())
+                        .orElseThrow(IllegalAccessError::new);
+                quizDTOList.get(i).setCategory(category);
+            }
+            return quizDTOList;
         }
-        return quizDTOList;
+        throw new IllegalAccessError("문제 정보를 불러올 수 없음");
     }
 
     @Transactional
@@ -119,6 +131,6 @@ public class ManageService {
             }
             return mapper.map(deleteQuiz, QuizDTO.class);
         }
-        return null;
+        throw new IllegalAccessError("문제 정보를 불러올 수 없음");
     }
 }

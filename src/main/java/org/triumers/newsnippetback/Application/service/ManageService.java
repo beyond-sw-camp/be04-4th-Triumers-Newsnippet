@@ -98,4 +98,23 @@ public class ManageService {
 
         return quizDTOList;
     }
+
+    @Transactional
+    public QuizDTO deleteQuizInListById(int id) {
+        Quiz deleteQuiz = quizRepository.findById(id).orElseThrow(IllegalAccessError::new);
+
+        if (deleteQuiz != null) {
+
+            quizRepository.deleteById(id);
+            List<Quiz> modifyQuizList = quizRepository
+                    .findByDateAndNoGreaterThanOrderByNoAsc(LocalDate.now().plusDays(1), deleteQuiz.getNo());
+
+            for (Quiz modifyQuiz : modifyQuizList) {
+                modifyQuiz.setNo(modifyQuiz.getNo() - 1);
+            }
+
+            return mapper.map(deleteQuiz, QuizDTO.class);
+        }
+        return null;
+    }
 }

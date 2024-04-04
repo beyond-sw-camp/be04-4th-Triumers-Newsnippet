@@ -46,8 +46,15 @@ class ManageServiceTest {
 
     @Test
     void selectQuizListByDate(){
-        List<QuizDTO> savedQuizList = manageService.selectQuizListByDate(LocalDate.of(2024,4,5));
-
+        List<QuizDTO> savedQuizList = manageService.selectQuizListByDate(LocalDate.now().plusDays(1));
+        assertNotNull(savedQuizList);
     }
+
+    @Test
+    void deleteQuizInList(){
+        QuizDTO quizDTO = manageService.deleteQuizInListById(1);
+        assertNotNull(quizDTO);
+    }
+
 
 }

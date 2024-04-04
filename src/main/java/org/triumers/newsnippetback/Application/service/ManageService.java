@@ -35,7 +35,7 @@ public class ManageService {
         this.mapper = mapper;
     }
 
-    public List<CrawlingQuizDTO> selectCrawlingQuizListByDate(LocalDate date){
+    public List<CrawlingQuizDTO> selectCrawlingQuizListByDate(LocalDate date) {
 
         List<CrawlingQuiz> crawlingQuizList = crawlingQuizRepository.findByNewsDate(date);
 
@@ -45,7 +45,7 @@ public class ManageService {
 
         for (int i = 0; i < crawlingQuizList.size(); i++) {
             Category category = categoryRepository.findById(crawlingQuizList.get(i).getCategoryId())
-                                                            .orElseThrow(IllegalAccessError::new);
+                    .orElseThrow(IllegalAccessError::new);
             crawlingQuizDTOList.get(i).setCategory(category);
         }
 
@@ -57,7 +57,7 @@ public class ManageService {
         CrawlingQuizDTO crawlingQuizDTO = mapper.map(crawlingQuiz, CrawlingQuizDTO.class);
 
         Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
-                                                        .orElseThrow(IllegalAccessError::new);
+                .orElseThrow(IllegalAccessError::new);
         crawlingQuizDTO.setCategory(category);
 
         return crawlingQuizDTO;
@@ -71,16 +71,22 @@ public class ManageService {
                 .map(crawlingQuizDTO -> mapper.map(crawlingQuizDTO, Quiz.class))
                 .collect(Collectors.toList());
 
+        int index = getMaxIndex() + 1;
         for (int i = 0; i < crawlingQuizDTOList.size(); i++) {
-            
+
             CrawlingQuizDTO seletedQuiz = crawlingQuizDTOList.get(i);
-            
-            quizList.get(i).setNo(i+1);
+
+            quizList.get(i).setNo(index++);
             quizList.get(i).setDate(LocalDate.now().plusDays(1));
             quizList.get(i).setCategoryId(seletedQuiz.getCategory().getId());
             quizList.get(i).setOriginQuizId(seletedQuiz.getId());
         }
+
         return quizRepository.saveAll(quizList);
+    }
+
+    public int getMaxIndex() {
+        return quizRepository.countByDate(LocalDate.now().plusDays(1));
     }
 
     public List<QuizDTO> selectQuizListByDate(LocalDate date) {
@@ -95,7 +101,6 @@ public class ManageService {
                     .orElseThrow(IllegalAccessError::new);
             quizDTOList.get(i).setCategory(category);
         }
-
         return quizDTOList;
     }
 
@@ -112,7 +117,6 @@ public class ManageService {
             for (Quiz modifyQuiz : modifyQuizList) {
                 modifyQuiz.setNo(modifyQuiz.getNo() - 1);
             }
-
             return mapper.map(deleteQuiz, QuizDTO.class);
         }
         return null;

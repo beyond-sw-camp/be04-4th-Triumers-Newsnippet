@@ -11,6 +11,7 @@ import org.triumers.newsnippetback.domain.aggregate.vo.QuizRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.QuizResponse;
 import org.triumers.newsnippetback.domain.dto.QuizDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -56,6 +57,24 @@ public class QuizController {
 
     /* 2. 해당 문제의 정답, 해설, 원본 링크 조회
     ㄴ 문제는 10개씩, 각 날짜마다 1번-10번까지 번호 부여 */
+    @PostMapping("/answer")
+    public ResponseEntity<QuizResponse> findQuizAnswerByDateAndNo(@RequestBody QuizRequest quizRequest) {
+        try {
+            QuizDTO quizDTO = quizService.findQuizAnswerByDateAndNo(quizRequest);
+
+            QuizResponse quizResponse = new QuizResponse();
+            quizResponse.setAnswer(quizDTO.getAnswer());
+            quizResponse.setExplanation(quizDTO.getExplanation());
+            quizResponse.setNewsLink(quizDTO.getNewsLink());
+
+            return ResponseEntity.ok().body(quizResponse);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 
     /* 3. 회원이 입력한 답과 문제의 정답이 같은지 조회한 후 정답 여부와 회원이 입력한 답 저장 */

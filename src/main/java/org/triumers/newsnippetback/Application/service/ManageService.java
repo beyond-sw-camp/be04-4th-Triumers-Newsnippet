@@ -57,7 +57,7 @@ public class ManageService {
         CrawlingQuizDTO crawlingQuizDTO = mapper.map(crawlingQuiz, CrawlingQuizDTO.class);
 
         Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
-                                                                    .orElseThrow(IllegalAccessError::new);
+                                                        .orElseThrow(IllegalAccessError::new);
         crawlingQuizDTO.setCategory(category);
 
         return crawlingQuizDTO;
@@ -76,7 +76,7 @@ public class ManageService {
             CrawlingQuizDTO seletedQuiz = crawlingQuizDTOList.get(i);
             
             quizList.get(i).setNo(i+1);
-            quizList.get(i).setDate(LocalDate.now());
+            quizList.get(i).setDate(LocalDate.now().plusDays(1));
             quizList.get(i).setCategoryId(seletedQuiz.getCategory().getId());
             quizList.get(i).setOriginQuizId(seletedQuiz.getId());
         }

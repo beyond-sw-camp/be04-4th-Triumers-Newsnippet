@@ -16,11 +16,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'corretto'
+          java-version: '22'
+#          distribution: 'corretto'
+          cache: gradle
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3

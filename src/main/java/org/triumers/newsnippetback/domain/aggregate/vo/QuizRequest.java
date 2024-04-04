@@ -43,4 +43,9 @@ public class QuizRequest {
 
     private String categoryName;
     private double correctRate;
+
+    public QuizRequest(LocalDate date, int no) {
+        this.date = date;
+        this.no = no;
+    }
 }

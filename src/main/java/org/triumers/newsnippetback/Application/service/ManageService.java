@@ -46,9 +46,14 @@ public class ManageService {
                     .collect(Collectors.toList());
 
             for (int i = 0; i < crawlingQuizList.size(); i++) {
-                Category category = categoryRepository.findById(crawlingQuizList.get(i).getCategoryId())
+                CrawlingQuiz crawlingQuiz = crawlingQuizList.get(i);
+                Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
                         .orElseThrow(IllegalAccessError::new);
                 crawlingQuizDTOList.get(i).setCategory(category);
+
+                boolean isSelected = quizRepository.countByDateAndOriginQuizId
+                                     (LocalDate.now().plusDays(1), crawlingQuiz.getId()) != 0;
+                crawlingQuizDTOList.get(i).setSelected(isSelected);
             }
             return crawlingQuizDTOList;
         } else {

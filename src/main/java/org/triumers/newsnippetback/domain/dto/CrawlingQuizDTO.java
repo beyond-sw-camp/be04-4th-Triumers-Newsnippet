@@ -29,4 +29,6 @@ public class CrawlingQuizDTO {
     private LocalDate newsDate;
 
     private Category category;
+
+    private boolean isSelected;
 }

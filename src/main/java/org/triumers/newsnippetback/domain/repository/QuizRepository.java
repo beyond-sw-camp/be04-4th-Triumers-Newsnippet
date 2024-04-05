@@ -14,4 +14,6 @@ public interface QuizRepository  extends JpaRepository<Quiz, Integer> {
     List<Quiz> findByDateAndNoGreaterThanOrderByNoAsc(LocalDate localDate, int no);
 
     Integer countByDate(LocalDate localDate);
+
+    Integer countByDateAndOriginQuizId(LocalDate localDate, int id);
 }

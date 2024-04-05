@@ -65,7 +65,8 @@ public class CrawlingQuizController {
         int month = Integer.parseInt(st.nextToken());
         int dayOfMonth = Integer.parseInt(st.nextToken());
 
-        return new NewsDTO(LocalDate.of(year, month, dayOfMonth), newsVO.getNewsLink(), newsVO.getTitle(),
-                newsVO.getContent(), newsVO.getCategory());
+        return new NewsDTO(LocalDate.of(year, month, dayOfMonth), newsVO.getNewsLink(),
+                newsVO.getTitle().replace("\"", "\'"),
+                newsVO.getContent().replace("\"", "\'"), newsVO.getCategory());
     }
 }

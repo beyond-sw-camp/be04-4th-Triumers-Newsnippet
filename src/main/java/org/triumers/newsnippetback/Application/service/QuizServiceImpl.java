@@ -19,13 +19,11 @@ public class QuizServiceImpl implements QuizService {
     private final QuizRepository quizRepository;
 
     private final CategoryRepository categoryRepository;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public QuizServiceImpl(QuizRepository quizRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
+    public QuizServiceImpl(QuizRepository quizRepository, CategoryRepository categoryRepository) {
         this.quizRepository = quizRepository;
         this.categoryRepository = categoryRepository;
-        this.modelMapper = modelMapper;
     }
 
     // 1

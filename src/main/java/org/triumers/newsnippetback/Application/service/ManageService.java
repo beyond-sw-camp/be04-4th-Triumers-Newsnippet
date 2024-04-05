@@ -52,7 +52,7 @@ public class ManageService {
                 crawlingQuizDTOList.get(i).setCategory(category);
 
                 boolean isSelected = quizRepository.countByDateAndOriginQuizId
-                                     (LocalDate.now().plusDays(1), crawlingQuiz.getId()) != 0;
+                                     (LocalDate.now().plusDays(1), crawlingQuiz.getId()) > 0;
                 crawlingQuizDTOList.get(i).setSelected(isSelected);
             }
             return crawlingQuizDTOList;

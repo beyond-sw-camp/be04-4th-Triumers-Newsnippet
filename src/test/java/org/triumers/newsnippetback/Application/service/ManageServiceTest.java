@@ -47,7 +47,7 @@ class ManageServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4, 5})
+    @ValueSource(ints = {11, 12, 13})
     void selectCrawlingQuizById(int id){
         CrawlingQuizDTO quizDTO = manageService.selectCrawlingQuizByID(id);
 
@@ -69,9 +69,46 @@ class ManageServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {6, 7, 8})
+    @ValueSource(ints = {13, 14, 15})
     void deleteQuizInListSuccess(int id){
         QuizDTO quizDTO = manageService.deleteQuizInListById(id);
         assertNotNull(quizDTO);
     }
+
+    @Test
+    void deleteQuizInListException(){
+        int id = -1;
+
+        assertThrows(IllegalAccessError.class, () -> {
+            manageService.deleteQuizInListById(id);
+        } );
+    }
+
+    @Test
+    void selectCrawlingQuizByIdException(){
+        int id = -1;
+
+        assertThrows(IllegalAccessError.class, () -> {
+            manageService.selectCrawlingQuizByID(id);
+        } );
+    }
+
+    @Test
+    void selectCrawlingQuizListByDateException(){
+        LocalDate date = LocalDate.of(2020, 1, 1);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            manageService.selectCrawlingQuizListByDate(date);
+        } );
+    }
+
+    @Test
+    void selectQuizListByDateException(){
+        LocalDate date = LocalDate.of(2020, 1, 1);
+
+        assertThrows(NoSuchElementException.class, () -> {
+            manageService.selectQuizListByDate(date);
+        } );
+    }
+
 }

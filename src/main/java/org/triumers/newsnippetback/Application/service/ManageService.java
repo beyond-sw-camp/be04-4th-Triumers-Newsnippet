@@ -40,7 +40,7 @@ public class ManageService {
 
         List<CrawlingQuiz> crawlingQuizList = crawlingQuizRepository.findByNewsDate(date);
 
-        if (crawlingQuizList != null) {
+        if (!crawlingQuizList.isEmpty()) {
             List<CrawlingQuizDTO> crawlingQuizDTOList = crawlingQuizList.stream()
                     .map(crawlingQuiz -> mapper.map(crawlingQuiz, CrawlingQuizDTO.class))
                     .collect(Collectors.toList());
@@ -53,7 +53,7 @@ public class ManageService {
             return crawlingQuizDTOList;
         } else {
             // 이후에 크롤링 서버에 문제 생성 요청하기
-            throw new IllegalAccessError("문제 정보를 불러올 수 없음");
+            throw new NoSuchElementException("문제 정보를 불러올 수 없음");
         }
     }
 
@@ -101,7 +101,7 @@ public class ManageService {
     public List<QuizDTO> selectQuizListByDate(LocalDate date) {
         List<Quiz> quizList = quizRepository.findByDateOrderByNoAsc(date);
 
-        if (quizList != null) {
+        if (!quizList.isEmpty()) {
             List<QuizDTO> quizDTOList = quizList.stream()
                     .map(quiz -> mapper.map(quiz, QuizDTO.class))
                     .collect(Collectors.toList());
@@ -113,7 +113,7 @@ public class ManageService {
             }
             return quizDTOList;
         }
-        throw new IllegalAccessError("문제 정보를 불러올 수 없음");
+        throw new NoSuchElementException("문제 정보를 불러올 수 없음");
     }
 
     @Transactional

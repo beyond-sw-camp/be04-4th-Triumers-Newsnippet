@@ -36,12 +36,12 @@ public class ManageController {
         return manageService.selectCrawlingQuizByID(id);
     }
 
-    @PostMapping("/addQuiz")
-    public ResponseEntity<List<Quiz>> addQuizInList(@RequestBody List<CrawlingQuizDTO> crawlingQuizDTOList){
+    @PostMapping("/addQuiz/{id}")
+    public ResponseEntity<Quiz> addQuizInList(@PathVariable int id){
 
-        List<Quiz> savedQuizList = manageService.insertSelectedQuiz(crawlingQuizDTOList);
+        Quiz savedQuiz = manageService.insertSelectedQuizById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(savedQuizList);
+        return ResponseEntity.status(HttpStatus.OK).body(savedQuiz);
     }
 
     @GetMapping("findSelectedQuiz")

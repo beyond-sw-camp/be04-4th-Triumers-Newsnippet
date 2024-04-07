@@ -11,7 +11,6 @@ import org.triumers.newsnippetback.domain.dto.CrawlingQuizDTO;
 import org.triumers.newsnippetback.domain.dto.QuizDTO;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
@@ -54,17 +53,18 @@ class ManageServiceTest {
         assertNotNull(quizDTO);
     }
 
-    @Test
-    void addSelectedQuiz(){
-        List<CrawlingQuizDTO> selectedCrawlingQuizList = manageService.selectCrawlingQuizListByDate(LocalDate.of(2024,4,2));
-        List<Quiz> savedQuizList = manageService.insertSelectedQuiz(selectedCrawlingQuizList);
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3})
+    void addSelectedQuiz(int id){
+        Quiz savedQuiz = manageService.insertSelectedQuizById(id);
 
-        assertNotNull(savedQuizList);
+        assertNotNull(savedQuiz);
     }
 
     @Test
     void selectQuizListByDate(){
         List<QuizDTO> savedQuizList = manageService.selectQuizListByDate(LocalDate.now().plusDays(1));
+
         assertNotNull(savedQuizList);
     }
 

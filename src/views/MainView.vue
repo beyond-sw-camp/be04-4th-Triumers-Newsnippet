@@ -1,21 +1,36 @@
 <template>
-
-        <Header>
-        <RouterLink to="/" active-class="active" replace>메인</RouterLink>
-        <RouterLink to="/quiz" active-class="active" replace>퀴즈</RouterLink>
-        <RouterLink to="/manage" active-class="active" replace>퀴즈 관리</RouterLink>
-        <RouterLink to="/login" active-class="active" replace>로그인</RouterLink>
-        <RouterLink to="/signUp" active-class="active" replace>회원가입</RouterLink>
-        </Header>
-    <div>
-        <Main></Main>
+    <div class="app">
+        <Header :showLoginButton="true" :showSignUpButton="true"></Header>
+      <div class="content">
+        <div class="banner">
+          <!-- <img src="path/to/banner.png" alt="Banner" /> -->
+        </div>
+        <div class="illustration">
+          <!-- <img src="path/to/illustration.png" alt="Illustration" /> -->
+        </div>
+      </div>
     </div>
-</template>
-
-<script setup>
-    import Main from '@/components/Main.vue'
-</script>
-
-<style scoped>
-
-</style>
+  </template>
+  
+  <script setup>
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import Header from '@/views/Header.vue';
+  
+  const router = useRouter();
+  const submenu = ref(null);
+  
+  
+  </script>
+  
+  <style scoped>
+  .app {
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  
+  .content {
+    padding: 20px;
+  }
+  </style>

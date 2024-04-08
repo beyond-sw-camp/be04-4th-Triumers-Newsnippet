@@ -1,18 +1,20 @@
 <template>
 
-    crawlingQuiz
     <input type="date" v-model="date" />
 
     <div class="crawlingQuiz-container">
         <template v-for="crawlingQuiz in crawlingQuizList" :key="crawlingQuiz.id">
 
-            <div class="crawlingQuiz-item" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`">
-                <div id="news-category">
-                    카테고리
+            <div class="crawlingQuiz-item">
+                <div class="click-div" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`"
+                    :aria-controls="`#crawling${crawlingQuiz.id}`">
+                    <div id="news-category">
+                        카테고리
+                    </div>
+                    <p id="question"> {{ crawlingQuiz.content }} </p>
                 </div>
-                <p id="question"> {{ crawlingQuiz.content }} </p>
 
-                <div id="selectBtn" @click.stop.prevent="changeSelect(crawlingQuiz.id - 1)">
+                <div class="selectBtn" @click.stop="changeSelect(crawlingQuiz.id - 1)">
                     <p id="select-text" v-if="crawlingQuiz.selected">출제</p>
                     <p id="select-text" v-else>미출제</p>
                 </div>
@@ -21,10 +23,10 @@
             <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
                 <div>
                     <p id="content">{{ crawlingQuiz.content }}</p>
-                    <p> <span id="option">A</span> <span> 보기 </span> </p>
-                    <p> <span id="option">B</span> <span> 보기 </span> </p>
-                    <p> <span id="option">C</span> <span> 보기 </span> </p>
-                    <p> <span id="option">D</span> <span> 보기 </span> </p>
+                    <p> <span class="option">A</span> <span> 보기 </span> </p>
+                    <p> <span class="option">B</span> <span> 보기 </span> </p>
+                    <p> <span class="option">C</span> <span> 보기 </span> </p>
+                    <p> <span class="option">D</span> <span> 보기 </span> </p>
                 </div>
                 <hr>
                 <div>
@@ -71,7 +73,11 @@
     text-align: center;
 }
 
-#selectBtn {
+.click-div{
+    display: flex;
+}
+
+.selectBtn {
     width: 100px;
     margin: 10px;
     padding-top: 10px;
@@ -116,6 +122,7 @@ const changeSelect = (id) => {
     // const res = await fetch(url);
 
     crawlingQuizList[id].selected = !isSelected;
+
 }
 
 const crawlingQuizList = reactive(

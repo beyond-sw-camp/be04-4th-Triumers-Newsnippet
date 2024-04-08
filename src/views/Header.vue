@@ -81,7 +81,7 @@
   
       const logout = () => {
         // 로그아웃 로직 처리
-        router.push('/main');
+        router.push('/');
       };
   
       const goToMyPage = () => {

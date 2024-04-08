@@ -1,29 +1,50 @@
 <template>
 
-        crawlingQuiz
-        <input type="date" v-model="date" />
+    crawlingQuiz
+    <input type="date" v-model="date" />
 
-        <div class="crawlingQuiz-container">
-            <template v-for="crawlingQuiz in crawlingQuizList" :key="crawlingQuiz.id">
-                <div class="crawlingQuiz-item">
-                    <div id="news-category">
-                        카테고리
-                    </div>
-                    <p id="question"> {{ crawlingQuiz.content }} </p>
+    <div class="crawlingQuiz-container">
+        <template v-for="crawlingQuiz in crawlingQuizList" :key="crawlingQuiz.id">
 
-                    <!-- 버블링 어쩌구 처리해서 버튼만 눌리게 하기 -->
-                    <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id - 1)"> 
-                        <p id="select-text" v-if="crawlingQuiz.selected">출제</p>
-                        <p id="select-text" v-else>미출제</p>
-                    </div>
+            <div class="crawlingQuiz-item" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`">
+                <div id="news-category">
+                    카테고리
                 </div>
-            </template>
-        </div>
+                <p id="question"> {{ crawlingQuiz.content }} </p>
+
+                <div id="selectBtn" @click.stop.prevent="changeSelect(crawlingQuiz.id - 1)">
+                    <p id="select-text" v-if="crawlingQuiz.selected">출제</p>
+                    <p id="select-text" v-else>미출제</p>
+                </div>
+            </div>
+
+            <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
+                <div>
+                    <p id="content">{{ crawlingQuiz.content }}</p>
+                    <p> <span id="option">A</span> <span> 보기 </span> </p>
+                    <p> <span id="option">B</span> <span> 보기 </span> </p>
+                    <p> <span id="option">C</span> <span> 보기 </span> </p>
+                    <p> <span id="option">D</span> <span> 보기 </span> </p>
+                </div>
+                <hr>
+                <div>
+                    <p> <span><a :href="`${crawlingQuiz.newsLink}`">기사 링크</a></span> </p>
+                    <p>
+                        {{ crawlingQuiz.explanation }}
+                    </p>
+                </div>
+
+            </div>
+
+        </template>
+    </div>
+
+
+
 
 </template>
 
 <style scoped>
-
 .crawlingQuiz-container {
     padding: 20px;
     display: flex;
@@ -50,20 +71,27 @@
     text-align: center;
 }
 
-#selectBtn{
+#selectBtn {
     width: 100px;
     margin: 10px;
+    padding-top: 10px;
     border-radius: 10px;
     text-align: center;
     background-color: white;
     justify-content: flex-end;
 }
 
-#question{
+#question {
     width: 550px;
     margin: 10px;
 }
 
+.collapse,
+.collapsing {
+    width: 800px;
+    background-color: beige;
+    padding: 20px;
+}
 </style>
 
 <script setup>
@@ -71,16 +99,17 @@ import { ref, onMounted, reactive } from "vue";
 import { useRoute } from 'vue-router'
 
 const date = ref(0);
+
 const changeSelect = (id) => {
 
     // 삭제인지 추가인지 판단해서 요청보내기, 버튼 변경
     const isSelected = crawlingQuizList[id].selected;
     let url = '';
 
-    if(isSelected){
+    if (isSelected) {
         url = `http://#{id}`;
     }
-    else{
+    else {
         url = `http://#{id}`;
     }
 

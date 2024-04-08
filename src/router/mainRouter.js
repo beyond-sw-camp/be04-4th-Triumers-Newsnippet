@@ -7,6 +7,8 @@ import SelectCrawlingQuiz from '@/components/manage/SelectCrawlingQuiz.vue';
 import SelectedQuiz from '@/components/manage/SelectedQuiz.vue';
 import SignUp from '@/components/user/SignUp.vue';
 import Login from '@/components/user/Login.vue';
+import MyPage from '@/components/user/MyPage.vue';
+import EditMyInfo from '@/components/user/EditMyInfo.vue';
 import League from '@/components/quiz/League.vue';
 import TodayQuiz from '@/components/quiz/TodayQuiz.vue';
 import SolvedQuiz from '@/components/quiz/SolvedQuiz.vue';
@@ -26,6 +28,14 @@ const router = createRouter({
         {
             path: '/login',
             component: Login,
+        },
+        {
+            path: '/my-page',
+            component: MyPage,
+        },
+        {
+            path: '/my-info',
+            component: EditMyInfo,
         },
         {
             path: '/today-quiz',

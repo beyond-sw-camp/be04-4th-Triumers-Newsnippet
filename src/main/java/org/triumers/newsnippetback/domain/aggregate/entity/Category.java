@@ -1,9 +1,15 @@
 package org.triumers.newsnippetback.domain.aggregate.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "tbl_category")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Category {
 
     @Id

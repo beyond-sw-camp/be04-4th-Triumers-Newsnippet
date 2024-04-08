@@ -8,11 +8,15 @@ import org.triumers.newsnippetback.domain.aggregate.entity.Category;
 import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
 import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
+import org.triumers.newsnippetback.domain.aggregate.vo.SolvedResultRequest;
 import org.triumers.newsnippetback.domain.dto.SolvedDTO;
 import org.triumers.newsnippetback.domain.repository.CategoryRepository;
 import org.triumers.newsnippetback.domain.repository.QuizRepository;
 import org.triumers.newsnippetback.domain.repository.SolvedRepository;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -96,4 +100,16 @@ public class SolvedServiceImpl implements SolvedService{
 
         return solvedDTO;
     }
+
+    @Override
+    public List<Solved> findCorrectQuizByUserIdAndSolvedDate(SolvedResultRequest solvedResultRequest) {
+        int userId = solvedResultRequest.getUserId();
+        boolean isCorrect = solvedResultRequest.isCorrect();
+        LocalDate solvedDate = solvedResultRequest.getSolvedDate();
+
+        List<Solved> solvedList = solvedRepository.findIdByUserIdAndIsCorrectAndSolvedDate(userId, isCorrect, solvedDate);
+
+        return solvedList;
+    }
+
 }

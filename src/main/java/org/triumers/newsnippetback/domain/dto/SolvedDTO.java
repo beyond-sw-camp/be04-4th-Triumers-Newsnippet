@@ -1,10 +1,14 @@
 package org.triumers.newsnippetback.domain.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class SolvedDTO {
     private int id;
     private boolean isCorrect;
@@ -21,5 +25,5 @@ public class SolvedDTO {
     private String explanation;
     private String newsLink;
     private LocalDate date;
-
+    private LocalDate solvedDate;
 }

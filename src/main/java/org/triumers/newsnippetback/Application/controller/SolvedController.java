@@ -1,5 +1,7 @@
 package org.triumers.newsnippetback.Application.controller;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,21 +10,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.triumers.newsnippetback.Application.service.SolvedService;
-import org.triumers.newsnippetback.domain.aggregate.vo.SolvedQuizResponse;
-import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
-import org.triumers.newsnippetback.domain.aggregate.vo.SolvedIsCorrectResponse;
+import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
+import org.triumers.newsnippetback.domain.aggregate.vo.*;
 import org.triumers.newsnippetback.domain.dto.SolvedDTO;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/solved")
 public class SolvedController {
     private final SolvedService solvedService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public SolvedController(SolvedService solvedService) {
+    public SolvedController(SolvedService solvedService, ModelMapper modelMapper) {
         this.solvedService = solvedService;
+        this.modelMapper = modelMapper;
     }
 
     /* 설명. 1. 사용자가 입력한 답과 문제의 정답 여부 판단 */
@@ -63,6 +68,25 @@ public class SolvedController {
             solvedQuizResponse.setDate(solvedDTO.getDate());
 
             return ResponseEntity.ok().body(solvedQuizResponse);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /* 설명. 3. 회원이 지정한 날짜에 맞춘 문제 갯수 조회 */
+    @PostMapping("/result")
+    public ResponseEntity<List<SolvedResultResponse>> findCorrectQuizByUserIdAndSolvedDate(@RequestBody SolvedResultRequest solvedResultRequest){
+        try {
+            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+            List<Solved> solvedList = solvedService.findCorrectQuizByUserIdAndSolvedDate(solvedResultRequest);
+            List<SolvedResultResponse> solvedResultResponse = solvedList.stream()
+                    .map(dot -> modelMapper.map(dot, SolvedResultResponse.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(solvedResultResponse);
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();
         } catch (Exception e) {

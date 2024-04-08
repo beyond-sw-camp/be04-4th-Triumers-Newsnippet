@@ -3,6 +3,8 @@ package org.triumers.newsnippetback.domain.aggregate.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -28,4 +30,7 @@ public class Solved {
 
     @Column(name = "QUIZ_ID")
     private int quizId;
+
+    @Column(name = "SOLVED_DATE")
+    private LocalDate solvedDate;
 }

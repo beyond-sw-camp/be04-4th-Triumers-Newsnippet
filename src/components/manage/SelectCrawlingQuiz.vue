@@ -44,10 +44,9 @@
 
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 const date = ref('');
-
 const crawlingQuizList = ref(null);
 
 onMounted(async () => {
@@ -61,7 +60,7 @@ onMounted(async () => {
         return year + "-" + month + "-" + day;
     }
     date.value = getDate();
-    getCrowdQuizListByDate(date);
+    getCrowdQuizListByDate(date.value);
 });
 
 async function getCrowdQuizListByDate(date){
@@ -70,13 +69,18 @@ async function getCrowdQuizListByDate(date){
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            date: date.value
+            date: date
         })
     }).then(response => response.json());
     const data = await response;
     crawlingQuizList.value = data;
-    console.log(crawlingQuizList.value);
 }
+
+watch(date, (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        getCrowdQuizListByDate(newValue);
+    }
+});
 
 async function changeSelect(id, index) {
 
@@ -93,7 +97,6 @@ async function changeSelect(id, index) {
 async function addQuiz(id){
     const response = fetch(`http://localhost:8555/manage/addQuiz/${id}`).then(response => response.json());
     const data = await response;
-    console.log(data);
 }
 
 async function deleteQuiz(id){
@@ -101,7 +104,6 @@ async function deleteQuiz(id){
         method : "DELETE"
     }).then(response => response.json());
     const data = await response;
-    console.log(data);
 }
 
 </script>

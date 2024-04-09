@@ -48,7 +48,26 @@ public class SolvedController {
         }
     }
 
-    /* 설명. 2. 사용자가 과거에 풀었던 문제 조회 */
+    /* 설명. 2. 사용자가 과거에 풀었던 문제들 조회 */
+    @PostMapping("/find/all")
+    public ResponseEntity<List<SolvedQuizListResponse>> findSolvedQuizByUserId(@RequestBody SolvedRequest solvedRequest){
+        try {
+            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+            List<Solved> solvedList = solvedService.findSolvedQuizListByUserId(solvedRequest);
+            List<SolvedQuizListResponse> SolvedQuizListResponse = solvedList.stream()
+                    .map(dot -> modelMapper.map(dot, SolvedQuizListResponse.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(SolvedQuizListResponse);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /* 설명. 3. 사용자가 과거에 풀었던 문제 하나 조회 */
     @PostMapping("/find")
     public ResponseEntity<SolvedQuizResponse> findSolvedQuizByUserID(@RequestBody SolvedRequest solvedRequest){
         try {
@@ -75,7 +94,7 @@ public class SolvedController {
         }
     }
 
-    /* 설명. 3. 회원이 지정한 날짜에 맞춘 문제 갯수 조회 */
+    /* 설명. 4. 회원이 지정한 날짜에 맞춘 문제 갯수 조회 */
     @PostMapping("/result")
     public ResponseEntity<List<SolvedResultResponse>> findCorrectQuizByUserIdAndSolvedDate(@RequestBody SolvedResultRequest solvedResultRequest){
         try {

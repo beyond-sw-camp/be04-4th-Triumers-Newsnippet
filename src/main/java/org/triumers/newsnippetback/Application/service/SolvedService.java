@@ -12,5 +12,7 @@ public interface SolvedService {
 
     SolvedDTO findSolvedQuizByUserID(SolvedRequest solvedRequest);
 
+    List<Solved> findSolvedQuizListByUserId(SolvedRequest solvedRequest);
+
     List<Solved> findCorrectQuizByUserIdAndSolvedDate(SolvedResultRequest solvedResultRequest);
 }

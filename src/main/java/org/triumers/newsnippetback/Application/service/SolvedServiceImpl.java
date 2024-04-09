@@ -15,10 +15,7 @@ import org.triumers.newsnippetback.domain.repository.QuizRepository;
 import org.triumers.newsnippetback.domain.repository.SolvedRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class SolvedServiceImpl implements SolvedService{
@@ -36,6 +33,7 @@ public class SolvedServiceImpl implements SolvedService{
         this.modelMapper = modelMapper;
     }
 
+    /* 설명. 사용자가 입력한 답과 정답 비교 후 여부 추가 */
     @Override
     public SolvedDTO findSelectedOptionAndCompareAnswer(SolvedRequest solvedRequest) {
 
@@ -70,6 +68,25 @@ public class SolvedServiceImpl implements SolvedService{
         return solvedDTO;
     }
 
+    /* 설명. 사용자의 ID로 풀었던 문제 ID들 불러오기 */
+    @Override
+    public List<Solved> findSolvedQuizListByUserId(SolvedRequest solvedRequest) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        int userId = solvedRequest.getUserId();
+        List<Solved> solvedList = solvedRepository.findSolvedQuizByUserId(userId);
+        List<Quiz> quizList = new ArrayList<>();
+
+        for (Solved solved: solvedList) {
+            int id = solved.getQuizId();
+            quizList.add(quizRepository.findById(id).orElseThrow());
+        }
+        System.out.println("quizList = " + quizList);
+
+        return solvedList;
+    }
+
+    /* 설명. 사용자의 ID와 문제 ID로 문제 내용 불러오기 */
     @Override
     public SolvedDTO findSolvedQuizByUserID(SolvedRequest solvedRequest) {
         int userId = solvedRequest.getUserId();

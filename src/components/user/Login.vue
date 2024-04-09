@@ -1,35 +1,36 @@
 <template>
-    <div class="login-container">
-        <Header :showSignUpButton="true"></Header>
-      <div class="login-form">
-        <h2>Login</h2>
-        <div class="form-group">
-          <input v-model="email" placeholder="이메일" />
-        </div>
-        <div class="form-group">
-          <input v-model="password" type="password" placeholder="비밀번호" />
-        </div>
-        <button @click="login" class="login-btn">로그인</button>
+  <div class="login-container">
+    <Header :showSignUpButton="true"></Header>
+    <div class="login-form">
+      <h2>Login</h2>
+      <div class="form-group">
+        <input v-model="email" placeholder="이메일" />
       </div>
+      <div class="form-group">
+        <input v-model="password" type="password" placeholder="비밀번호" />
+      </div>
+      <button @click="login" class="login-btn">로그인</button>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import Header from '@/views/Header.vue';
-  
-  const router = useRouter();
-  const email = ref('');
-  const password = ref('');
-  const submenu = ref(null);
-  
-  
-  const login = () => {
-    // 로그인 로직 처리
-    router.push('/');
-  };
-  </script>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import Header from '@/views/Header.vue';
+
+const router = useRouter();
+const email = ref('');
+const password = ref('');
+const submenu = ref(null);
+
+const login = () => {
+  // 로그인 로직 처리
+  // 예시: 로그인 성공 시 localStorage에 토큰 저장
+  localStorage.setItem('token', 'your_token_here');
+  router.push('/');
+};
+</script>
   
   <style scoped>
   .login-container {

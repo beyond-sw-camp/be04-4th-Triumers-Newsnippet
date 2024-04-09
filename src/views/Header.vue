@@ -1,121 +1,86 @@
-<!-- Header.vue -->
 <template>
-    <header class="header">
-      <div class="header-left">
-        <div class="logo">
-          <!-- <img src="@/components/images/newsnippet_logo.png" alt="Newsnippet Logo" /> -->
-        </div>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <!-- <img src="@/components/images/newsnippet_logo.png" alt="Newsnippet Logo" /> -->
       </div>
-      <nav class="header-nav">
-        <div class="menu-items">
-          <div class="menu-item" @mouseover="showSubmenu('problem')" @mouseout="hideSubmenu('problem')">
-            문제
-            <div v-show="submenu === 'problem'" class="submenu">
-              <div @click="goToTodayQuiz">오늘의 문제</div>
-              <div @click="goToSolvedQuiz">풀었던 문제 확인</div>
-            </div>
-          </div>
-          <div class="menu-item" @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')">
-            리그
-            <div v-show="submenu === 'league'" class="submenu">
-              <div @click="goToLeague">전체 리그</div>
-            </div>
+    </div>
+    <nav class="header-nav">
+      <div class="menu-items">
+        <div class="menu-item" @mouseover="showSubmenu('problem')" @mouseout="hideSubmenu('problem')">
+          문제
+          <div v-show="submenu === 'problem'" class="submenu">
+            <div @click="checkLoginAndNavigate('today-quiz')">오늘의 문제</div>
+            <div @click="checkLoginAndNavigate('solved-quiz')">풀었던 문제 확인</div>
           </div>
         </div>
-      </nav>
-      <div class="header-right">
-        <div class="auth-buttons">
-          <button v-if="showSignUpButton" @click="goToSignUp" class="btn btn-beige">회원가입</button>
-          <button v-if="showLoginButton" @click="goToLogin" class="btn btn-beige">로그인</button>
-          <button v-if="showLogoutButton" @click="logout" class="btn btn-beige">로그아웃</button>
-          <button v-if="showMyPageButton" @click="goToMyPage" class="btn btn-beige">마이페이지</button>
+        <div class="menu-item" @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')">
+          리그
+          <div v-show="submenu === 'league'" class="submenu">
+            <div @click="checkLoginAndNavigate('league')">전체 리그</div>
+          </div>
         </div>
       </div>
-    </header>
-  </template>
-  
-  <script>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  export default {
-    props: {
-      showSignUpButton: {
-        type: Boolean,
-        default: false
-      },
-      showLoginButton: {
-        type: Boolean,
-        default: false
-      },
-      showLogoutButton: {
-        type: Boolean,
-        default: false
-      },
-      showMyPageButton: {
-        type: Boolean,
-        default: false
-      }
-    },
-    setup(props) {
-      const router = useRouter();
-      const submenu = ref(null);
-  
-      const showSubmenu = (menu) => {
-        submenu.value = menu;
-      };
-  
-      const hideSubmenu = (menu) => {
-        if (submenu.value === menu) {
-          submenu.value = null;
-        }
-      };
-  
-      const goToSignUp = () => {
-        router.push('/signup');
-      };
-  
-      const goToLogin = () => {
-        router.push('/login');
-      };
-  
-      const logout = () => {
-        // 로그아웃 로직 처리
-        router.push('/');
-      };
-  
-      const goToMyPage = () => {
-        router.push('/my-page');
-      };
-  
-      const goToTodayQuiz = () => {
-        router.push('/today-quiz');
-      };
-  
-      const goToSolvedQuiz = () => {
-        router.push('/solved-quiz');
-      };
-  
-      const goToLeague = () => {
-        router.push('/league');
-      };
-  
-      return {
-        submenu,
-        showSubmenu,
-        hideSubmenu,
-        goToSignUp,
-        goToLogin,
-        logout,
-        goToMyPage,
-        goToTodayQuiz,
-        goToSolvedQuiz,
-        goToLeague
-      }
-    }
+    </nav>
+    <div class="header-right">
+      <div class="auth-buttons">
+        <button v-if="!isLoggedIn" @click="navigateTo('signup')" class="btn btn-beige">회원가입</button>
+        <button v-if="!isLoggedIn" @click="navigateTo('login')" class="btn btn-beige">로그인</button>
+        <button v-if="isLoggedIn" @click="logout" class="btn btn-beige">로그아웃</button>
+        <button v-if="isLoggedIn" @click="navigateTo('my-page')" class="btn btn-beige">마이페이지</button>
+      </div>
+    </div>
+  </header>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const props = defineProps({
+  isLoggedIn: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const router = useRouter();
+const submenu = ref(null);
+
+const showSubmenu = (menu) => {
+  submenu.value = menu;
+};
+
+const hideSubmenu = (menu) => {
+  if (submenu.value === menu) {
+    submenu.value = null;
   }
-  </script>
-  
+};
+
+const navigateTo = (path) => {
+  router.push(`/${path}`);
+};
+
+const checkLoginAndNavigate = (path) => {
+  if (props.isLoggedIn) {
+    router.push(`/${path}`);
+  } else {
+    alert('로그인 후 사용 가능합니다.');
+    router.push('/login');
+  }
+};
+
+const logout = () => {
+  alert('로그아웃 되었습니다.');
+  localStorage.removeItem('token');
+  emit('logout');
+  router.push('/');
+};
+
+const emit = defineEmits(['logout']);
+</script>
+
+
   <style scoped>
   .header {
     display: flex;

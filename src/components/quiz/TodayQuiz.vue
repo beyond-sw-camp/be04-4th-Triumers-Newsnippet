@@ -1,223 +1,272 @@
-<!-- 우선 로그인으로 채워둠 -->
-
 <template>
-    <div class="signup-container">
-      <header class="header">
-        <div class="header-left">
-          <div class="logo" @click="goToMain">
-            <!-- <img src="@/components/images/newsnippet_logo.png" alt="Newsnippet Logo" /> -->
+  <div>
+    <Header :isLoggedIn="true" />
+    <div class="quiz-container">
+      <div v-if="currentStep === 1">
+        <!-- 문제 및 선택지 표시 -->
+        <div class="quiz-info">
+          <span class="date">{{ currentQuiz.date }}</span>
+          <span class="category">카테고리: {{ currentQuiz.categoryName }}</span>
+          <span class="accuracy">정답률: {{ (currentQuiz.correctCnt / currentQuiz.solvedCnt * 100).toFixed(2) }}%</span>
+        </div>
+        <h2 class="question">{{ currentQuiz.no }}. {{ currentQuiz.content }}</h2>
+        <div class="options">
+          <div class="option" @click="selectOption('A')">
+            A. {{ currentQuiz.optionA }}
+          </div>
+          <div class="option" @click="selectOption('B')">
+            B. {{ currentQuiz.optionB }}
+          </div>
+          <div class="option" @click="selectOption('C')">
+            C. {{ currentQuiz.optionC }}
+          </div>
+          <div class="option" @click="selectOption('D')">
+            D. {{ currentQuiz.optionD }}
           </div>
         </div>
-        <nav class="header-nav">
-          <div class="menu-items">
-            <div class="menu-item" @mouseover="showSubmenu('problem')" @mouseout="hideSubmenu('problem')">
-              문제
-              <div v-show="submenu === 'problem'" class="submenu">
-                <div @click="goToProblemPage('오늘의문제')">오늘의 문제</div>
-                <div @click="goToProblemPage('전체리그')">전체 리그</div>
-                <div @click="goToProblemPage('풀었던문제')">풀었던 문제</div>
-              </div>
-            </div>
-            <div class="menu-item" @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')">
-              리그
-              <div v-show="submenu === 'league'" class="submenu">
-                <div @click="goToLeaguePage('오늘의리그')">오늘의 리그</div>
-                <div @click="goToLeaguePage('전체리그')">전체 리그</div>
-                <div @click="goToLeaguePage('풀었던리그')">풀었던 리그</div>
-              </div>
-            </div>
+        <button @click="nextStep" :disabled="!selectedOption" class="next-btn">다음</button>
+        <div class="progress">
+          <span class="progress-text">진행률:</span>
+          <span class="progress-bar" :style="{ width: `${currentQuizIndex + 1 / quizzes.length * 100}%` }"></span>
+          {{ currentQuizIndex + 1 }}/{{ quizzes.length }}
+        </div>
+      </div>
+
+      <div v-if="currentStep === 2">
+        <!-- 정답 확인 및 해설 표시 -->
+        <h2 class="question">{{ currentQuiz.no }}. {{ currentQuiz.content }}</h2>
+        <div class="result">
+          <p v-if="isCorrect" class="correct">정답입니다!</p>
+          <p v-else class="incorrect">오답입니다.</p>
+        </div>
+        <div class="options">
+          <div class="option" :class="{ correct: currentQuiz.optionA === currentQuiz.answer, incorrect: selectedOption === 'A' && !isCorrect }">
+            A. {{ currentQuiz.optionA }}
+            <span v-if="currentQuiz.optionA === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-        </nav>
-        <div class="header-right">
-          <div class="auth-buttons">
-            <button class="btn btn-beige">로그인</button>
+          <div class="option" :class="{ correct: currentQuiz.optionB === currentQuiz.answer, incorrect: selectedOption === 'B' && !isCorrect }">
+            B. {{ currentQuiz.optionB }}
+            <span v-if="currentQuiz.optionB === currentQuiz.answer" class="answer-label">(정답)</span>
+          </div>
+          <div class="option" :class="{ correct: currentQuiz.optionC === currentQuiz.answer, incorrect: selectedOption === 'C' && !isCorrect }">
+            C. {{ currentQuiz.optionC }}
+            <span v-if="currentQuiz.optionC === currentQuiz.answer" class="answer-label">(정답)</span>
+          </div>
+          <div class="option" :class="{ correct: currentQuiz.optionD === currentQuiz.answer, incorrect: selectedOption === 'D' && !isCorrect }">
+            D. {{ currentQuiz.optionD }}
+            <span v-if="currentQuiz.optionD === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
         </div>
-      </header>
-      <div class="signup-form">
-        <h2>Sign Up</h2>
-        <div class="form-group">
-          <input v-model="name" placeholder="이름" />
+        <p class="explanation">해설: {{ currentQuiz.explanation }}</p>
+        <a :href="currentQuiz.newsLink" target="_blank" class="source-link">원문 링크</a>
+        <button @click="nextQuestion" class="next-btn">다음 문제</button>
+        <div class="progress">
+          <span class="progress-text">진행률:</span>
+          <span class="progress-bar" :style="{ width: `${(currentQuizIndex + 1) / quizzes.length * 100}%` }"></span>
+          {{ currentQuizIndex + 1 }}/{{ quizzes.length }}
         </div>
-        <div class="form-group">
-          <input v-model="nickname" placeholder="닉네임" />
-        </div>
-        <div class="form-group">
-          <input v-model="email" placeholder="이메일" />
-        </div>
-        <div class="form-group">
-          <input v-model="password" type="password" placeholder="비밀번호" />
-        </div>
-        <button @click="signup" class="signup-btn">회원가입</button>
+      </div>
+
+      <div v-if="currentStep === 3">
+        <!-- 최종 결과 표시 -->
+        <h2>결과</h2>
+        <p>맞힌 문제 수: {{ correctCount }}</p>
+        <p>틀린 문제 수: {{ quizzes.length - correctCount }}</p>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  const router = useRouter();
-  const name = ref('');
-  const nickname = ref('');
-  const email = ref('');
-  const password = ref('');
-  const submenu = ref(null);
-  
-  const goToMain = () => {
-    router.push('/');
-  };
-  
-  const showSubmenu = (menu) => {
-    submenu.value = menu;
-  };
-  
-  const hideSubmenu = (menu) => {
-    if (submenu.value === menu) {
-      submenu.value = null;
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive, onMounted } from 'vue';
+import axios from 'axios';
+import Header from '@/views/Header.vue';
+
+const quizzes = ref([]);
+const currentQuizIndex = ref(0);
+const currentQuiz = reactive({});
+const selectedOption = ref(null);
+const correctCount = ref(0);
+const currentStep = ref(1);
+const isCorrect = ref(false);
+const userId = ref(null); // 사용자 ID를 가져오는 로직이 필요합니다.
+
+const fetchQuizzes = async () => {
+  try {
+    const response = await axios.post('/quiz/test', { date: new Date(), no: 1 });
+    quizzes.value = response.data.map((quiz, index) => ({
+      ...quiz,
+      no: index + 1,
+      correctRate: quiz.correctCnt / quiz.solvedCnt,
+    }));
+    currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
+    currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
+    currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
+    currentQuiz.content = quizzes.value[currentQuizIndex.value].content;
+    currentQuiz.optionA = quizzes.value[currentQuizIndex.value].optionA;
+    currentQuiz.optionB = quizzes.value[currentQuizIndex.value].optionB;
+    currentQuiz.optionC = quizzes.value[currentQuizIndex.value].optionC;
+    currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
+    currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
+    currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
+  } catch (error) {
+    console.error('문제 데이터 가져오기 실패:', error);
+  }
+};
+
+const fetchAnswer = async () => {
+  try {
+    const response = await axios.post('/quiz/answer', { date: new Date(), no: currentQuiz.no });
+    currentQuiz.answer = response.data.answer;
+    currentQuiz.explanation = response.data.explanation;
+    currentQuiz.newsLink = response.data.newsLink;
+  } catch (error) {
+    console.error('정답 데이터 가져오기 실패:', error);
+  }
+};
+
+const checkAnswer = async () => {
+  try {
+    const response = await axios.post('/quiz/check', {
+      userId: userId.value,
+      quizId: currentQuiz.id,
+      selectedOption: selectedOption.value,
+    });
+    isCorrect.value = response.data.correct;
+    if (isCorrect.value) {
+      correctCount.value++;
     }
-  };
-  
-  const goToProblemPage = (page) => {
-    // 문제 페이지로 이동하는 로직 추가
-    console.log(`Moving to problem page: ${page}`);
-  };
-  
-  const goToLeaguePage = (page) => {
-    // 리그 페이지로 이동하는 로직 추가
-    console.log(`Moving to league page: ${page}`);
-  };
-  
-  const signup = () => {
-    // 회원가입 로직 처리
-    router.push('/');
-  };
-  </script>
-  
-  <style scoped>
-  .signup-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    // Solved 엔티티에 데이터 저장
+    await axios.post('/solved', {
+      userId: userId.value,
+      quizId: currentQuiz.id,
+      selectedOption: selectedOption.value,
+      isCorrect: isCorrect.value,
+    });
+  } catch (error) {
+    console.error('정답 확인 및 Solved 데이터 저장 실패:', error);
   }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
+};
+
+const selectOption = (option) => {
+  selectedOption.value = option;
+};
+
+const nextStep = async () => {
+  if (currentStep.value === 1) {
+    await fetchAnswer();
+    await checkAnswer();
+    currentStep.value = 2;
   }
-  
-  .header-left,
-  .header-right {
-    display: flex;
-    align-items: center;
+};
+
+const nextQuestion = async () => {
+  if (currentQuizIndex.value < quizzes.value.length - 1) {
+    currentQuizIndex.value++;
+    currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
+    currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
+    currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
+    currentQuiz.content = quizzes.value[currentQuizIndex.value].content;
+    currentQuiz.optionA = quizzes.value[currentQuizIndex.value].optionA;
+    currentQuiz.optionB = quizzes.value[currentQuizIndex.value].optionB;
+    currentQuiz.optionC = quizzes.value[currentQuizIndex.value].optionC;
+    currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
+    currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
+    currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
+    selectedOption.value = null;
+    currentStep.value = 1;
+    await fetchAnswer();
+  } else {
+    currentStep.value = 3;
   }
-  
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .header-nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  .menu-items {
-    display: flex;
-    align-items: center;
-  }
-  
-  .menu-item {
-    margin-right: 20px;
-    position: relative;
-    cursor: pointer;
-    color: #fff;
-    padding: 10px;
-  }
-  
-  .submenu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    z-index: 1;
-    color: #333;
-    min-width: 150px;
-  }
-  
-  .submenu div {
-    padding: 10px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  
-  .submenu div:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .auth-buttons {
-    display: flex;
-    align-items: center;
-  }
-  
-  .btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-beige {
-    background-color: #f5f5dc;
-    color: #333;
-  }
-  
-  .btn-beige:hover {
-    background-color: #e9e9c9;
-  }
-  
-  .signup-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-  }
-  
-  .form-group {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .signup-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #f5f5dc;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .signup-btn:hover {
-    background-color: #e9e9c9;
-  }
-  </style>
+};
+
+onMounted(() => {
+  fetchQuizzes();
+});
+</script>
+
+<style scoped>
+/* CSS 스타일링 */
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.quiz-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.question {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.option {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.option.correct {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.option.incorrect {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.answer-label {
+  font-weight: bold;
+}
+
+.explanation {
+  margin-top: 20px;
+}
+
+.source-link {
+  display: block;
+  margin-top: 10px;
+}
+
+.next-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #ebe4b6;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.progress-text {
+  margin-right: 10px;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #ebe4b6;
+  border-radius: 10px;
+  margin-right: 10px;
+  flex-grow: 1;
+}
+</style>

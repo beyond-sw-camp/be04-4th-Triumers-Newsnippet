@@ -1,12 +1,18 @@
 package org.triumers.newsnippetback.domain.aggregate.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserStatus;
 
 @Entity
 @Table(name = "tbl_user")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class User {
 
     @Id

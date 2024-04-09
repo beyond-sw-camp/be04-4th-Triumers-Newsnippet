@@ -1,9 +1,17 @@
 package org.triumers.newsnippetback.domain.aggregate.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tbl_solved")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Solved {
 
     @Id
@@ -16,6 +24,9 @@ public class Solved {
 
     @Column(name = "SELECTED_OPTION")
     private String selectedOption;
+
+    @Column(name = "SOLVED_DATE")
+    private LocalDate solvedDate;
 
     @Column(name = "USER_ID")
     private int userId;

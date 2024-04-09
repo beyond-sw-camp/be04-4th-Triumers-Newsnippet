@@ -12,9 +12,5 @@ class NewsnippetBackApplicationTests {
         assertTrue(true);
     }
 
-    @Test
-    void githubActionTestFail(){
-        assertTrue(false);
-    }
 
 }

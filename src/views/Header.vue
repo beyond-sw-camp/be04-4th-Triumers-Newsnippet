@@ -10,14 +10,14 @@
         <div class="menu-item" @mouseover="showSubmenu('problem')" @mouseout="hideSubmenu('problem')">
           문제
           <div v-show="submenu === 'problem'" class="submenu">
-            <div @click="checkLoginAndNavigate('today-quiz')">오늘의 문제</div>
-            <div @click="checkLoginAndNavigate('solved-quiz')">풀었던 문제 확인</div>
+            <div @click="handleNavigation('today-quiz')">오늘의 문제</div>
+            <div @click="handleNavigation('solved-quiz')">풀었던 문제 확인</div>
           </div>
         </div>
         <div class="menu-item" @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')">
           리그
           <div v-show="submenu === 'league'" class="submenu">
-            <div @click="checkLoginAndNavigate('league')">전체 리그</div>
+            <div @click="handleNavigation('league')">전체 리그</div>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@ const navigateTo = (path) => {
   router.push(`/${path}`);
 };
 
-const checkLoginAndNavigate = (path) => {
+const handleNavigation = (path) => {
   if (props.isLoggedIn) {
     router.push(`/${path}`);
   } else {
@@ -79,7 +79,6 @@ const logout = () => {
 
 const emit = defineEmits(['logout']);
 </script>
-
 
   <style scoped>
   .header {

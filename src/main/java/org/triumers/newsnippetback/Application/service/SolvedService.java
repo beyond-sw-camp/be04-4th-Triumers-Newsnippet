@@ -10,7 +10,7 @@ import java.util.List;
 public interface SolvedService {
     SolvedDTO findSelectedOptionAndCompareAnswer(SolvedRequest solvedRequest);
 
-    SolvedDTO findSolvedQuizByUserID(SolvedRequest solvedRequest);
+    SolvedDTO findSolvedQuizByUserIdAndQuizId(SolvedRequest solvedRequest);
 
     List<Solved> findSolvedQuizListByUserId(SolvedRequest solvedRequest);
 

@@ -73,7 +73,7 @@ class SolvedServiceImplTest {
         SolvedRequest solvedRequest = new SolvedRequest(userId, quizId);
 
         // When
-        SolvedDTO solvedDTO = solvedService.findSolvedQuizByUserIdAnfQuizId(solvedRequest);
+        SolvedDTO solvedDTO = solvedService.findSolvedQuizByUserIdAndQuizId(solvedRequest);
 
         // Then
         Assertions.assertNotNull(solvedDTO);

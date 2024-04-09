@@ -69,9 +69,9 @@ public class SolvedController {
 
     /* 설명. 3. 사용자가 과거에 풀었던 문제 하나 조회 */
     @PostMapping("/find")
-    public ResponseEntity<SolvedQuizResponse> findSolvedQuizByUserID(@RequestBody SolvedRequest solvedRequest){
+    public ResponseEntity<SolvedQuizResponse> findSolvedQuizByUserIdAndQuizId(@RequestBody SolvedRequest solvedRequest){
         try {
-            SolvedDTO solvedDTO = solvedService.findSolvedQuizByUserID(solvedRequest);
+            SolvedDTO solvedDTO = solvedService.findSolvedQuizByUserIdAndQuizId(solvedRequest);
             SolvedQuizResponse solvedQuizResponse = new SolvedQuizResponse();
             solvedQuizResponse.setUserId(solvedDTO.getUserId());
             solvedQuizResponse.setQuizId(solvedDTO.getQuizId());

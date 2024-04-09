@@ -79,16 +79,15 @@ public class SolvedServiceImpl implements SolvedService{
 
         for (Solved solved: solvedList) {
             int id = solved.getQuizId();
-            quizList.add(quizRepository.findById(id).orElseThrow());
+            quizList.add(quizRepository.findById(id).orElseThrow());    // 추후 response 추가 예정
         }
-        System.out.println("quizList = " + quizList);
 
         return solvedList;
     }
 
     /* 설명. 사용자의 ID와 문제 ID로 문제 내용 불러오기 */
     @Override
-    public SolvedDTO findSolvedQuizByUserID(SolvedRequest solvedRequest) {
+    public SolvedDTO findSolvedQuizByUserIdAndQuizId(SolvedRequest solvedRequest) {
         int userId = solvedRequest.getUserId();
         int quizId = solvedRequest.getQuizId();
 

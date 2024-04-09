@@ -1,6 +1,5 @@
 <template>
-
-    <input id="dateInput" type="date" v-model="date"/>
+    <input id="dateInput" type="date" v-model="date" />
 
     <div v-if="crawlingQuizList" class="crawlingQuiz-container">
         <template v-for="(crawlingQuiz, index) in crawlingQuizList" :key="crawlingQuiz.id">
@@ -23,10 +22,10 @@
             <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
                 <div>
                     <p id="content">{{ crawlingQuiz.content }}</p>
-                    <p> <span class="option">A</span> <span> {{ crawlingQuiz.optionA }} </span> </p>
-                    <p> <span class="option">B</span> <span> {{ crawlingQuiz.optionB }} </span> </p>
-                    <p> <span class="option">C</span> <span> {{ crawlingQuiz.optionC }} </span> </p>
-                    <p> <span class="option">D</span> <span> {{ crawlingQuiz.optionD }} </span> </p>
+                    <p> <span class="option">A</span> <span class="optionContent"> {{ crawlingQuiz.optionA }} </span> </p>
+                    <p> <span class="option">B</span> <span class="optionContent"> {{ crawlingQuiz.optionB }} </span> </p>
+                    <p> <span class="option">C</span> <span class="optionContent"> {{ crawlingQuiz.optionC }} </span> </p>
+                    <p> <span class="option">D</span> <span class="optionContent"> {{ crawlingQuiz.optionD }} </span> </p>
                 </div>
                 <hr>
                 <div>
@@ -39,7 +38,6 @@
             </div>
         </template>
     </div>
-
 </template>
 
 
@@ -60,10 +58,10 @@ onMounted(async () => {
         return year + "-" + month + "-" + day;
     }
     date.value = getDate();
-    getCrowdQuizListByDate(date.value);
+    getCrawlingQuizListByDate(date.value);
 });
 
-async function getCrowdQuizListByDate(date){
+async function getCrawlingQuizListByDate(date) {
     const response = fetch('http://localhost:8555/manage/findCrawlingQuiz', {
         method: "POST", headers: {
             "Content-Type": "application/json",
@@ -78,7 +76,7 @@ async function getCrowdQuizListByDate(date){
 
 watch(date, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        getCrowdQuizListByDate(newValue);
+        getCrawlingQuizListByDate(newValue);
     }
 });
 
@@ -94,14 +92,14 @@ async function changeSelect(id, index) {
     crawlingQuizList.value[index].selected = isSelected;
 }
 
-async function addQuiz(id){
+async function addQuiz(id) {
     const response = fetch(`http://localhost:8555/manage/addQuiz/${id}`).then(response => response.json());
     const data = await response;
 }
 
-async function deleteQuiz(id){
+async function deleteQuiz(id) {
     const response = fetch(`http://localhost:8555/manage/deleteQuiz/${id}`, {
-        method : "DELETE"
+        method: "DELETE"
     }).then(response => response.json());
     const data = await response;
 }

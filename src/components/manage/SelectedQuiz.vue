@@ -1,5 +1,4 @@
 <template>
-
     <p id="nextDate"> {{ nextDate }} 출제 문제 </p>
 
     <div v-if="selectedQuizList" class="crawlingQuiz-container">
@@ -11,7 +10,7 @@
                     <div id="news-category">
                         {{ selectedQuiz.category.categoryName }}
                     </div>
-                    <p id="question"> {{ selectedQuiz.content }} </p>
+                    <p id="questionSelected"> {{ selectedQuiz.content }} </p>
                 </div>
             </div>
 
@@ -34,7 +33,6 @@
             </div>
         </template>
     </div>
-
 </template>
 
 <script setup>

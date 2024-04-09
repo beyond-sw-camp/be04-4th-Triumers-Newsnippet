@@ -11,7 +11,7 @@
           문제
           <div v-show="submenu === 'problem'" class="submenu">
             <div @click="handleNavigation('today-quiz')">오늘의 문제</div>
-            <div @click="handleNavigation('solved-quiz')">풀었던 문제 확인</div>
+            <div @click="handleNavigation('solved-quiz-list')">풀었던 문제 확인</div>
           </div>
         </div>
         <div class="menu-item" @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')">

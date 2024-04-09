@@ -11,7 +11,8 @@ import MyPage from '@/components/user/MyPage.vue';
 import EditMyInfo from '@/components/user/EditMyInfo.vue';
 import League from '@/components/quiz/League.vue';
 import TodayQuiz from '@/components/quiz/TodayQuiz.vue';
-import SolvedQuiz from '@/components/quiz/SolvedQuiz.vue';
+import SolvedQuizList from '@/components/quiz/SolvedQuizList.vue';
+import SolvedQuizDetail from '@/components/quiz/SolvedQuizDetail.vue';
 
 
 const router = createRouter({
@@ -42,8 +43,12 @@ const router = createRouter({
             component: TodayQuiz,
         },
         {
-            path: '/solved-quiz',
-            component: SolvedQuiz,
+            path: '/solved-quiz-list',
+            component: SolvedQuizList,
+        },
+        {
+            path: '/solved-quiz-detail/:id',
+            component: SolvedQuizDetail,
         },
         {
             path: '/league',

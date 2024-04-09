@@ -34,7 +34,7 @@ const router = createRouter({
             component: MyPage,
         },
         {
-            path: '/my-info',
+            path: '/edit-my-info',
             component: EditMyInfo,
         },
         {

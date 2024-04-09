@@ -1,6 +1,5 @@
 package org.triumers.newsnippetback.domain.dto;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 import org.triumers.newsnippetback.domain.aggregate.entity.Category;
 

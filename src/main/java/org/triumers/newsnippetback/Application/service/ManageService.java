@@ -48,8 +48,7 @@ public class ManageService {
 
             for (int i = 0; i < crawlingQuizList.size(); i++) {
                 CrawlingQuiz crawlingQuiz = crawlingQuizList.get(i);
-                Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
-                        .orElseThrow(IllegalAccessError::new);
+                Category category = categoryRepository.findById(crawlingQuiz.getCategoryId());
                 crawlingQuizDTOList.get(i).setCategory(category);
 
                 boolean isSelected = quizRepository.countByDateAndOriginQuizId
@@ -69,8 +68,7 @@ public class ManageService {
         if (crawlingQuiz != null) {
             CrawlingQuizDTO crawlingQuizDTO = mapper.map(crawlingQuiz, CrawlingQuizDTO.class);
 
-            Category category = categoryRepository.findById(crawlingQuiz.getCategoryId())
-                    .orElseThrow(IllegalAccessError::new);
+            Category category = categoryRepository.findById(crawlingQuiz.getCategoryId());
             crawlingQuizDTO.setCategory(category);
 
             return crawlingQuizDTO;
@@ -105,8 +103,7 @@ public class ManageService {
                     .collect(Collectors.toList());
 
             for (int i = 0; i < quizList.size(); i++) {
-                Category category = categoryRepository.findById(quizList.get(i).getCategoryId())
-                        .orElseThrow(IllegalAccessError::new);
+                Category category = categoryRepository.findById(quizList.get(i).getCategoryId());
                 quizDTOList.get(i).setCategory(category);
             }
             return quizDTOList;

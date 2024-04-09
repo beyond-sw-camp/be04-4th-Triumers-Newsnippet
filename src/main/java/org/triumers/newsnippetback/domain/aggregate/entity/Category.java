@@ -3,11 +3,6 @@ package org.triumers.newsnippetback.domain.aggregate.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name = "tbl_category")
 @Getter

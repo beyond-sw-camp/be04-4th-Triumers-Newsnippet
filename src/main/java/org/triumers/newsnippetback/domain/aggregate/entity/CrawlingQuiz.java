@@ -9,6 +9,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Entity
+@Table(name = "tbl_crawling_quiz")
 public class CrawlingQuiz {
 
     @Id

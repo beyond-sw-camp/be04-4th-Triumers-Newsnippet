@@ -33,7 +33,4 @@ public class Solved {
 
     @Column(name = "QUIZ_ID")
     private int quizId;
-
-    @Column(name = "SOLVED_DATE")
-    private LocalDate solvedDate;
 }

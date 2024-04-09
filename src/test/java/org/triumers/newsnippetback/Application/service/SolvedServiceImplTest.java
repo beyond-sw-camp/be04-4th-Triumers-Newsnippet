@@ -9,10 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
+import org.triumers.newsnippetback.domain.aggregate.vo.SolvedResultRequest;
 import org.triumers.newsnippetback.domain.dto.SolvedDTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootTest
 class SolvedServiceImplTest {
@@ -46,7 +49,22 @@ class SolvedServiceImplTest {
         Assertions.assertEquals(true, solvedDTO.isCorrect());
     }
 
-    @DisplayName("사용자가 풀었던 문제 조회")
+    @DisplayName("사용자가 풀었던 문제 리스트 조회")
+    @Test
+    void findSolvedQuizListByUserId() {
+        // Given
+        int userId = 1;
+        int quizId = 0;
+
+        // When
+        SolvedRequest solvedRequest = new SolvedRequest(userId, quizId);
+        List<Solved> solvedList = solvedService.findSolvedQuizListByUserId(solvedRequest);
+
+        // Then
+        Assertions.assertNotNull(solvedList);
+    }
+
+    @DisplayName("사용자가 풀었던 문제 한 개 조회")
     @Test
     void findSolvedQuizByUserID() {
         // Given
@@ -55,7 +73,7 @@ class SolvedServiceImplTest {
         SolvedRequest solvedRequest = new SolvedRequest(userId, quizId);
 
         // When
-        SolvedDTO solvedDTO = solvedService.findSolvedQuizByUserID(solvedRequest);
+        SolvedDTO solvedDTO = solvedService.findSolvedQuizByUserIdAnfQuizId(solvedRequest);
 
         // Then
         Assertions.assertNotNull(solvedDTO);
@@ -71,5 +89,21 @@ class SolvedServiceImplTest {
         Assertions.assertEquals("캐나다 앨버타주의 애서배스카 빙하에서 출발한 NASA의 로봇 탐사 임무에 대한 내용을 담고 있습니다. 이 임무는 미 항공우주국이 개발 중인 외계 생명체 탐사로봇인 EELS(일스)를 사용하여 토성의 위성 엔셀라두스에 보내는 것이 목표입니다. 이 로봇은 지구의 극한 환경에서도 작동할 수 있는 고성능을 갖추고 있으며, 엔셀라두스의 얼음 아래에 있는 바다에서 생명체를 찾는 임무를 수행할 예정입니다.", solvedDTO.getExplanation());
         Assertions.assertEquals("https://www.ytn.co.kr/_ln/0105_202404012353120871", solvedDTO.getNewsLink());
         Assertions.assertEquals(LocalDate.of(2024, 4, 2), solvedDTO.getDate());
+    }
+
+    @DisplayName("회원이 지정한 날짜에 맞춘 문제 조회")
+    @Test
+    void findCorrectQuizByUserIdAndSolvedDate() {
+        // Given
+        int userId = 1;
+        boolean isCorrect = true;
+        LocalDate solvedDate = LocalDate.parse("2024-04-08");
+        SolvedResultRequest solvedResultRequest = new SolvedResultRequest(userId, isCorrect, solvedDate);
+
+        // When
+        List<Solved> solvedList = solvedService.findCorrectQuizByUserIdAndSolvedDate(solvedResultRequest);
+
+        // Then
+        Assertions.assertNotNull(solvedList);
     }
 }

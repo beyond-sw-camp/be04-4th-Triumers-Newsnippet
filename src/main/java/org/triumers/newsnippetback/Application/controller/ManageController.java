@@ -36,7 +36,7 @@ public class ManageController {
         return manageService.selectCrawlingQuizByID(id);
     }
 
-    @PostMapping("/addQuiz/{id}")
+    @GetMapping("/addQuiz/{id}")
     public ResponseEntity<Quiz> addQuizInList(@PathVariable int id){
 
         Quiz savedQuiz = manageService.insertSelectedQuizById(id);

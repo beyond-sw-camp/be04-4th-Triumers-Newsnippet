@@ -25,6 +25,9 @@ public class Solved {
     @Column(name = "SELECTED_OPTION")
     private String selectedOption;
 
+    @Column(name = "SOLVED_DATE")
+    private LocalDate solvedDate;
+
     @Column(name = "USER_ID")
     private int userId;
 

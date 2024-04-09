@@ -1,6 +1,6 @@
 <template>
 
-    <input id="dateInput" type="date" v-model="date" />
+    <p id="nextDate"> {{ nextDate }} 출제 문제 </p>
 
     <div v-if="selectedQuizList" class="crawlingQuiz-container">
         <template v-for="selectedQuiz in selectedQuizList" :key="selectedQuiz.id">
@@ -38,18 +38,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted } from "vue";
 
+const nextDate = ref('');
 const selectedQuizList = ref(null)
 
 onMounted(async () => {
+
+    const getNextDate = () => {
+        const today = new Date;
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + (today.getDate() + 1)).slice(-2);
+
+        return year + "-" + month + "-" + day;
+    }
+    nextDate.value = getNextDate();
     getSelectedQuizList();
 });
 
-async function getSelectedQuizList(date){
-const response = fetch('http://localhost:8555/manage/findSelectedQuiz').then(response => response.json());
-const data = await response;
-selectedQuizList.value = data;
+async function getSelectedQuizList(date) {
+    const response = fetch('http://localhost:8555/manage/findSelectedQuiz').then(response => response.json());
+    const data = await response;
+    selectedQuizList.value = data;
 }
 </script>
 

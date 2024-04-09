@@ -1,5 +1,5 @@
 .crawlingQuiz-container {
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -18,7 +18,7 @@
 #news-category {
     width: 100px;
     margin: 20px 10px;
-    padding-top: 5px;
+    padding: 3px 0px;
     background-color: #D9D9D9;
     border-radius: 50px;
     text-align: center;
@@ -48,4 +48,21 @@
     width: 800px;
     background-color: beige;
     padding: 20px;
+}
+
+#dateInput{
+    margin-left: 95px;
+    background-color: #D5C0AB;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+}
+
+#nextDate{
+    margin-left: 95px;
+    font-weight: bold;
+    font-size: 20px;
 }

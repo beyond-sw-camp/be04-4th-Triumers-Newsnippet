@@ -1,12 +1,16 @@
-package org.triumers.newsnippetback.domain.dto;
+package org.triumers.newsnippetback.domain.aggregate.vo;
 
-import lombok.Data;
+import lombok.*;
 import org.triumers.newsnippetback.domain.aggregate.entity.Category;
 
 import java.time.LocalDate;
 
-@Data
-public class QuizDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class QuizRequest {
     private int id;
 
     private LocalDate date;
@@ -39,4 +43,9 @@ public class QuizDTO {
 
     private String categoryName;
     private double correctRate;
+
+    public QuizRequest(LocalDate date, int no) {
+        this.date = date;
+        this.no = no;
+    }
 }

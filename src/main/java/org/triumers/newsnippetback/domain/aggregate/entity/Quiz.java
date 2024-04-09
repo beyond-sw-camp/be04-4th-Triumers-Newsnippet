@@ -1,8 +1,6 @@
 package org.triumers.newsnippetback.domain.aggregate.entity;
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -12,11 +10,6 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "tbl_quiz")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Quiz {
 
     @Id

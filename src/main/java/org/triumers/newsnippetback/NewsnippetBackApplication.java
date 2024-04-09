@@ -16,5 +16,4 @@ public class NewsnippetBackApplication {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-
 }

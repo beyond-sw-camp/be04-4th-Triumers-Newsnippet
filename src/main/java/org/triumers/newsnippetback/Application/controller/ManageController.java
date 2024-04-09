@@ -44,12 +44,12 @@ public class ManageController {
         return ResponseEntity.status(HttpStatus.OK).body(savedQuiz);
     }
 
-    @GetMapping("findSelectedQuiz")
+    @GetMapping("/findSelectedQuiz")
     public List<QuizDTO> findSelectedQuizList(){
         return manageService.selectQuizListByDate(LocalDate.now().plusDays(1));
     }
 
-    @DeleteMapping("deleteQuiz/{id}")
+    @DeleteMapping("/deleteQuiz/{id}")
     public ResponseEntity<QuizDTO> deleteQuizInList(@PathVariable int id){
 
         QuizDTO deletedQuiz = manageService.deleteQuizInListById(id);

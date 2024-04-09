@@ -13,9 +13,9 @@
                     <p id="question"> {{ crawlingQuiz.content }} </p>
                 </div>
 
-                <div class="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, index)">
-                    <p id="select-text" v-if="crawlingQuiz.selected">출제</p>
-                    <p id="select-text" v-else>미출제</p>
+                <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, index)"  :class="{selected: crawlingQuiz.selected, notSelected: !crawlingQuiz.selected}">
+                    <p id="selected-text" v-if="crawlingQuiz.selected">출제</p>
+                    <p id="notSelected-text" v-else>미출제</p>
                 </div>
             </div>
 

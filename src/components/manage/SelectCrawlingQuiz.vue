@@ -3,7 +3,7 @@
     <input id="dateInput" type="date" v-model="date"/>
 
     <div v-if="crawlingQuizList" class="crawlingQuiz-container">
-        <template v-for="crawlingQuiz in crawlingQuizList" :key="crawlingQuiz.id">
+        <template v-for="(crawlingQuiz, index) in crawlingQuizList" :key="crawlingQuiz.id">
 
             <div class="crawlingQuiz-item">
                 <div class="clickDiv" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`"
@@ -14,7 +14,7 @@
                     <p id="question"> {{ crawlingQuiz.content }} </p>
                 </div>
 
-                <div class="selectBtn" @click.stop="changeSelect(crawlingQuiz.id)">
+                <div class="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, index)">
                     <p id="select-text" v-if="crawlingQuiz.selected">출제</p>
                     <p id="select-text" v-else>미출제</p>
                 </div>
@@ -46,7 +46,7 @@
 <script setup>
 import { ref, onMounted, reactive } from "vue";
 
-const date = ref(0);
+const date = ref('');
 
 const crawlingQuizList = ref(null);
 
@@ -75,25 +75,33 @@ async function getCrowdQuizListByDate(date){
     }).then(response => response.json());
     const data = await response;
     crawlingQuizList.value = data;
+    console.log(crawlingQuizList.value);
 }
 
+async function changeSelect(id, index) {
 
+    const isSelected = !crawlingQuizList.value[index].selected;
 
-const changeSelect = (id) => {
+    if (isSelected)
+        addQuiz(id)
+    else
+        deleteQuiz(id);
 
-    const isSelected = !crawlingQuizList[id].selected;
-    let url = '';
+    crawlingQuizList.value[index].selected = isSelected;
+}
 
-    if (isSelected) {
-        url = `http://localhost:8080/manage/addQuiz/${id}`;
-    }
-    else {
-        url = `http://localhost:8080/manage/deleteQuiz/${id}`;
-    }
+async function addQuiz(id){
+    const response = fetch(`http://localhost:8555/manage/addQuiz/${id}`).then(response => response.json());
+    const data = await response;
+    console.log(data);
+}
 
-    // const res = await fetch(url);
-
-    crawlingQuizList[id].selected = isSelected;
+async function deleteQuiz(id){
+    const response = fetch(`http://localhost:8555/manage/deleteQuiz/${id}`, {
+        method : "DELETE"
+    }).then(response => response.json());
+    const data = await response;
+    console.log(data);
 }
 
 </script>

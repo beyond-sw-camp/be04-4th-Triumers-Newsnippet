@@ -38,6 +38,9 @@
             </div>
         </template>
     </div>
+    <div v-else class="crawlingQuiz-container">
+        문제 데이터가 없습니다.
+    </div>
 </template>
 
 
@@ -62,16 +65,19 @@ onMounted(async () => {
 });
 
 async function getCrawlingQuizListByDate(date) {
-    const response = fetch('http://localhost:8555/manage/findCrawlingQuiz', {
-        method: "POST", headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            date: date
-        })
-    }).then(response => response.json());
-    const data = await response;
-    crawlingQuizList.value = data;
+
+        const response = fetch('http://localhost:8555/manage/findCrawlingQuiz', {
+            method: "POST", headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                date: date
+            })
+        }).then(response => response.json());
+
+        const data = await response;
+        crawlingQuizList.value = data;
+    
 }
 
 watch(date, (newValue, oldValue) => {

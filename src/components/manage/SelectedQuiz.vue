@@ -55,7 +55,7 @@ onMounted(async () => {
     getSelectedQuizList();
 });
 
-async function getSelectedQuizList(date) {
+async function getSelectedQuizList() {
     const response = fetch('http://localhost:8555/manage/findSelectedQuiz').then(response => response.json());
     const data = await response;
     selectedQuizList.value = data;

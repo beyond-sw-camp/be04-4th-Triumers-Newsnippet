@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :showLogoutButton="true" :showMyPageButton="true"></Header>
+    <Header :isLoggedIn="true"></Header>
     <div class="edit-my-info">
       <div class="form-group">
         <label for="name">이름</label>
@@ -38,9 +38,7 @@ const router = useRouter();
 const name = ref('');
 const nickname = ref('');
 const password = ref('');
-const userData = ref({
-  nickname: '', // 현재 닉네임 값을 할당해야 합니다.
-});
+const userData = ref({ nickname: '', });
 
 const isNicknameValid = computed(() => {
   return nickname.value !== userData.nickname && checkNicknameValidity(nickname.value);
@@ -68,7 +66,6 @@ async function updateUserInfo() {
           password: password.value,
         }),
       });
-
       if (response.ok) {
         // 회원 정보 업데이트 성공
         router.push('/my-page');

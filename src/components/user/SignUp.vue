@@ -1,44 +1,42 @@
 <template>
-    <div class="signup-container">
-    <Header :showLoginButton="true"></Header>
-
-      <div class="signup-form">
-        <h2>Sign Up</h2>
-        <div class="form-group">
-          <input v-model="name" placeholder="이름" />
-        </div>
-        <div class="form-group">
-          <input v-model="nickname" placeholder="닉네임" />
-        </div>
-        <div class="form-group">
-          <input v-model="email" placeholder="이메일" />
-        </div>
-        <div class="form-group">
-          <input v-model="password" type="password" placeholder="비밀번호" />
-        </div>
-        <button @click="signup" class="signup-btn">회원가입</button>
+  <div class="signup-container">
+    <Header :isLoggedIn="false"></Header>
+    <div class="signup-form">
+      <h2>Sign Up</h2>
+      <div class="form-group">
+        <input v-model="name" placeholder="이름" />
       </div>
+      <div class="form-group">
+        <input v-model="nickname" placeholder="닉네임" />
+      </div>
+      <div class="form-group">
+        <input v-model="email" placeholder="이메일" />
+      </div>
+      <div class="form-group">
+        <input v-model="password" type="password" placeholder="비밀번호" />
+      </div>
+      <button @click="signup" class="signup-btn">회원가입</button>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import Header from '@/views/Header.vue';
-  
-  const router = useRouter();
-  const name = ref('');
-  const nickname = ref('');
-  const email = ref('');
-  const password = ref('');
-  const submenu = ref(null);
-  
-  
-  const signup = () => {
-    // 회원가입 로직 처리
-    router.push('/');
-  };
-  </script>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import Header from '@/views/Header.vue';
+
+const router = useRouter();
+const name = ref('');
+const nickname = ref('');
+const email = ref('');
+const password = ref('');
+
+const signup = () => {
+  // 회원가입 로직 처리
+  alert('회원가입 되었습니다.');
+  router.push('/');
+};
+</script>
   
   <style scoped>
   .signup-container {

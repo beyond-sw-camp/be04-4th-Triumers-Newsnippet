@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :showLogoutButton="true"></Header>
+    <Header :isLoggedIn="true"></Header>
     <div class="my-page">
       <div class="profile-section">
         <div class="profile-picture">
@@ -49,7 +49,6 @@ import Header from '@/views/Header.vue';
 
 const router = useRouter();
 const userData = ref({});
-const showModal = ref(false);
 
 // 사용자 정보를 가져오는 함수 (백엔드 API 호출)
 async function fetchUserData() {
@@ -73,6 +72,11 @@ function calculateAccuracy() {
 function goToEditMyInfo() {
   router.push('/edit-my-info');
 }
+
+const handleLogout = () => {
+  localStorage.removeItem('token');
+  router.push('/');
+};
 
 onMounted(() => {
   fetchUserData();

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <Header :showSignUpButton="true"></Header>
+    <Header :isLoggedIn="false"></Header>
     <div class="login-form">
       <h2>Login</h2>
       <div class="form-group">
@@ -22,7 +22,6 @@ import Header from '@/views/Header.vue';
 const router = useRouter();
 const email = ref('');
 const password = ref('');
-const submenu = ref(null);
 
 const login = () => {
   // 로그인 로직 처리

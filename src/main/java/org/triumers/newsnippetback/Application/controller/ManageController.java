@@ -38,7 +38,6 @@ public class ManageController {
 
     @GetMapping("/addQuiz/{id}")
     public ResponseEntity<Quiz> addQuizInList(@PathVariable int id){
-
         Quiz savedQuiz = manageService.insertSelectedQuizById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(savedQuiz);
@@ -51,7 +50,6 @@ public class ManageController {
 
     @DeleteMapping("/deleteQuiz/{id}")
     public ResponseEntity<QuizDTO> deleteQuizInList(@PathVariable int id){
-
         QuizDTO deletedQuiz = manageService.deleteQuizInListById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(deletedQuiz);

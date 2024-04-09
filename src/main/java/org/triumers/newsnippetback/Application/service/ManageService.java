@@ -26,6 +26,8 @@ public class ManageService {
     private final CategoryRepository categoryRepository;
     private final ModelMapper mapper;
 
+    final static LocalDate nextDate = LocalDate.now().plusDays(1);
+
     @Autowired
     public ManageService(QuizRepository quizRepository, CrawlingQuizRepository crawlingQuizRepository,
                          CategoryRepository categoryRepository, ModelMapper mapper) {
@@ -51,7 +53,7 @@ public class ManageService {
                 crawlingQuizDTOList.get(i).setCategory(category);
 
                 boolean isSelected = quizRepository.countByDateAndOriginQuizId
-                        (LocalDate.now().plusDays(1), crawlingQuiz.getId()) > 0;
+                        (nextDate, crawlingQuiz.getId()) > 0;
                 crawlingQuizDTOList.get(i).setSelected(isSelected);
             }
             return crawlingQuizDTOList;
@@ -83,50 +85,51 @@ public class ManageService {
         Quiz insertQuiz = mapper.map(selectedQuiz, Quiz.class);
 
         insertQuiz.setNo(getMaxNo() + 1);
-        insertQuiz.setDate(LocalDate.now().plusDays(1));
+        insertQuiz.setDate(nextDate);
         insertQuiz.setCategoryId(selectedQuiz.getCategory().getId());
         insertQuiz.setOriginQuizId(selectedQuiz.getId());
 
         return quizRepository.save(insertQuiz);
-}
-
-public int getMaxNo() {
-    return quizRepository.countByDate(LocalDate.now().plusDays(1));
-}
-
-public List<QuizDTO> selectQuizListByDate(LocalDate date) {
-    List<Quiz> quizList = quizRepository.findByDateOrderByNoAsc(date);
-
-    if (!quizList.isEmpty()) {
-        List<QuizDTO> quizDTOList = quizList.stream()
-                .map(quiz -> mapper.map(quiz, QuizDTO.class))
-                .collect(Collectors.toList());
-
-        for (int i = 0; i < quizList.size(); i++) {
-            Category category = categoryRepository.findById(quizList.get(i).getCategoryId())
-                    .orElseThrow(IllegalAccessError::new);
-            quizDTOList.get(i).setCategory(category);
-        }
-        return quizDTOList;
     }
-    throw new NoSuchElementException("문제 정보를 불러올 수 없음");
-}
 
-@Transactional
-public QuizDTO deleteQuizInListById(int id) {
-    Quiz deleteQuiz = quizRepository.findById(id).orElseThrow(IllegalAccessError::new);
-
-    if (deleteQuiz != null) {
-
-        quizRepository.deleteById(id);
-        List<Quiz> modifyQuizList = quizRepository
-                .findByDateAndNoGreaterThanOrderByNoAsc(LocalDate.now().plusDays(1), deleteQuiz.getNo());
-
-        for (Quiz modifyQuiz : modifyQuizList) {
-            modifyQuiz.setNo(modifyQuiz.getNo() - 1);
-        }
-        return mapper.map(deleteQuiz, QuizDTO.class);
+    public int getMaxNo() {
+        return quizRepository.countByDate(nextDate);
     }
-    throw new IllegalAccessError("문제 정보를 불러올 수 없음");
-}
+
+    public List<QuizDTO> selectQuizListByDate(LocalDate date) {
+        List<Quiz> quizList = quizRepository.findByDateOrderByNoAsc(date);
+
+        if (!quizList.isEmpty()) {
+            List<QuizDTO> quizDTOList = quizList.stream()
+                    .map(quiz -> mapper.map(quiz, QuizDTO.class))
+                    .collect(Collectors.toList());
+
+            for (int i = 0; i < quizList.size(); i++) {
+                Category category = categoryRepository.findById(quizList.get(i).getCategoryId())
+                        .orElseThrow(IllegalAccessError::new);
+                quizDTOList.get(i).setCategory(category);
+            }
+            return quizDTOList;
+        }
+        throw new NoSuchElementException("문제 정보를 불러올 수 없음");
+    }
+
+    @Transactional
+    public QuizDTO deleteQuizInListById(int id) {
+
+        Quiz deleteQuiz = quizRepository.findByOriginQuizIdAndDate(id, nextDate);
+
+        if (deleteQuiz != null) {
+
+            quizRepository.deleteById(deleteQuiz.getId());
+            List<Quiz> modifyQuizList = quizRepository
+                    .findByDateAndNoGreaterThanOrderByNoAsc(nextDate, deleteQuiz.getNo());
+
+            for (Quiz modifyQuiz : modifyQuizList) {
+                modifyQuiz.setNo(modifyQuiz.getNo() - 1);
+            }
+            return mapper.map(deleteQuiz, QuizDTO.class);
+        }
+        throw new IllegalAccessError("문제 정보를 불러올 수 없음");
+    }
 }

@@ -7,6 +7,7 @@ import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface QuizRepository  extends JpaRepository<Quiz, Integer> {
     List<Quiz> findByDateOrderByNoAsc(LocalDate date);
@@ -16,4 +17,6 @@ public interface QuizRepository  extends JpaRepository<Quiz, Integer> {
     Integer countByDate(LocalDate localDate);
 
     Integer countByDateAndOriginQuizId(LocalDate localDate, int id);
+
+    Quiz findByOriginQuizIdAndDate(int id, LocalDate date);
 }

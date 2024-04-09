@@ -1,0 +1,51 @@
+.crawlingQuiz-container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.crawlingQuiz-item {
+    width: 800px;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #F4F3F6;
+    display: flex;
+    justify-content: center;
+}
+
+#news-category {
+    width: 100px;
+    margin: 20px 10px;
+    padding-top: 5px;
+    background-color: #D9D9D9;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.clickDiv{
+    display: flex;
+}
+
+.selectBtn {
+    width: 100px;
+    margin: 10px;
+    padding-top: 10px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: white;
+    justify-content: flex-end;
+}
+
+#question {
+    width: 550px;
+    margin: 10px;
+}
+
+.collapse,
+.collapsing {
+    width: 800px;
+    background-color: beige;
+    padding: 20px;
+}

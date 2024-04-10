@@ -1,5 +1,6 @@
 package org.triumers.newsnippetback.common.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
+import org.triumers.newsnippetback.domain.aggregate.vo.RequestLoginVO;
 import org.triumers.newsnippetback.domain.dto.CustomUserDetails;
 
 import java.io.IOException;
@@ -30,12 +32,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        String email = obtainUsername(request);
-        String password = obtainPassword(request);
+        try {
+            RequestLoginVO loginVO = new ObjectMapper().readValue(request.getInputStream(), RequestLoginVO.class);
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(loginVO.getEmail(), loginVO.getPassword(), null);
 
-        return authenticationManager.authenticate(authToken);
+            return authenticationManager.authenticate(authToken);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -43,6 +50,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
+        String nickname = customUserDetails.getNickname();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -50,7 +58,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         UserRole role = UserRole.valueOf(auth.getAuthority());
 
-        String token = jwtUtil.createJwt(username, role);
+        String token = jwtUtil.createJwt(username, role, nickname);
 
         response.addHeader("Authorization", "Bearer " + token);
     }

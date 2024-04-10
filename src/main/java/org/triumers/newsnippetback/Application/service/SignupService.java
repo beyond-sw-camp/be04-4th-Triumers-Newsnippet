@@ -47,7 +47,7 @@ public class SignupService {
         user.setNickname(request.getNickname());
         user.setEmail(request.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        user.setUserRole(UserRole.ROLE_USER);
+        user.setUserRole(UserRole.USER);
         user.setProvider(request.getProvider());
         user.setSnsId(request.getSnsId());
         user.setUserStatus(UserStatus.ACTIVE);

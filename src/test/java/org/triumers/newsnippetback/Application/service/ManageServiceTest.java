@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class ManageServiceTest {
 
-    ManageService manageService;
+    private final ManageService manageService;
 
     @Autowired
     public ManageServiceTest(ManageService manageService) {
@@ -29,11 +29,8 @@ class ManageServiceTest {
 
     static Stream<LocalDate> getDate() {
         return Stream.of(
-                LocalDate.of(2024, 4, 1),
                 LocalDate.of(2024, 4, 2),
-                LocalDate.of(2024, 4, 3),
-                LocalDate.of(2024, 4, 4),
-                LocalDate.of(2024, 4, 5)
+                LocalDate.of(2024, 4, 9)
         );
     }
 

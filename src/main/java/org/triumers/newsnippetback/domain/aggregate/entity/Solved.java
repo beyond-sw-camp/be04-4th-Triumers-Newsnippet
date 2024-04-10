@@ -5,13 +5,13 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "tbl_solved")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @ToString
+@Entity
+@Table(name = "tbl_solved")
 public class Solved {
 
     @Id

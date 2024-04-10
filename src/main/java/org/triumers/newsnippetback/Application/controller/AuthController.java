@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.triumers.newsnippetback.Application.service.SignupService;
+import org.triumers.newsnippetback.Application.service.AuthService;
 import org.triumers.newsnippetback.common.exception.UserEmailDuplicateException;
 import org.triumers.newsnippetback.common.exception.UserNicknameDuplicateException;
 import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
-import org.triumers.newsnippetback.domain.aggregate.vo.RequestSignupVO;
+import org.triumers.newsnippetback.domain.aggregate.vo.RequestUserVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.ResponseMessageVO;
 import org.triumers.newsnippetback.domain.dto.SignupDTO;
 
@@ -19,17 +19,15 @@ import org.triumers.newsnippetback.domain.dto.SignupDTO;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final SignupService signupService;
+    private final AuthService authService;
 
     @Autowired
-    public AuthController(SignupService signupService) {
-        this.signupService = signupService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseMessageVO> signup(@RequestBody RequestSignupVO request) {
-
-        ResponseMessageVO response = new ResponseMessageVO();
+    public ResponseEntity<ResponseMessageVO> signup(@RequestBody RequestUserVO request) {
 
         SignupDTO user = new SignupDTO();
 
@@ -40,15 +38,27 @@ public class AuthController {
         user.setProvider(Provider.LOCAL);
 
         try {
-            signupService.signup(user);
-
-            response.setMessage(user.getNickname() + "님 회원가입에 성공했습니다.");
+            authService.signup(user);
 
         } catch (UserNicknameDuplicateException | UserEmailDuplicateException e) {
-            response.setMessage(e.getMessage());
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO(e.getMessage()));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseMessageVO(user.getNickname() + "님 회원가입에 성공했습니다."));
     }
+
+    @PostMapping("/exist/nickname")
+    public ResponseEntity<ResponseMessageVO> existNickname(@RequestBody RequestUserVO request) {
+
+        if (authService.existNickname(request.getNickname())) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("이미 존재하는 닉네임입니다."));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("사용 가능한 닉네임입니다."));
+    }
+
+
 }

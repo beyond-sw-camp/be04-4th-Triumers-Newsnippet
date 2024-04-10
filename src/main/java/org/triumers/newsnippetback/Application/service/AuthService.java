@@ -12,13 +12,13 @@ import org.triumers.newsnippetback.domain.dto.SignupDTO;
 import org.triumers.newsnippetback.domain.repository.UserRepository;
 
 @Service
-public class SignupService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SignupService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -39,6 +39,12 @@ public class SignupService {
 
         userRepository.save(user);
     }
+
+    public boolean existNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+
 
     private User userMapper(SignupDTO request) {
         User user = new User();

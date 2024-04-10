@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class RequestSignupVO {
+public class RequestUserVO {
     private String name;
     private String nickname;
     private String email;

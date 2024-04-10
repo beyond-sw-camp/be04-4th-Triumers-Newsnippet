@@ -60,5 +60,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("사용 가능한 닉네임입니다."));
     }
 
+    @PostMapping("/exist/email")
+    public ResponseEntity<ResponseMessageVO> existEmail(@RequestBody RequestUserVO request) {
 
+        if (authService.existEmail(request.getEmail())) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("이미 존재하는 이메일입니다."));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("사용 가능한 이메일입니다."));
+    }
 }

@@ -44,7 +44,9 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-
+    public boolean existEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
     private User userMapper(SignupDTO request) {
         User user = new User();

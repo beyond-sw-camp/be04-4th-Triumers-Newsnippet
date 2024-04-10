@@ -2,6 +2,8 @@ package org.triumers.newsnippetback.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,6 +42,17 @@ public class SecurityConfig {
     }
 
     @Bean
+    public RoleHierarchy roleHierarchy() {
+
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MANAGER\n" +
+                "ROLE_MANAGER > ROLE_USER");
+
+        return hierarchy;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // csrf disable
@@ -53,9 +66,10 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/auth/login", "/auth/signup").permitAll()
+                .requestMatchers("/auth/signup").permitAll()
                 .requestMatchers("/**").permitAll()
-//                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers(("/manager")).hasAnyRole("MANAGER")
+                .requestMatchers("/admin").hasAnyRole("ADMIN")
                 .anyRequest().authenticated());
 
         // JWT 필터

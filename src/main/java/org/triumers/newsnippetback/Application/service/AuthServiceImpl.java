@@ -1,6 +1,7 @@
 package org.triumers.newsnippetback.Application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.common.exception.UserEmailDuplicateException;
@@ -9,6 +10,8 @@ import org.triumers.newsnippetback.domain.aggregate.entity.User;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserStatus;
 import org.triumers.newsnippetback.domain.dto.AuthDTO;
+import org.triumers.newsnippetback.domain.dto.PasswordDTO;
+import org.triumers.newsnippetback.domain.dto.UserDTO;
 import org.triumers.newsnippetback.domain.repository.UserRepository;
 
 @Service
@@ -47,6 +50,29 @@ public class AuthServiceImpl implements AuthService {
 
     public boolean existEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void modifyUserInfo(UserDTO userDTO) throws UserNicknameDuplicateException {
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if (userDTO.getNickname() != null) {
+            if (existNickname(userDTO.getNickname())) {
+                throw new UserNicknameDuplicateException();
+            }
+            user.setNickname(userDTO.getNickname());
+        }
+
+        if (userDTO.getName() != null) {
+            user.setName(userDTO.getName());
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void modifyPassword(PasswordDTO passwordDTO) {
+
     }
 
     private User userMapper(AuthDTO request) {

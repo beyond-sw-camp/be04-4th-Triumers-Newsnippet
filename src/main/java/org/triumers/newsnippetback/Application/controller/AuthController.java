@@ -1,5 +1,6 @@
 package org.triumers.newsnippetback.Application.controller;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
 import org.triumers.newsnippetback.domain.aggregate.vo.RequestUserVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.ResponseMessageVO;
 import org.triumers.newsnippetback.domain.dto.AuthDTO;
+import org.triumers.newsnippetback.domain.dto.UserDTO;
 
 @RestController
 @RequestMapping("/auth")
@@ -54,7 +56,7 @@ public class AuthController {
 
         if (authService.existNickname(request.getNickname())) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("이미 존재하는 닉네임입니다."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 이미 존재하는 닉네임입니다."));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("사용 가능한 닉네임입니다."));
@@ -65,9 +67,27 @@ public class AuthController {
 
         if (authService.existEmail(request.getEmail())) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("이미 존재하는 이메일입니다."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 이미 존재하는 이메일입니다."));
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("사용 가능한 이메일입니다."));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("[사용 가능한 이메일입니다."));
+    }
+
+    @PostMapping("/modify/info")
+    public ResponseEntity<ResponseMessageVO> modifyUserInfo(@RequestBody RequestUserVO request) {
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setName(request.getName());
+        userDTO.setNickname(request.getNickname());
+
+        try {
+            authService.modifyUserInfo(userDTO);
+
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("변경 성공"));
+        } catch (ExpiredJwtException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 로그인 이후 이용해주십시오."));
+        } catch (UserNicknameDuplicateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 이미 존재하는 닉네임입니다."));
+        }
     }
 }

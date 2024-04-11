@@ -37,11 +37,6 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
-    public String getNickname(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("nickname", String.class);
-    }
-
     public Boolean isExpired(String token) {
 
         try {
@@ -56,7 +51,6 @@ public class JWTUtil {
         return Jwts.builder()
                 .claim("email", email)
                 .claim("role", role)
-                .claim("nickname", nickname)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)

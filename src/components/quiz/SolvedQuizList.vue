@@ -6,12 +6,15 @@
       <div class="date-picker">
         <VueDatePicker v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList"></VueDatePicker>
       </div>
-      <p v-if="noQuizMessage" class="no-quiz-message">{{ noQuizMessage }}</p>
-      <div class="quiz-list" v-else>
+      
+      <div class="quiz-list" v-if="solvedList">
         <div class="quiz-item" v-for="solved in solvedList" :key="solved.id" @click="goToQuizDetail(solved.quizId)">
-          {{ solved.content }}
+          <div class="content">{{ solved.content }}</div>
+          <div v-if="solved.selectedOption === solved.answer" class="correct"> O </div>
+          <div v-else class="incorrect"> X </div>
         </div>
       </div>
+      <p v-else class="no-quiz-message">{{ noQuizMessage }}</p>
     </div>
   </div>
 </template>
@@ -26,20 +29,28 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 const router = useRouter();
 const selectedDate = ref(new Date());
-const solvedList = ref([]);
-const noQuizMessage = ref('');
+const solvedList = ref(null);
+const noQuizMessage = ref(null);
 
 onMounted(fetchSolvedQuizList);
 
 async function fetchSolvedQuizList() {
   try {
-    const userId = localStorage.getItem('userId');
-    const response = await axios.post('/solved/find/all', {
-      userId: userId,
-      solvedDate: formatDate(selectedDate.value),
-    });
-    solvedList.value = response.data;
+    const response = fetch('http://localhost:7777/solved/find/allByDate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: 1,
+        date: formatDate(selectedDate.value)
+      }),
+    }).then(response => response.json());
+      
+    const data = await response;
+    solvedList.value = data;
     noQuizMessage.value = solvedList.value.length === 0 ? '풀었던 문제가 없습니다.' : '';
+
   } catch (error) {
     console.error(error);
   }
@@ -50,7 +61,7 @@ function formatDate(date) {
 }
 
 const goToQuizDetail = (quizId) => {
-  router.push(`/solved-quiz/${quizId}`);
+  router.push(`/solved-quiz-detail/${quizId}`);
 };
 </script>
 
@@ -82,5 +93,20 @@ const goToQuizDetail = (quizId) => {
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 4px;
+  display: flex;
+  font-size: 15px;
 }
+
+.content{
+  width: 750px;
+}
+
+.correct {
+    color: green;
+  }
+  
+.incorrect {
+    color: red;
+  }
+
 </style>

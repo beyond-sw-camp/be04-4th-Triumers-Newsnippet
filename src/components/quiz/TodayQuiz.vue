@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :isLoggedIn="true" />
+    <Header :isLoggedIn="true"></Header>
     <div class="quiz-container">
       <div v-if="currentStep === 1">
         <!-- 문제 및 선택지 표시 -->
@@ -11,19 +11,35 @@
         </div>
         <h2 class="question">{{ currentQuiz.no }}. {{ currentQuiz.content }}</h2>
         <div class="options">
-          <div class="option" @click="selectOption('A')">
-            A. {{ currentQuiz.optionA }}
-          </div>
-          <div class="option" @click="selectOption('B')">
-            B. {{ currentQuiz.optionB }}
-          </div>
-          <div class="option" @click="selectOption('C')">
-            C. {{ currentQuiz.optionC }}
-          </div>
-          <div class="option" @click="selectOption('D')">
-            D. {{ currentQuiz.optionD }}
-          </div>
-        </div>
+  <div
+    class="option"
+    :class="{ 'selected': selectedOption === 'A' }"
+    @click="selectOption('A')"
+  >
+    A. {{ currentQuiz.optionA }}
+  </div>
+  <div
+    class="option"
+    :class="{ 'selected': selectedOption === 'B' }"
+    @click="selectOption('B')"
+  >
+    B. {{ currentQuiz.optionB }}
+  </div>
+  <div
+    class="option"
+    :class="{ 'selected': selectedOption === 'C' }"
+    @click="selectOption('C')"
+  >
+    C. {{ currentQuiz.optionC }}
+  </div>
+  <div
+    class="option"
+    :class="{ 'selected': selectedOption === 'D' }"
+    @click="selectOption('D')"
+  >
+    D. {{ currentQuiz.optionD }}
+  </div>
+</div>
         <button @click="nextStep" :disabled="!selectedOption" class="next-btn">다음</button>
         <div class="progress">
           <span class="progress-text">진행률:</span>
@@ -89,16 +105,17 @@ const selectedOption = ref(null);
 const correctCount = ref(0);
 const currentStep = ref(1);
 const isCorrect = ref(false);
-const userId = ref(null); // 사용자 ID를 가져오는 로직이 필요합니다.
+// const userId = ref(null); // 사용자 ID를 가져오는 로직이 필요합니다.
+// 백엔드 db 연결 테스트를 위해 임의로 할당
+const userId = ref(1);
 
+
+// 백엔드 db 연결을 위해 날짜를 2024-04-02로 고정
 const fetchQuizzes = async () => {
   try {
-    const response = await axios.post('/quiz/test', { date: new Date(), no: 1 });
-    quizzes.value = response.data.map((quiz, index) => ({
-      ...quiz,
-      no: index + 1,
-      correctRate: quiz.correctCnt / quiz.solvedCnt,
-    }));
+    const response = await axios.post('http://localhost:8888/quiz/test', { date: new Date('2024-04-02') });
+    quizzes.value = response.data;
+    currentQuiz.date = quizzes.value[currentQuizIndex.value].id;
     currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
     currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
     currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
@@ -109,25 +126,17 @@ const fetchQuizzes = async () => {
     currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
     currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
     currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
+    currentQuiz.correctRate = quizzes.value[currentQuizIndex.value].correctRate;
+    // 첫 번째 페이지에서는 정답, 해설, 원문 링크 정보를 설정하지 않음
   } catch (error) {
     console.error('문제 데이터 가져오기 실패:', error);
   }
 };
 
-const fetchAnswer = async () => {
-  try {
-    const response = await axios.post('/quiz/answer', { date: new Date(), no: currentQuiz.no });
-    currentQuiz.answer = response.data.answer;
-    currentQuiz.explanation = response.data.explanation;
-    currentQuiz.newsLink = response.data.newsLink;
-  } catch (error) {
-    console.error('정답 데이터 가져오기 실패:', error);
-  }
-};
 
-const checkAnswer = async () => {
+const checkAnswerCorrectness = async () => {
   try {
-    const response = await axios.post('/quiz/check', {
+    const response = await axios.post('http://localhost:8888/solved/check', {
       userId: userId.value,
       quizId: currentQuiz.id,
       selectedOption: selectedOption.value,
@@ -136,15 +145,23 @@ const checkAnswer = async () => {
     if (isCorrect.value) {
       correctCount.value++;
     }
-    // Solved 엔티티에 데이터 저장
-    await axios.post('/solved', {
+  } catch (error) {
+    console.error('정답 확인 실패:', error);
+  }
+};
+
+const saveSolvedData = async () => {
+  try {
+    const solvedData = {
       userId: userId.value,
       quizId: currentQuiz.id,
       selectedOption: selectedOption.value,
       isCorrect: isCorrect.value,
-    });
+      solvedDate: new Date('2024-04-02'),
+    };
+    await axios.post('http://localhost:8888/solved/put', solvedData);
   } catch (error) {
-    console.error('정답 확인 및 Solved 데이터 저장 실패:', error);
+    console.error('Solved 데이터 저장 실패:', error);
   }
 };
 
@@ -154,8 +171,12 @@ const selectOption = (option) => {
 
 const nextStep = async () => {
   if (currentStep.value === 1) {
-    await fetchAnswer();
-    await checkAnswer();
+    await checkAnswerCorrectness();
+    await saveSolvedData();
+    // 두 번째 페이지로 넘어갈 때 정답, 해설, 원문 링크 정보 설정
+    currentQuiz.answer = quizzes.value[currentQuizIndex.value].answer;
+    currentQuiz.explanation = quizzes.value[currentQuizIndex.value].explanation;
+    currentQuiz.newsLink = quizzes.value[currentQuizIndex.value].newsLink;
     currentStep.value = 2;
   }
 };
@@ -175,7 +196,6 @@ const nextQuestion = async () => {
     currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
     selectedOption.value = null;
     currentStep.value = 1;
-    await fetchAnswer();
   } else {
     currentStep.value = 3;
   }
@@ -183,6 +203,9 @@ const nextQuestion = async () => {
 
 onMounted(() => {
   fetchQuizzes();
+
+  // 전체 문제 수를 10개로 가정
+  // quizzes.value = Array.from({ length: 10 }, (_, i) => ({ no: i + 1 }));
 });
 </script>
 
@@ -217,6 +240,11 @@ onMounted(() => {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.option.selected {
+  background-color: #ebe4b6;
+  font-weight: bold;
 }
 
 .option.correct {

@@ -66,7 +66,7 @@ onMounted(async () => {
 
 async function getCrawlingQuizListByDate(date) {
 
-        const response = fetch('http://localhost:8555/manage/findCrawlingQuiz', {
+        const response = fetch('http://localhost:7777/manage/findCrawlingQuiz', {
             method: "POST", headers: {
                 "Content-Type": "application/json",
             },

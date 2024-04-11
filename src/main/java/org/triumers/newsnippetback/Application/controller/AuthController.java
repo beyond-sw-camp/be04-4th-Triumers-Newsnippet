@@ -13,7 +13,7 @@ import org.triumers.newsnippetback.common.exception.UserNicknameDuplicateExcepti
 import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
 import org.triumers.newsnippetback.domain.aggregate.vo.RequestUserVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.ResponseMessageVO;
-import org.triumers.newsnippetback.domain.dto.SignupDTO;
+import org.triumers.newsnippetback.domain.dto.AuthDTO;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,7 +29,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<ResponseMessageVO> signup(@RequestBody RequestUserVO request) {
 
-        SignupDTO user = new SignupDTO();
+        AuthDTO user = new AuthDTO();
 
         user.setName(request.getName());
         user.setNickname(request.getNickname());

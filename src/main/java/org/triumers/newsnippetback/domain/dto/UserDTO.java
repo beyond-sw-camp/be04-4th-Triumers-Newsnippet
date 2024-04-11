@@ -1,6 +1,5 @@
 package org.triumers.newsnippetback.domain.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
@@ -11,14 +10,14 @@ import org.triumers.newsnippetback.domain.aggregate.enums.UserStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SignupDTO {
+public class UserDTO {
 
     private String name;
     private String nickname;
     private String email;
-    private String password;
     private UserRole userRole;
-    private Provider provider;
-    private String snsId;
     private UserStatus userStatus;
+    private int solvedCnt;
+    private int correctCnt;
+    private int rank;
 }

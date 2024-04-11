@@ -9,7 +9,11 @@ import org.triumers.newsnippetback.domain.aggregate.vo.QuizRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.QuizResponse;
 import org.triumers.newsnippetback.domain.dto.QuizDTO;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/quiz")
@@ -25,20 +29,23 @@ public class QuizController {
     /* 1. 해당 날짜에 출제되는 문제의 카테고리, 지문, 선택지, 정답률 조회
     ㄴ 문제는 10개씩, 각 날짜마다 1번-10번까지 번호 부여 */
     @PostMapping("/test")
-    public ResponseEntity<QuizResponse> findQuizByDateAndNo(@RequestBody QuizRequest quizRequest) {
+    public ResponseEntity<List<QuizResponse>> findQuizByDateAndNo(@RequestBody QuizRequest quizRequest) {
         try {
-            QuizDTO quizDTO = quizService.findQuizByDateAndNo(quizRequest);
-
-            QuizResponse quizResponse = new QuizResponse();
-            quizResponse.setContent(quizDTO.getContent());
-            quizResponse.setOptionA(quizDTO.getOptionA());
-            quizResponse.setOptionB(quizDTO.getOptionB());
-            quizResponse.setOptionC(quizDTO.getOptionC());
-            quizResponse.setOptionD(quizDTO.getOptionD());
-            quizResponse.setCategoryName(quizDTO.getCategoryName());
-            quizResponse.setCorrectRate(quizDTO.getCorrectRate());
-
-            return ResponseEntity.ok().body(quizResponse);
+            LocalDate date = quizRequest.getDate();
+            List<QuizDTO> quizDTOs = quizService.findAllQuizzesByDate(date);
+            List<QuizResponse> quizResponses = new ArrayList<>();
+            for (QuizDTO quizDTO : quizDTOs) {
+                QuizResponse quizResponse = new QuizResponse();
+                quizResponse.setContent(quizDTO.getContent());
+                quizResponse.setOptionA(quizDTO.getOptionA());
+                quizResponse.setOptionB(quizDTO.getOptionB());
+                quizResponse.setOptionC(quizDTO.getOptionC());
+                quizResponse.setOptionD(quizDTO.getOptionD());
+                quizResponse.setCategoryName(quizDTO.getCategoryName());
+                quizResponse.setCorrectRate(quizDTO.getCorrectRate());
+                quizResponses.add(quizResponse);
+            }
+            return ResponseEntity.ok().body(quizResponses);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -49,12 +56,33 @@ public class QuizController {
 
     /* 2. 해당 문제의 정답, 해설, 원본 링크 조회
     ㄴ 문제는 10개씩, 각 날짜마다 1번-10번까지 번호 부여 */
+//    @PostMapping("/answer")
+//    public ResponseEntity<QuizResponse> findQuizAnswerByDateAndNo(@RequestBody QuizRequest quizRequest) {
+//        try {
+//            QuizDTO quizDTO = quizService.findQuizAnswerByDateAndNo(quizRequest);
+//
+//            QuizResponse quizResponse = new QuizResponse();
+//            quizResponse.setAnswer(quizDTO.getAnswer());
+//            quizResponse.setExplanation(quizDTO.getExplanation());
+//            quizResponse.setNewsLink(quizDTO.getNewsLink());
+//
+//            return ResponseEntity.ok().body(quizResponse);
+//        } catch (NoSuchElementException e) {
+//            return ResponseEntity.notFound().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+
     @PostMapping("/answer")
     public ResponseEntity<QuizResponse> findQuizAnswerByDateAndNo(@RequestBody QuizRequest quizRequest) {
         try {
-            QuizDTO quizDTO = quizService.findQuizAnswerByDateAndNo(quizRequest);
+            LocalDate date = quizRequest.getDate();
+            int no = quizRequest.getNo();
+            QuizDTO quizDTO = quizService.findQuizAnswerByDateAndNo(date, no);
 
             QuizResponse quizResponse = new QuizResponse();
+            quizResponse.setNo(quizDTO.getNo());
             quizResponse.setAnswer(quizDTO.getAnswer());
             quizResponse.setExplanation(quizDTO.getExplanation());
             quizResponse.setNewsLink(quizDTO.getNewsLink());

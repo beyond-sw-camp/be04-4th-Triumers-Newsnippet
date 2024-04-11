@@ -128,4 +128,39 @@ public class SolvedServiceImpl implements SolvedService{
         return solvedList;
     }
 
+    @Override
+    public List<SolvedDTO> findSolvedQuizListByUserIdAndDate(SolvedRequest solvedRequest) {
+        System.out.println(solvedRequest);
+        int userId = solvedRequest.getUserId();
+        LocalDate solvedDate = solvedRequest.getDate();
+
+        List<Solved> solvedList = solvedRepository.findSolvedQuizByUserIdAndSolvedDate(userId, solvedDate);
+        List<SolvedDTO> solvedDTOList = new ArrayList<>();
+
+        for (Solved solved: solvedList) {
+            int id = solved.getQuizId();
+            Quiz quiz = quizRepository.findById(id).orElseThrow();
+
+            SolvedDTO solvedDTO = new SolvedDTO();
+
+            solvedDTO.setUserId(solved.getUserId());
+            solvedDTO.setQuizId(quiz.getId());
+            solvedDTO.setCategoryId(quiz.getCategoryId());
+            solvedDTO.setContent(quiz.getContent());
+            solvedDTO.setOptionA(quiz.getOptionA());
+            solvedDTO.setOptionB(quiz.getOptionB());
+            solvedDTO.setOptionC(quiz.getOptionC());
+            solvedDTO.setOptionD(quiz.getOptionD());
+            solvedDTO.setAnswer(quiz.getAnswer());
+            solvedDTO.setSelectedOption(solved.getSelectedOption());
+            solvedDTO.setExplanation(quiz.getExplanation());
+            solvedDTO.setNewsLink(quiz.getNewsLink());
+            solvedDTO.setDate(quiz.getDate());
+
+            solvedDTOList.add(solvedDTO);
+        }
+
+        return solvedDTOList;
+    }
+
 }

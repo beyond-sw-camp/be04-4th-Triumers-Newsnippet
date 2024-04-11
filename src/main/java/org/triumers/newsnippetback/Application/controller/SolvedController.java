@@ -112,4 +112,22 @@ public class SolvedController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/find/allByDate")
+    public ResponseEntity<List<SolvedQuizResponse>> findSolvedQuizByUserIdAndDate(@RequestBody SolvedRequest solvedRequest){
+        try {
+            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+            List<SolvedDTO> solvedList = solvedService.findSolvedQuizListByUserIdAndDate(solvedRequest);
+            List<SolvedQuizResponse> SolvedQuizListResponse = solvedList.stream()
+                    .map(dot -> modelMapper.map(dot, SolvedQuizResponse.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(SolvedQuizListResponse);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

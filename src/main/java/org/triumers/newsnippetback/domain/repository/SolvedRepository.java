@@ -14,4 +14,6 @@ public interface SolvedRepository extends JpaRepository<Solved, Integer> {
     List<Solved> findIdByUserIdAndIsCorrectAndSolvedDate(int userId, boolean isCorrect, LocalDate solvedDate);
 
     List<Solved> findSolvedQuizByUserId(int userId);
+
+    List<Solved> findSolvedQuizByUserIdAndSolvedDate(int userId, LocalDate solvedDate);
 }

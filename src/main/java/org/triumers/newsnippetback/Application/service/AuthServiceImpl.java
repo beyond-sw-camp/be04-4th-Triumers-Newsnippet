@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.common.exception.UserEmailDuplicateException;
 import org.triumers.newsnippetback.common.exception.UserNicknameDuplicateException;
+import org.triumers.newsnippetback.common.exception.WrongPasswordException;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserStatus;
@@ -71,8 +72,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void modifyPassword(PasswordDTO passwordDTO) {
+    public void modifyPassword(PasswordDTO passwordDTO) throws WrongPasswordException {
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
+        if (bCryptPasswordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(passwordDTO.getNewPassword()));
+            userRepository.save(user);
+            return;
+        }
+
+        throw new WrongPasswordException();
     }
 
     private User userMapper(AuthDTO request) {

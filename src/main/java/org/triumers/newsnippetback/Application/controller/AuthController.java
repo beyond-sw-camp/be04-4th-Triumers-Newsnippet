@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.triumers.newsnippetback.Application.service.AuthService;
 import org.triumers.newsnippetback.common.exception.UserEmailDuplicateException;
 import org.triumers.newsnippetback.common.exception.UserNicknameDuplicateException;
+import org.triumers.newsnippetback.common.exception.WrongPasswordException;
 import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
+import org.triumers.newsnippetback.domain.aggregate.vo.RequestModifyPasswordVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.RequestUserVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.ResponseMessageVO;
 import org.triumers.newsnippetback.domain.dto.AuthDTO;
+import org.triumers.newsnippetback.domain.dto.PasswordDTO;
 import org.triumers.newsnippetback.domain.dto.UserDTO;
 
 @RestController
@@ -88,6 +91,22 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 로그인 이후 이용해주십시오."));
         } catch (UserNicknameDuplicateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 이미 존재하는 닉네임입니다."));
+        }
+    }
+
+    @PostMapping("/modify/password")
+    public ResponseEntity<ResponseMessageVO> modifyPassword(@RequestBody RequestModifyPasswordVO request) {
+
+        PasswordDTO passwordDTO = new PasswordDTO(request.getOldPassword(), request.getNewPassword());
+
+        try {
+            authService.modifyPassword(passwordDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessageVO("변경 성공"));
+
+        } catch (ExpiredJwtException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 로그인 이후 이용해주십시오."));
+        } catch (WrongPasswordException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO(e.getMessage()));
         }
     }
 }

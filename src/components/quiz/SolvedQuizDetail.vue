@@ -3,24 +3,24 @@
       <Header :isLoggedIn="true"></Header>
       <div class="container">
         <h2>문제 상세</h2>
-        <div class="quiz-container">
+        <div class="quiz-container" v-if="quiz">
           <div class="quiz-content">
             <p class="quiz-question">문제: {{ quiz.content }}</p>
             <ul class="options">
               <li :class="{ 'selected-option': quiz.selectedOption === quiz.optionA, 'correct-option': quiz.answer === quiz.optionA }">
-                <span class="option-label" :class="{ 'correct': quiz.answer === quiz.optionA, 'incorrect': quiz.selectedOption === quiz.optionA && quiz.answer !== quiz.optionA }">A</span>
+                <span class="option-label" :class="{ correct : quiz.answer === optionText[0], incorrect: quiz.selectedOption === optionText[0] && quiz.answer !== optionText[0] }">A</span>
                 <span class="option-text">{{ quiz.optionA }}</span>
               </li>
               <li :class="{ 'selected-option': quiz.selectedOption === quiz.optionB, 'correct-option': quiz.answer === quiz.optionB }">
-                <span class="option-label" :class="{ 'correct': quiz.answer === quiz.optionB, 'incorrect': quiz.selectedOption === quiz.optionB && quiz.answer !== quiz.optionB }">B</span>
+                <span class="option-label" :class="{ 'correct': quiz.answer === optionText[1], 'incorrect': quiz.selectedOption === optionText[1] && quiz.answer !== optionText[1] }">B</span>
                 <span class="option-text">{{ quiz.optionB }}</span>
               </li>
               <li :class="{ 'selected-option': quiz.selectedOption === quiz.optionC, 'correct-option': quiz.answer === quiz.optionC }">
-                <span class="option-label" :class="{ 'correct': quiz.answer === quiz.optionC, 'incorrect': quiz.selectedOption === quiz.optionC && quiz.answer !== quiz.optionC }">C</span>
+                <span class="option-label" :class="{ 'correct': quiz.answer === optionText[2], 'incorrect': quiz.selectedOption === optionText[2] && quiz.answer !== optionText[2] }">C</span>
                 <span class="option-text">{{ quiz.optionC }}</span>
               </li>
               <li :class="{ 'selected-option': quiz.selectedOption === quiz.optionD, 'correct-option': quiz.answer === quiz.optionD }">
-                <span class="option-label" :class="{ 'correct': quiz.answer === quiz.optionD, 'incorrect': quiz.selectedOption === quiz.optionD && quiz.answer !== quiz.optionD }">D</span>
+                <span class="option-label" :class="{ 'correct': quiz.answer === optionText[3], 'incorrect': quiz.selectedOption === optionText[3] && quiz.answer !== optionText[3]}">D</span>
                 <span class="option-text">{{ quiz.optionD }}</span>
               </li>
             </ul>
@@ -49,21 +49,48 @@
   
   const route = useRoute();
   const router = useRouter();
-  const quizId = route.params.quizId;
-  const quiz = ref({});
+  const quizId = route.params.id;
+  const quiz = ref(null);
+
+  const optionText = ["A", "B", "C", "D"];
   
-  onMounted(async () => {
-    try {
-      const userId = localStorage.getItem('userId');
-      const response = await axios.post('/solved/find', {
-        userId: userId,
-        quizId: quizId,
-      });
-      quiz.value = response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  // onMounted(async () => {
+  //   try {
+  //     const userId = localStorage.getItem('userId');
+  //     const response = await axios.post('/solved/find', {
+  //       userId: userId,
+  //       quizId: quizId,
+  //     });
+  //     quiz.value = response.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
+
+
+  onMounted(fetchSolvedQuiz);
+
+async function fetchSolvedQuiz() {
+  try {
+    const response = fetch('http://localhost:7777/solved/find', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: 1,
+        quizId: quizId
+      }),
+    }).then(response => response.json());
+      
+    const data = await response;
+    console.log(data);
+    quiz.value = data;
+  
+  } catch (error) {
+    console.error(error);
+  }
+}
   
   const goBack = () => {
     router.go(-1);

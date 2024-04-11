@@ -8,7 +8,7 @@ public interface UserService {
 
     UserDTO findUserByEmail(String email) throws UserNotFoundException;
 
-    UserDTO findUserById(int id);
+    UserDTO findUserById(int id) throws UserNotFoundException;
 
     UserDTO findUserByNickname(String nickname);
 }

@@ -25,8 +25,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findUserById(int id) {
-        return null;
+    public UserDTO findUserById(int id) throws UserNotFoundException {
+        User user = userRepository.findById(id);
+
+        return userToUserDTO(user);
     }
 
     @Override

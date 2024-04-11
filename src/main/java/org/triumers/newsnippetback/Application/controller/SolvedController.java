@@ -82,6 +82,7 @@ public class SolvedController {
             solvedQuizResponse.setOptionC(solvedDTO.getOptionC());
             solvedQuizResponse.setOptionD(solvedDTO.getOptionD());
             solvedQuizResponse.setAnswer(solvedDTO.getAnswer());
+            solvedQuizResponse.setSelectedOption(solvedDTO.getSelectedOption());
             solvedQuizResponse.setExplanation(solvedDTO.getExplanation());
             solvedQuizResponse.setNewsLink(solvedDTO.getNewsLink());
             solvedQuizResponse.setDate(solvedDTO.getDate());

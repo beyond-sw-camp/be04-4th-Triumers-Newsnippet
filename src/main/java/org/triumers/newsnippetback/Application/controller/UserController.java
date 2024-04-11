@@ -1,7 +1,9 @@
 package org.triumers.newsnippetback.Application.controller;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +65,20 @@ public class UserController {
         } catch (UserNotFoundException e) {
             ResponseUserInfoVO response = new ResponseUserInfoVO();
             response.setMessage(e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+    @GetMapping("/my-page")
+    public ResponseEntity<ResponseUserInfoVO> myPage() {
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+            return findUserByEmail(email);
+        } catch (ExpiredJwtException e) {
+            ResponseUserInfoVO response = new ResponseUserInfoVO();
+            response.setMessage("[ERROR] 로그인 이후 이용해주십시오.");
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }

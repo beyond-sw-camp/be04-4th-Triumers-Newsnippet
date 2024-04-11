@@ -1,6 +1,7 @@
 package org.triumers.newsnippetback.Application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.common.exception.UserNotFoundException;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
@@ -36,6 +37,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByNickname(nickname);
 
         return userToUserDTO(user);
+    }
+
+    @Override
+    public UserDTO findByToken() throws UserNotFoundException {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return findUserByEmail(email);
     }
 
     private UserDTO userToUserDTO(User user) throws UserNotFoundException {

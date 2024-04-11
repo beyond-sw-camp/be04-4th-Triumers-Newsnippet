@@ -1,7 +1,6 @@
 package org.triumers.newsnippetback.Application.service;
 
 import org.triumers.newsnippetback.common.exception.UserNotFoundException;
-import org.triumers.newsnippetback.domain.dto.AuthDTO;
 import org.triumers.newsnippetback.domain.dto.UserDTO;
 
 public interface UserService {
@@ -11,4 +10,6 @@ public interface UserService {
     UserDTO findUserById(int id) throws UserNotFoundException;
 
     UserDTO findUserByNickname(String nickname) throws UserNotFoundException;
+
+    UserDTO findByToken() throws UserNotFoundException;
 }

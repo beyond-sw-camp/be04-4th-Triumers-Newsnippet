@@ -6,9 +6,9 @@ import org.triumers.newsnippetback.domain.dto.AuthDTO;
 
 public interface AuthService {
 
-    public void signup(AuthDTO request) throws UserNicknameDuplicateException, UserEmailDuplicateException;
+    void signup(AuthDTO request) throws UserNicknameDuplicateException, UserEmailDuplicateException;
 
-    public boolean existNickname(String nickname);
+    boolean existNickname(String nickname);
 
-    public boolean existEmail(String email);
+    boolean existEmail(String email);
 }

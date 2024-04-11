@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByEmail(String email);
 
+    User findByNickname(String nickname);
+
     @Query("SELECT COUNT(u) + 1 FROM User u WHERE u.correctCnt > :correctCnt")
     int findRankByCorrectCnt(@Param("correctCnt") int correctCnt);
 }

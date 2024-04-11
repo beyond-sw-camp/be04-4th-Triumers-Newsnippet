@@ -10,5 +10,5 @@ public interface UserService {
 
     UserDTO findUserById(int id) throws UserNotFoundException;
 
-    UserDTO findUserByNickname(String nickname);
+    UserDTO findUserByNickname(String nickname) throws UserNotFoundException;
 }

@@ -32,8 +32,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findUserByNickname(String nickname) {
-        return null;
+    public UserDTO findUserByNickname(String nickname) throws UserNotFoundException {
+        User user = userRepository.findByNickname(nickname);
+
+        return userToUserDTO(user);
     }
 
     private UserDTO userToUserDTO(User user) throws UserNotFoundException {

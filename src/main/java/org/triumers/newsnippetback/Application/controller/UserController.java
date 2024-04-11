@@ -53,6 +53,21 @@ public class UserController {
         }
     }
 
+    @GetMapping("/nickname/{nickname}")
+    public ResponseEntity<ResponseUserInfoVO> findUserByNickname(@PathVariable("nickname") String nickname) {
+        System.out.println("nickname = " + nickname);
+        try {
+            UserDTO userDTO = userService.findUserByNickname(nickname);
+            return ResponseEntity.status(HttpStatus.OK).body(userDTOToUserInfoVO(userDTO));
+
+        } catch (UserNotFoundException e) {
+            ResponseUserInfoVO response = new ResponseUserInfoVO();
+            response.setMessage(e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
     private ResponseUserInfoVO userDTOToUserInfoVO(UserDTO user) {
         return new ResponseUserInfoVO("조회 성공", user.getName(), user.getNickname(), user.getEmail(),
                 userRoleToString(user.getUserRole()), userStatusToString(user.getUserStatus()), user.getSolvedCnt(),

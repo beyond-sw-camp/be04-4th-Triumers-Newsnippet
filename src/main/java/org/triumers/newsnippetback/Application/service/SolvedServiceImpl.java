@@ -48,6 +48,7 @@ public class SolvedServiceImpl implements SolvedService{
         SolvedDTO solvedDTO = new SolvedDTO();
         solvedDTO.setUserId(userId);
         solvedDTO.setQuizId(quizId);
+        solvedDTO.setSolvedDate(LocalDate.now());
         solvedDTO.setCorrect(Objects.equals(answer.getAnswer(), seletedOption));
         solvedDTO.setSelectedOption(seletedOption);
 

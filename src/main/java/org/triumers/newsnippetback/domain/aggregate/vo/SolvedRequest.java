@@ -12,5 +12,7 @@ import java.time.LocalDate;
 public class SolvedRequest {
     private int userId;
     private int quizId;
-    private LocalDate date;
+    private LocalDate solvedDate;
+    private String selectedOption;
+    private boolean isCorrect;
 }

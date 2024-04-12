@@ -37,6 +37,7 @@ public class QuizController {
                     .map(quizDTO -> {
                         QuizResponse quizResponse = new QuizResponse();
                         quizResponse.setId(quizDTO.getId());
+                        quizResponse.setNo(quizDTO.getNo());
                         quizResponse.setContent(quizDTO.getContent());
                         quizResponse.setOptionA(quizDTO.getOptionA());
                         quizResponse.setOptionB(quizDTO.getOptionB());

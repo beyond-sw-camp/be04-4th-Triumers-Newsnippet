@@ -42,6 +42,7 @@ public class QuizServiceImpl implements QuizService {
                 .map(quiz -> {
                     QuizDTO quizDTO = new QuizDTO();
                     quizDTO.setId(quiz.getId());
+                    quizDTO.setNo(quiz.getNo());
                     quizDTO.setContent(quiz.getContent());
                     quizDTO.setOptionA(quiz.getOptionA());
                     quizDTO.setOptionB(quiz.getOptionB());

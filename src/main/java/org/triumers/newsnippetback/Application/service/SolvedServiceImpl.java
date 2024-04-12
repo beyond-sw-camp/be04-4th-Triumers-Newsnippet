@@ -41,29 +41,23 @@ public class SolvedServiceImpl implements SolvedService{
 
         int userId = solvedRequest.getUserId();
         int quizId = solvedRequest.getQuizId();
+        String seletedOption = solvedRequest.getSelectedOption();
 
-        Solved solved = solvedRepository.findSelectedOptionByUserIdAndQuizId(userId, quizId);
         Quiz answer = quizRepository.findAnswerById(quizId);
-
-        if (answer == null || solved == null) {
-            throw new NoSuchElementException("Quiz or Selected Option not found for quizId: " + quizId);
-        }
 
         SolvedDTO solvedDTO = new SolvedDTO();
         solvedDTO.setUserId(userId);
         solvedDTO.setQuizId(quizId);
+        solvedDTO.setSolvedDate(LocalDate.now());
+        solvedDTO.setCorrect(Objects.equals(answer.getAnswer(), seletedOption));
+        solvedDTO.setSelectedOption(seletedOption);
 
-        if (Objects.equals(answer.getAnswer(), solved.getSelectedOption())) {
-            solvedDTO.setCorrect(true);
-            solved.setCorrect(true);
-            solvedRepository.save(solved);
-
-            return solvedDTO;
-        }
-
-        solvedDTO.setCorrect(false);
-        solved.setCorrect(false);
+        Solved solved = modelMapper.map(solvedDTO, Solved.class);
         solvedRepository.save(solved);
+
+        if (answer == null || solved == null) {
+            throw new NoSuchElementException("Quiz or Selected Option not found for quizId: " + quizId);
+        }
 
         return solvedDTO;
     }
@@ -127,5 +121,41 @@ public class SolvedServiceImpl implements SolvedService{
 
         return solvedList;
     }
+
+    @Override
+    public List<SolvedDTO> findSolvedQuizListByUserIdAndDate(SolvedRequest solvedRequest) {
+        System.out.println(solvedRequest);
+        int userId = solvedRequest.getUserId();
+        LocalDate solvedDate = solvedRequest.getSolvedDate();
+
+        List<Solved> solvedList = solvedRepository.findSolvedQuizByUserIdAndSolvedDate(userId, solvedDate);
+        List<SolvedDTO> solvedDTOList = new ArrayList<>();
+
+        for (Solved solved: solvedList) {
+            int id = solved.getQuizId();
+            Quiz quiz = quizRepository.findById(id).orElseThrow();
+
+            SolvedDTO solvedDTO = new SolvedDTO();
+
+            solvedDTO.setUserId(solved.getUserId());
+            solvedDTO.setQuizId(quiz.getId());
+            solvedDTO.setCategoryId(quiz.getCategoryId());
+            solvedDTO.setContent(quiz.getContent());
+            solvedDTO.setOptionA(quiz.getOptionA());
+            solvedDTO.setOptionB(quiz.getOptionB());
+            solvedDTO.setOptionC(quiz.getOptionC());
+            solvedDTO.setOptionD(quiz.getOptionD());
+            solvedDTO.setAnswer(quiz.getAnswer());
+            solvedDTO.setSelectedOption(solved.getSelectedOption());
+            solvedDTO.setExplanation(quiz.getExplanation());
+            solvedDTO.setNewsLink(quiz.getNewsLink());
+            solvedDTO.setDate(quiz.getDate());
+
+            solvedDTOList.add(solvedDTO);
+        }
+
+        return solvedDTOList;
+    }
+
 
 }

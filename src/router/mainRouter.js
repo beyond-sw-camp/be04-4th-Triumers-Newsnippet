@@ -59,11 +59,11 @@ const router = createRouter({
             component: ManageQuizView,
             children:[
                 {
-                    path: '/selectQuiz',
+                    path: '/manage/selectQuiz',
                     component: SelectCrawlingQuiz
                 },
                 {
-                    path: '/selectedQuiz',
+                    path: '/manage/selectedQuiz',
                     component: SelectedQuiz
                 }
             ]

@@ -17,14 +17,14 @@
             <div class="collapse" :id="`crawling${selectedQuiz.id}`">
                 <div>
                     <p id="content">{{ selectedQuiz.content }}</p>
-                    <p> <span class="option">A</span> <span> 보기 </span> </p>
-                    <p> <span class="option">B</span> <span> 보기 </span> </p>
-                    <p> <span class="option">C</span> <span> 보기 </span> </p>
-                    <p> <span class="option">D</span> <span> 보기 </span> </p>
+                    <p> <span class="option">A</span> <span> {{selectedQuiz.optionA}} </span> </p>
+                    <p> <span class="option">B</span> <span> {{selectedQuiz.optionB}} </span> </p>
+                    <p> <span class="option">C</span> <span> {{selectedQuiz.optionC}} </span> </p>
+                    <p> <span class="option">D</span> <span> {{selectedQuiz.optionD}} </span> </p>
                 </div>
                 <hr>
                 <div>
-                    <p> <span><a :href="`${selectedQuiz.newsLink}`">기사 링크</a></span> </p>
+                    <p> <span><a :href="`${selectedQuiz.newsLink}`">원본 링크</a></span> </p>
                     <p>
                         {{ selectedQuiz.explanation }}
                     </p>

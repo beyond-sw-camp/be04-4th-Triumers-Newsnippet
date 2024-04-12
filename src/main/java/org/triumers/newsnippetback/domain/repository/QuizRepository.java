@@ -27,5 +27,4 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer> {
 
     List<Quiz> findAllByDate(LocalDate date);
 
-    List<Quiz> findByDateAndNoIn(LocalDate date, List<Integer> nos);
 }

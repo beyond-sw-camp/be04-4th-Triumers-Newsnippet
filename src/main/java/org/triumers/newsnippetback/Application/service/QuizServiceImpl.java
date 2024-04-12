@@ -119,6 +119,7 @@ public class QuizServiceImpl implements QuizService {
         List<QuizDTO> quizDTOs = quizzes.stream()
                 .map(quiz -> {
                     QuizDTO quizDTO = new QuizDTO();
+                    quizDTO.setId(quiz.getId());
                     quizDTO.setContent(quiz.getContent());
                     quizDTO.setOptionA(quiz.getOptionA());
                     quizDTO.setOptionB(quiz.getOptionB());

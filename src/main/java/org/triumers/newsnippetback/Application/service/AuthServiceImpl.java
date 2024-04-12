@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.common.exception.UserEmailDuplicateException;
 import org.triumers.newsnippetback.common.exception.UserNicknameDuplicateException;
+import org.triumers.newsnippetback.common.exception.WrongInputTypeException;
 import org.triumers.newsnippetback.common.exception.WrongPasswordException;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
@@ -14,26 +15,32 @@ import org.triumers.newsnippetback.domain.dto.AuthDTO;
 import org.triumers.newsnippetback.domain.dto.PasswordDTO;
 import org.triumers.newsnippetback.domain.dto.UserDTO;
 import org.triumers.newsnippetback.domain.repository.UserRepository;
+import org.triumers.newsnippetback.domain.service.ValidationAuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final ValidationAuthService validation;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public AuthServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthServiceImpl(UserRepository userRepository, ValidationAuthService validation, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.validation = validation;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
-    public void signup(AuthDTO request) throws UserNicknameDuplicateException, UserEmailDuplicateException {
+    public void signup(AuthDTO request) throws UserNicknameDuplicateException, UserEmailDuplicateException, WrongInputTypeException {
 
         // 닉네임 중복 예외 처리
         if (userRepository.existsByNickname(request.getNickname())) {
             throw new UserNicknameDuplicateException();
         }
+
+        // 닉네임 자릿수, 타입 검증
+        validation.nickname(request.getNickname());
 
         // 이메일 중복 예외 처리
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -54,13 +61,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void modifyUserInfo(UserDTO userDTO) throws UserNicknameDuplicateException {
+    public void modifyUserInfo(UserDTO userDTO) throws UserNicknameDuplicateException, WrongInputTypeException {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
         if (userDTO.getNickname() != null) {
             if (existNickname(userDTO.getNickname())) {
                 throw new UserNicknameDuplicateException();
             }
+
+            // 닉네임 자릿수, 타입 검증
+            validation.nickname(userDTO.getNickname());
+
             user.setNickname(userDTO.getNickname());
         }
 

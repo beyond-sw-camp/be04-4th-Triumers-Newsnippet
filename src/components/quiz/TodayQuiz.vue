@@ -56,19 +56,19 @@
           <p v-else class="incorrect">오답입니다.</p>
         </div>
         <div class="options">
-          <div class="option" :class="{ correct: currentQuiz.optionA === currentQuiz.answer, incorrect: selectedOption === 'A' && !isCorrect }">
+          <div class="option" :class="{ correct: selectedOption === 'A' && isCorrect, incorrect: selectedOption === 'A' && !isCorrect }">
             A. {{ currentQuiz.optionA }}
             <span v-if="currentQuiz.optionA === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: currentQuiz.optionB === currentQuiz.answer, incorrect: selectedOption === 'B' && !isCorrect }">
+          <div class="option" :class="{ correct: selectedOption === 'B' && isCorrect, incorrect: selectedOption === 'B' && !isCorrect }">
             B. {{ currentQuiz.optionB }}
             <span v-if="currentQuiz.optionB === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: currentQuiz.optionC === currentQuiz.answer, incorrect: selectedOption === 'C' && !isCorrect }">
+          <div class="option" :class="{ correct: selectedOption === 'C' && isCorrect, incorrect: selectedOption === 'C' && !isCorrect }">
             C. {{ currentQuiz.optionC }}
             <span v-if="currentQuiz.optionC === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: currentQuiz.optionD === currentQuiz.answer, incorrect: selectedOption === 'D' && !isCorrect }">
+          <div class="option" :class="{ correct: selectedOption === 'D' && isCorrect, incorrect: selectedOption === 'D' && !isCorrect }">
             D. {{ currentQuiz.optionD }}
             <span v-if="currentQuiz.optionD === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
@@ -113,9 +113,22 @@ const userId = ref(1);
 // 백엔드 db 연결을 위해 날짜를 2024-04-02로 고정
 const fetchQuizzes = async () => {
   try {
-    const response = await axios.post('http://localhost:8888/quiz/test', { date: new Date('2024-04-02') });
-    quizzes.value = response.data;
-    currentQuiz.date = quizzes.value[currentQuizIndex.value].id;
+    // const response = await axios.post('http://localhost:7777/quiz/test', { date: new Date('2024-04-02') });
+    const response = fetch('http://localhost:7777/quiz/test', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      date: new Date('2024-04-12') 
+    })
+  }).then(response => response.json());
+
+  const data = await response;
+  console.log(data);
+
+    quizzes.value = data;
+    currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
     currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
     currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
     currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
@@ -133,37 +146,34 @@ const fetchQuizzes = async () => {
   }
 };
 
-
 const checkAnswerCorrectness = async () => {
   try {
-    const response = await axios.post('http://localhost:8888/solved/check', {
+
+    const response = fetch('http://localhost:7777/solved/check', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       userId: userId.value,
       quizId: currentQuiz.id,
-      selectedOption: selectedOption.value,
-    });
-    isCorrect.value = response.data.correct;
-    if (isCorrect.value) {
-      correctCount.value++;
-    }
+      selectedOption: selectedOption.value
+    })
+  }).then(response => response.json());
+
+  const data = await response;
+  console.log(data);
+
+  isCorrect.value = data.correct;
+  if (isCorrect.value) {
+    correctCount.value++;
+  }
+    
   } catch (error) {
-    console.error('정답 확인 실패:', error);
+    console.error('정답 확인 및 저장 실패:', error);
   }
 };
 
-const saveSolvedData = async () => {
-  try {
-    const solvedData = {
-      userId: userId.value,
-      quizId: currentQuiz.id,
-      selectedOption: selectedOption.value,
-      isCorrect: isCorrect.value,
-      solvedDate: new Date('2024-04-02'),
-    };
-    await axios.post('http://localhost:8888/solved/put', solvedData);
-  } catch (error) {
-    console.error('Solved 데이터 저장 실패:', error);
-  }
-};
 
 const selectOption = (option) => {
   selectedOption.value = option;
@@ -172,7 +182,6 @@ const selectOption = (option) => {
 const nextStep = async () => {
   if (currentStep.value === 1) {
     await checkAnswerCorrectness();
-    await saveSolvedData();
     // 두 번째 페이지로 넘어갈 때 정답, 해설, 원문 링크 정보 설정
     currentQuiz.answer = quizzes.value[currentQuizIndex.value].answer;
     currentQuiz.explanation = quizzes.value[currentQuizIndex.value].explanation;
@@ -184,6 +193,8 @@ const nextStep = async () => {
 const nextQuestion = async () => {
   if (currentQuizIndex.value < quizzes.value.length - 1) {
     currentQuizIndex.value++;
+
+    currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
     currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
     currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
     currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
@@ -203,18 +214,38 @@ const nextQuestion = async () => {
 
 onMounted(() => {
   fetchQuizzes();
-
-  // 전체 문제 수를 10개로 가정
-  // quizzes.value = Array.from({ length: 10 }, (_, i) => ({ no: i + 1 }));
 });
 </script>
 
 <style scoped>
-/* CSS 스타일링 */
 .quiz-container {
-  max-width: 800px;
+  max-width: 60%; 
   margin: 0 auto;
   padding: 20px;
+  transition: max-width 0.5s ease; /* 부드러운 너비 전환 애니메이션 추가 */
+}
+
+/* 기본 스타일링은 유지하되 색상 조정 */
+.next-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white; /* 텍스트 색상 변경 */
+}
+
+/* 마우스 호버 효과 추가 */
+.next-btn:hover {
+  background-color: #45a049;
+}
+
+/* 선택된 옵션에 대한 스타일링 추가 */
+.option.selected {
+  background-color: #e0e0e0; /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
+  font-weight: bold;
 }
 
 .quiz-info {
@@ -223,10 +254,17 @@ onMounted(() => {
   margin-bottom: 20px;
 }
 
-.question {
+/* .question {
   font-size: 1.2rem;
   margin-bottom: 20px;
+} */
+
+/* 폰트 및 텍스트 스타일 개선 */
+.question {
+  font-size: 1.4rem; /* 폰트 크기를 더 크게 조정 */
+  line-height: 1.5; /* 줄간격을 조정하여 가독성 향상 */
 }
+
 
 .options {
   display: grid;
@@ -242,10 +280,10 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.option.selected {
+/* .option.selected {
   background-color: #ebe4b6;
   font-weight: bold;
-}
+} */
 
 .option.correct {
   background-color: #d4edda;

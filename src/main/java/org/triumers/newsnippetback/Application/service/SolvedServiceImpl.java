@@ -41,29 +41,22 @@ public class SolvedServiceImpl implements SolvedService{
 
         int userId = solvedRequest.getUserId();
         int quizId = solvedRequest.getQuizId();
+        String seletedOption = solvedRequest.getSelectedOption();
 
-        Solved solved = solvedRepository.findSelectedOptionByUserIdAndQuizId(userId, quizId);
         Quiz answer = quizRepository.findAnswerById(quizId);
-
-        if (answer == null || solved == null) {
-            throw new NoSuchElementException("Quiz or Selected Option not found for quizId: " + quizId);
-        }
 
         SolvedDTO solvedDTO = new SolvedDTO();
         solvedDTO.setUserId(userId);
         solvedDTO.setQuizId(quizId);
+        solvedDTO.setCorrect(Objects.equals(answer.getAnswer(), seletedOption));
+        solvedDTO.setSelectedOption(seletedOption);
 
-        if (Objects.equals(answer.getAnswer(), solved.getSelectedOption())) {
-            solvedDTO.setCorrect(true);
-            solved.setCorrect(true);
-            solvedRepository.save(solved);
-
-            return solvedDTO;
-        }
-
-        solvedDTO.setCorrect(false);
-        solved.setCorrect(false);
+        Solved solved = modelMapper.map(solvedDTO, Solved.class);
         solvedRepository.save(solved);
+
+        if (answer == null || solved == null) {
+            throw new NoSuchElementException("Quiz or Selected Option not found for quizId: " + quizId);
+        }
 
         return solvedDTO;
     }

@@ -15,4 +15,9 @@ public class SolvedRequest {
     private LocalDate solvedDate;
     private String selectedOption;
     private boolean isCorrect;
+
+    public SolvedRequest(int userId, int quizId) {
+        this.userId = userId;
+        this.quizId = quizId;
+    }
 }

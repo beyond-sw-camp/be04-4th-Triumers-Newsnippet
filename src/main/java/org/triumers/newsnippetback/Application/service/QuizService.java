@@ -10,9 +10,7 @@ public interface QuizService {
 
     QuizDTO findQuizByDateAndNo(QuizRequest quizRequest);
 
-//    QuizDTO findQuizAnswerByDateAndNo(QuizRequest quizRequest);
-
     List<QuizDTO> findAllQuizzesByDate(LocalDate date);
 
-    QuizDTO findQuizAnswerByDateAndNo(LocalDate date, int no);
+
 }

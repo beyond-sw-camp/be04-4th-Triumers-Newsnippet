@@ -40,3 +40,5 @@ out/
 *.yml
 *.jar
 *.properties
+!gradle-wrapper.jar
+!gradle-wrapper.properties

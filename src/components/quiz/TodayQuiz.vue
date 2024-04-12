@@ -11,35 +11,19 @@
         </div>
         <h2 class="question">{{ currentQuiz.no }}. {{ currentQuiz.content }}</h2>
         <div class="options">
-  <div
-    class="option"
-    :class="{ 'selected': selectedOption === 'A' }"
-    @click="selectOption('A')"
-  >
-    A. {{ currentQuiz.optionA }}
-  </div>
-  <div
-    class="option"
-    :class="{ 'selected': selectedOption === 'B' }"
-    @click="selectOption('B')"
-  >
-    B. {{ currentQuiz.optionB }}
-  </div>
-  <div
-    class="option"
-    :class="{ 'selected': selectedOption === 'C' }"
-    @click="selectOption('C')"
-  >
-    C. {{ currentQuiz.optionC }}
-  </div>
-  <div
-    class="option"
-    :class="{ 'selected': selectedOption === 'D' }"
-    @click="selectOption('D')"
-  >
-    D. {{ currentQuiz.optionD }}
-  </div>
-</div>
+          <div class="option" :class="{ 'selected': selectedOption === 'A' }" @click="selectOption('A')">
+            A. {{ currentQuiz.optionA }}
+          </div>
+          <div class="option" :class="{ 'selected': selectedOption === 'B' }" @click="selectOption('B')">
+            B. {{ currentQuiz.optionB }}
+          </div>
+          <div class="option" :class="{ 'selected': selectedOption === 'C' }" @click="selectOption('C')">
+            C. {{ currentQuiz.optionC }}
+          </div>
+          <div class="option" :class="{ 'selected': selectedOption === 'D' }" @click="selectOption('D')">
+            D. {{ currentQuiz.optionD }}
+          </div>
+        </div>
         <button @click="nextStep" :disabled="!selectedOption" class="next-btn">다음</button>
         <div class="progress">
           <span class="progress-text">진행률:</span>
@@ -56,19 +40,23 @@
           <p v-else class="incorrect">오답입니다.</p>
         </div>
         <div class="options">
-          <div class="option" :class="{ correct: ((selectedOption === 'A' && isCorrect) || currentQuiz.answer == 'A') , incorrect: selectedOption === 'A' && !isCorrect }">
+          <div class="option"
+            :class="{ correct: ((selectedOption === 'A' && isCorrect) || currentQuiz.answer == 'A'), incorrect: selectedOption === 'A' && !isCorrect }">
             A. {{ currentQuiz.optionA }}
             <span v-if="currentQuiz.optionA === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: (selectedOption === 'B' && isCorrect) || currentQuiz.answer == 'B', incorrect: selectedOption === 'B' && !isCorrect }">
+          <div class="option"
+            :class="{ correct: (selectedOption === 'B' && isCorrect) || currentQuiz.answer == 'B', incorrect: selectedOption === 'B' && !isCorrect }">
             B. {{ currentQuiz.optionB }}
             <span v-if="currentQuiz.optionB === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: (selectedOption === 'C' && isCorrect) || currentQuiz.answer == 'C', incorrect: selectedOption === 'C' && !isCorrect }">
+          <div class="option"
+            :class="{ correct: (selectedOption === 'C' && isCorrect) || currentQuiz.answer == 'C', incorrect: selectedOption === 'C' && !isCorrect }">
             C. {{ currentQuiz.optionC }}
             <span v-if="currentQuiz.optionC === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: (selectedOption === 'D' && isCorrect) || currentQuiz.answer == 'D' , incorrect: selectedOption === 'D' && !isCorrect }">
+          <div class="option"
+            :class="{ correct: (selectedOption === 'D' && isCorrect) || currentQuiz.answer == 'D', incorrect: selectedOption === 'D' && !isCorrect }">
             D. {{ currentQuiz.optionD }}
             <span v-if="currentQuiz.optionD === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
@@ -115,18 +103,16 @@ const fetchQuizzes = async () => {
   try {
     // const response = await axios.post('http://localhost:7777/quiz/test', { date: new Date('2024-04-02') });
     const response = fetch('http://localhost:7777/quiz/test', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      date: new Date('2024-04-12') 
-    })
-  }).then(response => response.json());
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        date: new Date()
+      })
+    }).then(response => response.json());
 
-  const data = await response;
-  console.log(data);
-
+    const data = await response;
     quizzes.value = data;
     currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
     currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
@@ -150,25 +136,24 @@ const checkAnswerCorrectness = async () => {
   try {
 
     const response = fetch('http://localhost:7777/solved/check', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userId: userId.value,
-      quizId: currentQuiz.id,
-      selectedOption: selectedOption.value
-    })
-  }).then(response => response.json());
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId.value,
+        quizId: currentQuiz.id,
+        selectedOption: selectedOption.value
+      })
+    }).then(response => response.json());
 
-  const data = await response;
-  console.log(data);
+    const data = await response;
 
-  isCorrect.value = data.correct;
-  if (isCorrect.value) {
-    correctCount.value++;
-  }
-    
+    isCorrect.value = data.correct;
+    if (isCorrect.value) {
+      correctCount.value++;
+    }
+
   } catch (error) {
     console.error('정답 확인 및 저장 실패:', error);
   }
@@ -219,10 +204,11 @@ onMounted(() => {
 
 <style scoped>
 .quiz-container {
-  max-width: 60%; 
+  max-width: 60%;
   margin: 0 auto;
   padding: 20px;
-  transition: max-width 0.5s ease; /* 부드러운 너비 전환 애니메이션 추가 */
+  transition: max-width 0.5s ease;
+  /* 부드러운 너비 전환 애니메이션 추가 */
 }
 
 /* 기본 스타일링은 유지하되 색상 조정 */
@@ -230,11 +216,13 @@ onMounted(() => {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #4CAF50; /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
+  background-color: #4CAF50;
+  /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  color: white; /* 텍스트 색상 변경 */
+  color: white;
+  /* 텍스트 색상 변경 */
 }
 
 /* 마우스 호버 효과 추가 */
@@ -244,7 +232,8 @@ onMounted(() => {
 
 /* 선택된 옵션에 대한 스타일링 추가 */
 .option.selected {
-  background-color: #e0e0e0; /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
+  background-color: #e0e0e0;
+  /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
   font-weight: bold;
 }
 
@@ -261,8 +250,10 @@ onMounted(() => {
 
 /* 폰트 및 텍스트 스타일 개선 */
 .question {
-  font-size: 1.4rem; /* 폰트 크기를 더 크게 조정 */
-  line-height: 1.5; /* 줄간격을 조정하여 가독성 향상 */
+  font-size: 1.4rem;
+  /* 폰트 크기를 더 크게 조정 */
+  line-height: 1.5;
+  /* 줄간격을 조정하여 가독성 향상 */
 }
 
 

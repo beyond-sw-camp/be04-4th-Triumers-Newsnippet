@@ -4,9 +4,10 @@
     <div class="container">
       <h2>풀었던 문제 확인</h2>
       <div class="date-picker">
-        <VueDatePicker v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList"></VueDatePicker>
+        <VueDatePicker v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList">
+        </VueDatePicker>
       </div>
-      
+
       <div class="quiz-list" v-if="solvedList">
         <div class="quiz-item" v-for="solved in solvedList" :key="solved.id" @click="goToQuizDetail(solved.quizId)">
           <div class="content">{{ solved.content }}</div>
@@ -47,7 +48,7 @@ async function fetchSolvedQuizList() {
         solvedDate: formatDate(selectedDate.value)
       }),
     }).then(response => response.json());
-    
+
     const data = await response;
 
     solvedList.value = data;
@@ -99,16 +100,15 @@ const goToQuizDetail = (quizId) => {
   font-size: 15px;
 }
 
-.content{
+.content {
   width: 750px;
 }
 
 .correct {
-    color: green;
-  }
-  
-.incorrect {
-    color: red;
-  }
+  color: green;
+}
 
+.incorrect {
+  color: red;
+}
 </style>

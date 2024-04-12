@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Integer> {
-    Quiz findByDateAndNo(LocalDate date, int no);
-
     Quiz findAnswerById(int quizId);
 
     Quiz findCategoryIdAndContentAndOptionAAndOptionBAndOptionCAndOptionDAndAnswerById(int quizId);

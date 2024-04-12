@@ -30,7 +30,7 @@ public class SolvedController {
         this.modelMapper = modelMapper;
     }
 
-    /* 설명. 1. 사용자가 입력한 답과 문제의 정답 여부 판단 */
+    /* 설명. 1. 사용자가 입력한 답과 문제의 정답 여부 판단 및 사용자가 입력한 답 db에 저장 */
     @PostMapping("/check")
     public ResponseEntity<SolvedIsCorrectResponse> findSelectedOptionAndCompareAnswer(@RequestBody SolvedRequest solvedRequest) {
         try {

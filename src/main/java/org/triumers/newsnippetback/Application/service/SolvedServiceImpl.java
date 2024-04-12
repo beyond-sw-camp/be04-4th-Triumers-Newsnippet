@@ -132,7 +132,7 @@ public class SolvedServiceImpl implements SolvedService{
     public List<SolvedDTO> findSolvedQuizListByUserIdAndDate(SolvedRequest solvedRequest) {
         System.out.println(solvedRequest);
         int userId = solvedRequest.getUserId();
-        LocalDate solvedDate = solvedRequest.getDate();
+        LocalDate solvedDate = solvedRequest.getSolvedDate();
 
         List<Solved> solvedList = solvedRepository.findSolvedQuizByUserIdAndSolvedDate(userId, solvedDate);
         List<SolvedDTO> solvedDTOList = new ArrayList<>();
@@ -162,5 +162,6 @@ public class SolvedServiceImpl implements SolvedService{
 
         return solvedDTOList;
     }
+
 
 }

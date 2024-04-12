@@ -29,7 +29,7 @@
                 </div>
                 <hr>
                 <div>
-                    <p> <span><a :href="`${crawlingQuiz.newsLink}`">기사 링크</a></span> </p>
+                    <p> <span><a :href="`${crawlingQuiz.newsLink}`">원본 링크</a></span> </p>
                     <p>
                         {{ crawlingQuiz.explanation }}
                     </p>
@@ -99,12 +99,12 @@ async function changeSelect(id, index) {
 }
 
 async function addQuiz(id) {
-    const response = fetch(`http://localhost:8555/manage/addQuiz/${id}`).then(response => response.json());
+    const response = fetch(`http://localhost:7777/manage/addQuiz/${id}`).then(response => response.json());
     const data = await response;
 }
 
 async function deleteQuiz(id) {
-    const response = fetch(`http://localhost:8555/manage/deleteQuiz/${id}`, {
+    const response = fetch(`http://localhost:7777/manage/deleteQuiz/${id}`, {
         method: "DELETE"
     }).then(response => response.json());
     const data = await response;

@@ -28,6 +28,7 @@
         <button v-if="!isLoggedIn" @click="navigateTo('login')" class="btn btn-beige">로그인</button>
         <button v-if="isLoggedIn" @click="logout" class="btn btn-beige">로그아웃</button>
         <button v-if="isLoggedIn" @click="navigateTo('my-page')" class="btn btn-beige">마이페이지</button>
+        <button v-if="isLoggedIn" @click="handleNavigation('manage/selectQuiz')" class="btn btn-beige">퀴즈 관리</button>
       </div>
     </div>
   </header>
@@ -157,6 +158,7 @@ const emit = defineEmits(['logout']);
   }
   
   .btn-beige {
+    margin: 5px;
     background-color: #f5f5dc;
     color: #333;
   }

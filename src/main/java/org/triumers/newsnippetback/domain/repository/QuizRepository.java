@@ -24,4 +24,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer> {
     Integer countByDateAndOriginQuizId(LocalDate localDate, int id);
 
     Quiz findByOriginQuizIdAndDate(int id, LocalDate date);
+
+    List<Quiz> findAllByDate(LocalDate date);
+
 }

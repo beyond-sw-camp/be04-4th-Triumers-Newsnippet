@@ -30,7 +30,7 @@ public class SolvedController {
         this.modelMapper = modelMapper;
     }
 
-    /* 설명. 1. 사용자가 입력한 답과 문제의 정답 여부 판단 */
+    /* 설명. 1. 사용자가 입력한 답과 문제의 정답 여부 판단 및 사용자가 입력한 답 db에 저장 */
     @PostMapping("/check")
     public ResponseEntity<SolvedIsCorrectResponse> findSelectedOptionAndCompareAnswer(@RequestBody SolvedRequest solvedRequest) {
         try {
@@ -82,6 +82,7 @@ public class SolvedController {
             solvedQuizResponse.setOptionC(solvedDTO.getOptionC());
             solvedQuizResponse.setOptionD(solvedDTO.getOptionD());
             solvedQuizResponse.setAnswer(solvedDTO.getAnswer());
+            solvedQuizResponse.setSelectedOption(solvedDTO.getSelectedOption());
             solvedQuizResponse.setExplanation(solvedDTO.getExplanation());
             solvedQuizResponse.setNewsLink(solvedDTO.getNewsLink());
             solvedQuizResponse.setDate(solvedDTO.getDate());
@@ -106,6 +107,24 @@ public class SolvedController {
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok().body(solvedResultResponse);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/find/allByDate")
+    public ResponseEntity<List<SolvedQuizResponse>> findSolvedQuizByUserIdAndDate(@RequestBody SolvedRequest solvedRequest){
+        try {
+            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+            List<SolvedDTO> solvedList = solvedService.findSolvedQuizListByUserIdAndDate(solvedRequest);
+            List<SolvedQuizResponse> SolvedQuizListResponse = solvedList.stream()
+                    .map(dot -> modelMapper.map(dot, SolvedQuizResponse.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(SolvedQuizListResponse);
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();
         } catch (Exception e) {

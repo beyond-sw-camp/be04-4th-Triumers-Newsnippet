@@ -17,4 +17,13 @@ public class ValidationAuthService {
             throw new WrongInputTypeException();
         }
     }
+
+    public void password(String password) throws WrongInputTypeException {
+        Pattern pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,12}$");
+        Matcher matcher = pattern.matcher(password);
+
+        if (!matcher.matches()) {
+            throw new WrongInputTypeException();
+        }
+    }
 }

@@ -106,7 +106,7 @@ public class AuthController {
 
         } catch (ExpiredJwtException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO("[ERROR] 로그인 이후 이용해주십시오."));
-        } catch (WrongPasswordException e) {
+        } catch (WrongPasswordException | WrongInputTypeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessageVO(e.getMessage()));
         }
     }

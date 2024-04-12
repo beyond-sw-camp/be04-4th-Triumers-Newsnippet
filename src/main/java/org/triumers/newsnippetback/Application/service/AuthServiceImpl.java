@@ -39,8 +39,11 @@ public class AuthServiceImpl implements AuthService {
             throw new UserNicknameDuplicateException();
         }
 
-        // 닉네임 자릿수, 타입 검증
+        // 닉네임 유효성 검사
         validation.nickname(request.getNickname());
+
+        // 비밀번호 유효성 검사
+        validation.password(request.getPassword());
 
         // 이메일 중복 예외 처리
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -83,8 +86,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void modifyPassword(PasswordDTO passwordDTO) throws WrongPasswordException {
+    public void modifyPassword(PasswordDTO passwordDTO) throws WrongPasswordException, WrongInputTypeException {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        // 비밀번호 유효성 검사
+        validation.password(passwordDTO.getNewPassword());
 
         if (bCryptPasswordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())) {
             user.setPassword(bCryptPasswordEncoder.encode(passwordDTO.getNewPassword()));

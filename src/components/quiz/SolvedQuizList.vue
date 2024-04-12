@@ -31,6 +31,7 @@ const router = useRouter();
 const selectedDate = ref(new Date());
 const solvedList = ref(null);
 const noQuizMessage = ref(null);
+const userId = ref(1);//localStorage.getItem;
 
 onMounted(fetchSolvedQuizList);
 
@@ -42,12 +43,13 @@ async function fetchSolvedQuizList() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: 1,
-        date: formatDate(selectedDate.value)
+        userId: userId.value,
+        solvedDate: formatDate(selectedDate.value)
       }),
     }).then(response => response.json());
-      
+    
     const data = await response;
+
     solvedList.value = data;
     noQuizMessage.value = solvedList.value.length === 0 ? '풀었던 문제가 없습니다.' : '';
 

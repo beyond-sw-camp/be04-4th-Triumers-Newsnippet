@@ -56,19 +56,19 @@
           <p v-else class="incorrect">오답입니다.</p>
         </div>
         <div class="options">
-          <div class="option" :class="{ correct: selectedOption === 'A' && isCorrect, incorrect: selectedOption === 'A' && !isCorrect }">
+          <div class="option" :class="{ correct: ((selectedOption === 'A' && isCorrect) || currentQuiz.answer == 'A') , incorrect: selectedOption === 'A' && !isCorrect }">
             A. {{ currentQuiz.optionA }}
             <span v-if="currentQuiz.optionA === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: selectedOption === 'B' && isCorrect, incorrect: selectedOption === 'B' && !isCorrect }">
+          <div class="option" :class="{ correct: (selectedOption === 'B' && isCorrect) || currentQuiz.answer == 'B', incorrect: selectedOption === 'B' && !isCorrect }">
             B. {{ currentQuiz.optionB }}
             <span v-if="currentQuiz.optionB === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: selectedOption === 'C' && isCorrect, incorrect: selectedOption === 'C' && !isCorrect }">
+          <div class="option" :class="{ correct: (selectedOption === 'C' && isCorrect) || currentQuiz.answer == 'C', incorrect: selectedOption === 'C' && !isCorrect }">
             C. {{ currentQuiz.optionC }}
             <span v-if="currentQuiz.optionC === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>
-          <div class="option" :class="{ correct: selectedOption === 'D' && isCorrect, incorrect: selectedOption === 'D' && !isCorrect }">
+          <div class="option" :class="{ correct: (selectedOption === 'D' && isCorrect) || currentQuiz.answer == 'D' , incorrect: selectedOption === 'D' && !isCorrect }">
             D. {{ currentQuiz.optionD }}
             <span v-if="currentQuiz.optionD === currentQuiz.answer" class="answer-label">(정답)</span>
           </div>

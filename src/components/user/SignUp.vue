@@ -7,7 +7,9 @@
         <input v-model="user.name" placeholder="이름" />
       </div>
       <div class="form-group">
-        <input v-model="user.nickname" placeholder="닉네임" />
+        <input v-model="user.nickname" placeholder="닉네임" style="display: inline-block; width: 81%;"/>&nbsp
+        <button v-if="statusNickname === 200" @click="checkNickname" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
+        <button v-else @click="checkNickname" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
       </div>
       <div class="form-group">
         <input v-model="user.email" placeholder="이메일" />
@@ -24,6 +26,7 @@
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 import Header from '@/views/Header.vue';
+import { ref } from 'vue';
 
 const router = useRouter();
 const user = {
@@ -32,6 +35,21 @@ const user = {
     email: '',
     password: ''
 };
+
+const statusNickname = ref(0);
+
+function checkNickname() {
+  // 닉네임 중복 확인 로직 처리
+  return axios.post(`http://localhost:7777/auth/exist/nickname`, user)
+  .then(response => {
+    statusNickname.value = response.status;
+    alert(response.data.message);
+  })
+  .catch(error => {
+    statusNickname.value = error.status;
+    alert(error.response.data.message);
+  });
+}
 
 async function signup() {
   // 회원가입 로직 처리
@@ -143,5 +161,17 @@ async function signup() {
   
   .signup-btn:hover {
     background-color: #e9e9c9;
+  }
+
+  .beige-v-symbol {
+    background-color: #f5f5dc;
+    color: rgb(22, 1, 255);
+    font-weight: bold;
+  }
+
+  .beige-x-symbol {
+    background-color: #f5f5dc;
+    color: #FF0000;
+    font-weight: bold;
   }
   </style>

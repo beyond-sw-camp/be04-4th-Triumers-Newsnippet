@@ -23,14 +23,10 @@
             <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
                 <div>
                     <p id="content">{{ crawlingQuiz.content }}</p>
-                    <p> <span class="option">A</span> <span class="optionContent"> {{ crawlingQuiz.optionA }} </span>
-                    </p>
-                    <p> <span class="option">B</span> <span class="optionContent"> {{ crawlingQuiz.optionB }} </span>
-                    </p>
-                    <p> <span class="option">C</span> <span class="optionContent"> {{ crawlingQuiz.optionC }} </span>
-                    </p>
-                    <p> <span class="option">D</span> <span class="optionContent"> {{ crawlingQuiz.optionD }} </span>
-                    </p>
+                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'A'}">A</span> <span class="optionContent"> {{ crawlingQuiz.optionA }} </span></p>
+                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'B'}">B</span> <span class="optionContent"> {{ crawlingQuiz.optionB }} </span></p>
+                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'C'}">C</span> <span class="optionContent"> {{ crawlingQuiz.optionC }} </span></p>
+                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'D'}">D</span> <span class="optionContent"> {{ crawlingQuiz.optionD }} </span></p>
                 </div>
                 <hr>
                 <div>

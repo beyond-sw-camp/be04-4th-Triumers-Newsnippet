@@ -87,9 +87,10 @@ const emit = defineEmits(['logout']);
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #F4F3F6;
+    /* background-color: #F4F3F6; */
     color: #000;
     width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   .header-left,
@@ -115,14 +116,15 @@ const emit = defineEmits(['logout']);
   .menu-items {
     display: flex;
     align-items: center;
-    margin-right: 400px; /* 메뉴 아이템을 왼쪽으로 이동 */
+    margin-right: 550px; /* 메뉴 아이템을 왼쪽으로 이동 */
   }
   
   .menu-item {
+
     margin-right: 30px;
     position: relative;
     cursor: pointer;
-    color: #000000;
+    color: rgb(0, 0, 0);
     padding: 10px;
   }
   
@@ -163,8 +165,8 @@ const emit = defineEmits(['logout']);
   
   .btn-beige {
     margin: 5px;
-    background-color: #EDE8E3;
-    color: #333;
+    background-color: #393B63;
+    color: #ffffff;
   }
   
   .btn-beige:hover {

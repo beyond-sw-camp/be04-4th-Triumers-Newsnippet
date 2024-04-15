@@ -4,10 +4,10 @@
     <div class="login-form">
       <h2>Login</h2>
       <div class="form-group">
-        <input v-model="email" placeholder="이메일" />
+        <input type="email" v-model="user.email" placeholder="이메일" />
       </div>
       <div class="form-group">
-        <input v-model="password" type="password" placeholder="비밀번호" />
+        <input type="password" v-model="user.password" placeholder="비밀번호" />
       </div>
       <button @click="login" class="login-btn">로그인</button>
     </div>
@@ -15,26 +15,37 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Header from '@/views/Header.vue';
+import axios from 'axios';
 
 const router = useRouter();
-const email = ref('');
-const password = ref('');
-
-const login = () => {
-  // 로그인 로직 처리
-  // 예시: 로그인 성공 시 localStorage에 토큰 저장
-  localStorage.setItem('token', 'your_token_here');
-  router.push('/');
+const user = {
+    email: '',
+    password: ''
 };
+
+async function login() {
+
+  return axios.post(`http://localhost:7777/login`, user)
+  .then(response => {
+    localStorage.setItem('token', response.headers.get('Authorization'));
+    router.push('/');
+
+    return response.data;
+  })
+  .catch(error => {
+    const errorMessage = error.message + '\n회원 정보가 일치하지 않습니다.';
+    alert(errorMessage);
+  });
+}
+
 </script>
   
   <style scoped>
   .login-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
     padding: 20px;
   }

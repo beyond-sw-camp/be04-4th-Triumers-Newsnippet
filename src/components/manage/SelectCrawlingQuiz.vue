@@ -1,19 +1,20 @@
 <template>
-    <input id="dateInput" type="date" v-model="date" />
+    <input id="dateInput" type="date" v-model="date" @update:model-value="getCrawlingQuizListByDate" />
 
-    <div v-if="crawlingQuizList" class="crawlingQuiz-container">
+    <div v-if="crawlingQuizList && !isLoading" class="crawlingQuiz-container">
         <template v-for="(crawlingQuiz, index) in crawlingQuizList" :key="crawlingQuiz.id">
 
             <div class="crawlingQuiz-item">
                 <div class="clickDiv" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`"
                     :aria-controls="`#crawling${crawlingQuiz.id}`">
-                    <div id="news-category">
+                    <div id="news-category" :style="{ backgroundColor: getCategoryColor(crawlingQuiz.category.id) }">
                         {{ crawlingQuiz.category.categoryName }}
                     </div>
                     <p id="question"> {{ crawlingQuiz.content }} </p>
                 </div>
 
-                <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, index)"  :class="{selected: crawlingQuiz.selected, notSelected: !crawlingQuiz.selected}">
+                <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, index)"
+                    :class="{ selected: crawlingQuiz.selected, notSelected: !crawlingQuiz.selected }">
                     <p id="selected-text" v-if="crawlingQuiz.selected">출제</p>
                     <p id="notSelected-text" v-else>미출제</p>
                 </div>
@@ -22,10 +23,14 @@
             <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
                 <div>
                     <p id="content">{{ crawlingQuiz.content }}</p>
-                    <p> <span class="option">A</span> <span class="optionContent"> {{ crawlingQuiz.optionA }} </span> </p>
-                    <p> <span class="option">B</span> <span class="optionContent"> {{ crawlingQuiz.optionB }} </span> </p>
-                    <p> <span class="option">C</span> <span class="optionContent"> {{ crawlingQuiz.optionC }} </span> </p>
-                    <p> <span class="option">D</span> <span class="optionContent"> {{ crawlingQuiz.optionD }} </span> </p>
+                    <p> <span class="option">A</span> <span class="optionContent"> {{ crawlingQuiz.optionA }} </span>
+                    </p>
+                    <p> <span class="option">B</span> <span class="optionContent"> {{ crawlingQuiz.optionB }} </span>
+                    </p>
+                    <p> <span class="option">C</span> <span class="optionContent"> {{ crawlingQuiz.optionC }} </span>
+                    </p>
+                    <p> <span class="option">D</span> <span class="optionContent"> {{ crawlingQuiz.optionD }} </span>
+                    </p>
                 </div>
                 <hr>
                 <div>
@@ -39,16 +44,20 @@
         </template>
     </div>
     <div v-else class="crawlingQuiz-container">
-        문제 데이터가 없습니다.
+        <div id="noData-div">
+            <p id="noData">문제 데이터가 없습니다.</p>
+        </div>
     </div>
 </template>
 
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 
 const date = ref('');
 const crawlingQuizList = ref(null);
+const isLoading = ref(false);
+const tmp = ref(0);
 
 onMounted(async () => {
 
@@ -61,30 +70,29 @@ onMounted(async () => {
         return year + "-" + month + "-" + day;
     }
     date.value = getDate();
-    getCrawlingQuizListByDate(date.value);
+    await getCrawlingQuizListByDate();
 });
 
-async function getCrawlingQuizListByDate(date) {
-
+async function getCrawlingQuizListByDate() {
+    isLoading.value = true;
+    try {
         const response = fetch('http://localhost:7777/manage/findCrawlingQuiz', {
             method: "POST", headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                date: date
+                date: date.value
             })
         }).then(response => response.json());
 
         const data = await response;
         crawlingQuizList.value = data;
-    
-}
-
-watch(date, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        getCrawlingQuizListByDate(newValue);
+    } catch (error) {
+        crawlingQuizList.value = null;
+    } finally {
+        isLoading.value = false;
     }
-});
+}
 
 async function changeSelect(id, index) {
 
@@ -109,6 +117,16 @@ async function deleteQuiz(id) {
     }).then(response => response.json());
     const data = await response;
 }
+
+const categoryColors = [
+    "#F0E7F1", "#E8EBF1", "#F7E3E6", "#C0D2D6", "#F4DDD2",
+    "#F5D2DC", "#B9D3C4", "#DFD6E1", "#B2C4D7", "#F0D9B3",
+    "#CBB4C9", "#EABEA1", "#B9CEB5"
+];
+
+const getCategoryColor = (categoryId) => {
+    return categoryColors[categoryId] || '#D9D9D9';
+};
 
 </script>
 

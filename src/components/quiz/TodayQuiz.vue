@@ -7,7 +7,7 @@
         <div class="quiz-info">
           <span class="date">{{ currentQuiz.date }}</span>
           <span class="category">카테고리: {{ currentQuiz.categoryName }}</span>
-          <span class="accuracy">정답률: {{ (currentQuiz.correctCnt / currentQuiz.solvedCnt * 100).toFixed(2) }}%</span>
+          <span class="accuracy">정답률: {{ (currentQuiz.correctRate * 100).toFixed(2) }}%</span>
         </div>
         <h2 class="question">{{ currentQuiz.no }}. {{ currentQuiz.content }}</h2>
         <div class="options">
@@ -190,6 +190,7 @@ const nextQuestion = async () => {
     currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
     currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
     currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
+    currentQuiz.correctRate = quizzes.value[currentQuizIndex.value].correctRate;
     selectedOption.value = null;
     currentStep.value = 1;
   } else {

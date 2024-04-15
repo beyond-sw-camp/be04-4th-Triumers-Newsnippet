@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-left">
       <div class="logo">
-        <!-- <img src="@/components/images/newsnippet_logo.png" alt="Newsnippet Logo" /> -->
+        <img src="@/assets/images/newsnippetLogo.png" alt="Newsnippet Logo" @click="navigateTo('')" />
       </div>
     </div>
     <nav class="header-nav">
@@ -81,94 +81,99 @@ const logout = () => {
 const emit = defineEmits(['logout']);
 </script>
 
-  <style scoped>
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #ebe4b6;
-    color: #000;
-    width: 100%;
-  }
-  
-  .header-left,
-  .header-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .header-nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  .menu-items {
-    display: flex;
-    align-items: center;
-    margin-left: 20px; /* 메뉴 아이템을 왼쪽으로 이동 */
-  }
-  
-  .menu-item {
-    margin-right: 20px;
-    position: relative;
-    cursor: pointer;
-    color: #000000;
-    padding: 10px;
-  }
-  
-  .submenu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    z-index: 1;
-    color: #333;
-    min-width: 150px;
-  }
-  
-  .submenu div {
-    padding: 10px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  
-  .submenu div:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .auth-buttons {
-    display: flex;
-    align-items: center;
-  }
-  
-  .btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-beige {
-    margin: 5px;
-    background-color: #f5f5dc;
-    color: #333;
-  }
-  
-  .btn-beige:hover {
-    background-color: #e9e9c9;
-  }
-  
-  body, html {
-    margin: 0;
-    padding: 0;
-  }
-  </style>
+<style scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  /* background-color: #F4F3F6; */
+  color: #000;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo > img {
+  width: 200px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.menu-items {
+  display: flex;
+  align-items: center;
+  margin-right: 550px; /* 메뉴 아이템을 왼쪽으로 이동 */
+}
+
+.menu-item {
+  margin-right: 30px;
+  position: relative;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1;
+  color: #333;
+  min-width: 150px;
+}
+
+.submenu div {
+  padding: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.submenu div:hover {
+  background-color: #f0f0f0;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-beige {
+  margin: 5px;
+  background-color: #393b63;
+  color: #ffffff;
+}
+
+.btn-beige:hover {
+  background-color: #cac5bf;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+</style>

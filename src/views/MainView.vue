@@ -43,9 +43,6 @@ checkLoginStatus();
 </script>
 
 <style scoped>
-.app {
-  font-family: Arial, sans-serif;
-}
 .content {
   padding: 20px;
 }

@@ -35,6 +35,7 @@ function toggleDarkMode() {
   display: flex;
   flex-direction: column;
   font-family: 'ONE-Mobile-Title', 'Noto Sans KR';
+  background-color: #FFFBF8;
 }
 
 .toggle-button-container {

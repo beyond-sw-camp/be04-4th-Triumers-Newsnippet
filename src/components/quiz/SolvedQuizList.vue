@@ -3,8 +3,9 @@
     <Header :isLoggedIn="true"></Header>
     <div class="container">
       <h2>풀었던 문제 확인</h2>
+      <hr>
       <div class="date-picker">
-        <VueDatePicker v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList">
+        <VueDatePicker id="datePicker" v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList">
         </VueDatePicker>
       </div>
 
@@ -76,7 +77,7 @@ const goToQuizDetail = (quizId) => {
 }
 
 .date-picker {
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }
 
 .no-quiz-message {
@@ -90,18 +91,23 @@ const goToQuizDetail = (quizId) => {
 }
 
 .quiz-item {
-  background-color: #f5f5f5;
+  background-color: #F4F3F6;
   padding: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  border: 1px solid #ccc;
   border-radius: 4px;
   display: flex;
   font-size: 15px;
 }
 
 .content {
+  margin: 10px;
   width: 750px;
+}
+
+.correct, .incorrect{
+  width: 20px;
+  margin: 10px;
 }
 
 .correct {

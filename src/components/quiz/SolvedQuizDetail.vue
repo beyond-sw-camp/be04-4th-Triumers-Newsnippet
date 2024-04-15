@@ -3,6 +3,7 @@
     <Header :isLoggedIn="true"></Header>
     <div class="container">
       <h2>문제 상세</h2>
+      <hr>
       <div class="quiz-container" v-if="quiz">
         <div class="quiz-content">
           <p class="quiz-question">문제: {{ quiz.content }}</p>
@@ -35,11 +36,11 @@
         </div>
         <div class="explanation-container">
           <div class="news-link">
-            <h3>원본 링크</h3>
+            <h4>원본 링크</h4>
             <a :href="quiz.newsLink" target="_blank">{{ quiz.newsLink }}</a>
           </div>
           <div class="explanation">
-            <h3>해설</h3>
+            <h4>해설</h4>
             <p>{{ quiz.explanation }}</p>
           </div>
         </div>
@@ -94,8 +95,7 @@ const goBack = () => {
 <style scoped>
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 50px auto;
 }
 
 .quiz-container {

@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-left">
       <div class="logo">
-        <!-- <img src="@/components/images/newsnippet_logo.png" alt="Newsnippet Logo" /> -->
+        <img src="@/assets/images/newsnippetLogo.png" alt="Newsnippet Logo" @click="navigateTo('')"/>
       </div>
     </div>
     <nav class="header-nav">
@@ -87,7 +87,7 @@ const emit = defineEmits(['logout']);
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #ebe4b6;
+    background-color: #F4F3F6;
     color: #000;
     width: 100%;
   }
@@ -103,6 +103,10 @@ const emit = defineEmits(['logout']);
     font-weight: bold;
   }
   
+.logo > img{
+  width: 200px;
+}
+
   .header-nav {
     display: flex;
     align-items: center;
@@ -111,11 +115,11 @@ const emit = defineEmits(['logout']);
   .menu-items {
     display: flex;
     align-items: center;
-    margin-left: 20px; /* 메뉴 아이템을 왼쪽으로 이동 */
+    margin-right: 400px; /* 메뉴 아이템을 왼쪽으로 이동 */
   }
   
   .menu-item {
-    margin-right: 20px;
+    margin-right: 30px;
     position: relative;
     cursor: pointer;
     color: #000000;
@@ -159,12 +163,12 @@ const emit = defineEmits(['logout']);
   
   .btn-beige {
     margin: 5px;
-    background-color: #f5f5dc;
+    background-color: #EDE8E3;
     color: #333;
   }
   
   .btn-beige:hover {
-    background-color: #e9e9c9;
+    background-color: #cac5bf;
   }
   
   body, html {

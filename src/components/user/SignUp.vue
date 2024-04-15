@@ -10,12 +10,20 @@
         <input v-model="user.nickname" placeholder="닉네임" style="display: inline-block; width: 81%;"/>&nbsp
         <button v-if="statusNickname === 200" @click="checkNickname" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
         <button v-else @click="checkNickname" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
+        <div class="description">
+          2-10자, 알파벳, 숫자, 한글(특수문자 불가)
+        </div>
       </div>
       <div class="form-group">
-        <input v-model="user.email" placeholder="이메일" />
+        <input v-model="user.email" placeholder="이메일" style="display: inline-block; width: 81%;"/>&nbsp
+        <button v-if="statusEmail === 200" @click="checkEmail" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
+        <button v-else @click="checkEmail" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
       </div>
       <div class="form-group">
         <input v-model="user.password" type="password" placeholder="비밀번호" />
+        <div class="description">
+          8-12자, 숫자, 대문자, 소문자 각각 1개 이상 포함(이외 문자 불가)
+        </div>
       </div>
       <button @click="signup" class="signup-btn">회원가입</button>
     </div>
@@ -37,6 +45,7 @@ const user = {
 };
 
 const statusNickname = ref(0);
+const statusEmail = ref(0);
 
 function checkNickname() {
   // 닉네임 중복 확인 로직 처리
@@ -47,6 +56,19 @@ function checkNickname() {
   })
   .catch(error => {
     statusNickname.value = error.status;
+    alert(error.response.data.message);
+  });
+}
+
+function checkEmail() {
+  // 이메일 중복 확인 로직 처리
+  return axios.post(`http://localhost:7777/auth/exist/email`, user)
+  .then(response => {
+    statusEmail.value = response.status;
+    alert(response.data.message);
+  })
+  .catch(error => {
+    statusEmail.value = error.status;
     alert(error.response.data.message);
   });
 }
@@ -173,5 +195,11 @@ async function signup() {
     background-color: #f5f5dc;
     color: #FF0000;
     font-weight: bold;
+  }
+
+  .description {
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
   }
   </style>

@@ -10,23 +10,17 @@ import { RouterView } from 'vue-router';
 </script>
 <style scoped>
 @font-face {
-  font-family: 'RIDIBatang';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'MICEMyungjo';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEMyungjo.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'ONE-Mobile-Title';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 main {
-  font-family: 'MICEMyungjo', 'RIDIBatang', 'Noto Sans KR';
+  margin: 10px;
+  font-family:  'ONE-Mobile-Title', 'Noto Sans KR';
   background-size: 100vh;
-  background-color: #EDE8E3;
+  background-color: #FFFBF8;
   min-height: 100vh;
   height: auto;
 }

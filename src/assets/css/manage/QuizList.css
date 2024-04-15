@@ -39,7 +39,7 @@
 }
 
 .selected {
-    background-color: rgba(108, 93, 67, 0.5);
+    background-color: #393B63;
     color: white;
 }
 
@@ -68,7 +68,8 @@
 
 #dateInput {
     margin-left: 10px;
-    background-color: #D5C0AB;
+    background-color: #393B63;
+    color: white;
     padding: 5px;
     border-radius: 5px;
     font-size: 15px;

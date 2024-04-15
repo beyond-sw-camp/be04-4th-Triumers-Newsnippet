@@ -6,7 +6,7 @@
         <!-- 문제 및 선택지 표시 -->
         <div class="quiz-info">
           <span class="date">{{ currentQuiz.date }}</span>
-          <span class="category">카테고리: {{ currentQuiz.categoryName }}</span>
+          <span class="category"> {{ currentQuiz.categoryName }}</span>
           <span class="accuracy">정답률: {{ (currentQuiz.correctRate * 100).toFixed(2) }}%</span>
         </div>
         <h2 class="question">{{ currentQuiz.no }}. {{ currentQuiz.content }}</h2>
@@ -73,9 +73,15 @@
 
       <div v-if="currentStep === 3">
         <!-- 최종 결과 표시 -->
-        <h2>결과</h2>
-        <p>맞힌 문제 수: {{ correctCount }}</p>
-        <p>틀린 문제 수: {{ quizzes.length - correctCount }}</p>
+        <div class="result-step">
+          <h2 class="result-title">🎉결과🎉</h2>
+          <hr>
+          <div id="result-text">
+            <h4 class="totalCount"> {{correctCount}} / {{quizzes.length}} </h4>
+            <p class="correctCount">맞힌 문제 수: {{ correctCount }}</p>
+            <p class="incorrectCount">틀린 문제 수: {{ quizzes.length - correctCount }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -175,6 +181,8 @@ const nextStep = async () => {
   }
 };
 
+
+
 const nextQuestion = async () => {
   if (currentQuizIndex.value < quizzes.value.length - 1) {
     currentQuizIndex.value++;
@@ -204,127 +212,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.quiz-container {
-  max-width: 60%;
-  margin: 0 auto;
-  padding: 20px;
-  transition: max-width 0.5s ease;
-  /* 부드러운 너비 전환 애니메이션 추가 */
-}
+@import url('@/assets/css/quiz/TodayQuiz.css');
 
-/* 기본 스타일링은 유지하되 색상 조정 */
-.next-btn {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-  /* 텍스트 색상 변경 */
-}
-
-/* 마우스 호버 효과 추가 */
-.next-btn:hover {
-  background-color: #45a049;
-}
-
-/* 선택된 옵션에 대한 스타일링 추가 */
-.option.selected {
-  background-color: #e0e0e0;
-  /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
-  font-weight: bold;
-}
-
-.quiz-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-/* .question {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-} */
-
-/* 폰트 및 텍스트 스타일 개선 */
-.question {
-  font-size: 1.4rem;
-  /* 폰트 크기를 더 크게 조정 */
-  line-height: 1.5;
-  /* 줄간격을 조정하여 가독성 향상 */
-}
-
-
-.options {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.option {
-  background-color: #f5f5f5;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* .option.selected {
-  background-color: #ebe4b6;
-  font-weight: bold;
-} */
-
-.option.correct {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.option.incorrect {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.answer-label {
-  font-weight: bold;
-}
-
-.explanation {
-  margin-top: 20px;
-}
-
-.source-link {
-  display: block;
-  margin-top: 10px;
-}
-
-.next-btn {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: #ebe4b6;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.progress {
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.progress-text {
-  margin-right: 10px;
-}
-
-.progress-bar {
-  height: 20px;
-  background-color: #ebe4b6;
-  border-radius: 10px;
-  margin-right: 10px;
-  flex-grow: 1;
-}
 </style>

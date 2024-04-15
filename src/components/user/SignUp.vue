@@ -25,6 +25,11 @@
           8-12자, 숫자, 대문자, 소문자 각각 1개 이상 포함(이외 문자 불가)
         </div>
       </div>
+      <div class="form-group">
+        <input v-model="checkPassword" type="password" placeholder="비밀번호 확인" style="display: inline-block; width: 81%;"/>&nbsp
+        <span v-if="statusCheckPassword === 200" class="span beige-v-symbol" style="display: inline-block; width: 15%;">V</span>
+        <span v-else class="span beige-x-symbol" style="display: inline-block; width: 15%;">X</span>
+      </div>
       <button @click="signup" class="signup-btn">회원가입</button>
     </div>
   </div>
@@ -34,7 +39,7 @@
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 import Header from '@/views/Header.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const router = useRouter();
 const user = {
@@ -43,9 +48,11 @@ const user = {
     email: '',
     password: ''
 };
+const checkPassword = ref('');
 
 const statusNickname = ref(0);
 const statusEmail = ref(0);
+const statusCheckPassword = ref(0);
 
 function checkNickname() {
   // 닉네임 중복 확인 로직 처리
@@ -72,6 +79,16 @@ function checkEmail() {
     alert(error.response.data.message);
   });
 }
+
+// 비밀번호 확인 로직 처리
+watch(checkPassword, async(newVal, oldVal) => {
+  if(newVal === user.password) {
+    statusCheckPassword.value = 200;
+  }
+  else {
+    statusCheckPassword.value = 400;
+  }
+});
 
 async function signup() {
   // 회원가입 로직 처리
@@ -138,6 +155,13 @@ async function signup() {
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+
+  .span {
+    padding: 8px 16px;
+    border-radius: 4px;
     font-size: 14px;
     transition: background-color 0.3s ease;
   }

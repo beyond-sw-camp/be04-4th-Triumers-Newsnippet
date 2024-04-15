@@ -1,5 +1,6 @@
 package org.triumers.newsnippetback.common.config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -13,9 +14,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.triumers.newsnippetback.common.jwt.JWTFilter;
 import org.triumers.newsnippetback.common.jwt.JWTUtil;
 import org.triumers.newsnippetback.common.jwt.LoginFilter;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -54,6 +62,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        // CORS 설정
+        http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                List<String> allowStringList = Collections.singletonList("*");
+                List<String> exposedHeaders = List.of("Authorization");
+                CorsConfiguration configuration = new CorsConfiguration();
+
+                configuration.setAllowedOriginPatterns(allowStringList);
+                configuration.setAllowedMethods(allowStringList);
+                configuration.setAllowedHeaders(allowStringList);
+                configuration.setAllowCredentials(true);
+                configuration.setMaxAge(3600L);
+                configuration.setExposedHeaders(exposedHeaders);
+
+                return configuration;
+            }
+        }));
 
         // csrf disable
         http.csrf(AbstractHttpConfigurer::disable);

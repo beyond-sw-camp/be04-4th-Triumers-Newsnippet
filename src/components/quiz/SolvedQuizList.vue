@@ -3,8 +3,9 @@
     <Header :isLoggedIn="true"></Header>
     <div class="container">
       <h2>풀었던 문제 확인</h2>
+      <hr>
       <div class="date-picker">
-        <VueDatePicker v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList">
+        <VueDatePicker id="datePicker" v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList">
         </VueDatePicker>
       </div>
 
@@ -69,46 +70,5 @@ const goToQuizDetail = (quizId) => {
 </script>
 
 <style scoped>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.date-picker {
-  margin-bottom: 20px;
-}
-
-.no-quiz-message {
-  color: red;
-  margin-bottom: 10px;
-}
-
-.quiz-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.quiz-item {
-  background-color: #f5f5f5;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  display: flex;
-  font-size: 15px;
-}
-
-.content {
-  width: 750px;
-}
-
-.correct {
-  color: green;
-}
-
-.incorrect {
-  color: red;
-}
+@import url('@/assets/css/quiz/SolvedQuizList.css');
 </style>

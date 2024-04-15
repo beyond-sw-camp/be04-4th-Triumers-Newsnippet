@@ -3,6 +3,7 @@
     <Header :isLoggedIn="true"></Header>
     <div class="container">
       <h2>문제 상세</h2>
+      <hr>
       <div class="quiz-container" v-if="quiz">
         <div class="quiz-content">
           <p class="quiz-question">문제: {{ quiz.content }}</p>
@@ -35,11 +36,11 @@
         </div>
         <div class="explanation-container">
           <div class="news-link">
-            <h3>원본 링크</h3>
+            <h4>원본 링크</h4>
             <a :href="quiz.newsLink" target="_blank">{{ quiz.newsLink }}</a>
           </div>
           <div class="explanation">
-            <h3>해설</h3>
+            <h4>해설</h4>
             <p>{{ quiz.explanation }}</p>
           </div>
         </div>
@@ -92,80 +93,5 @@ const goBack = () => {
 </script>
 
 <style scoped>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.quiz-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.quiz-content {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.quiz-question {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.options {
-  list-style-type: none;
-  padding: 0;
-}
-
-.options li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.option-label {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #ccc;
-  color: #fff;
-  text-align: center;
-  margin-right: 10px;
-}
-
-.option-label.correct {
-  background-color: green;
-}
-
-.option-label.incorrect {
-  background-color: red;
-}
-
-.explanation-container {
-  flex: 1;
-}
-
-.explanation,
-.news-link {
-  margin-bottom: 20px;
-}
-
-.back-button {
-  background-color: #f0f0f0;
-  color: #333;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.back-button:hover {
-  background-color: #e0e0e0;
-}
+@import url('@/assets/css/quiz/SolvedQuizDetail.css');
 </style>

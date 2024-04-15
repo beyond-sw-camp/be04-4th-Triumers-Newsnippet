@@ -1,5 +1,5 @@
 <template>
-    <span id="nextDate"> 📰 {{ nextDate }} 출제 문제 </span>
+    <span id="nextDate"> 📰 {{ nextDate }}</span>
 
     <div v-if="selectedQuizList" class="crawlingQuiz-container">
         <template v-for="selectedQuiz in selectedQuizList" :key="selectedQuiz.id">
@@ -17,10 +17,10 @@
             <div class="collapse" :id="`crawling${selectedQuiz.id}`">
                 <div>
                     <p id="content">{{ selectedQuiz.content }}</p>
-                    <p> <span class="option">A</span> <span> {{selectedQuiz.optionA}} </span> </p>
-                    <p> <span class="option">B</span> <span> {{selectedQuiz.optionB}} </span> </p>
-                    <p> <span class="option">C</span> <span> {{selectedQuiz.optionC}} </span> </p>
-                    <p> <span class="option">D</span> <span> {{selectedQuiz.optionD}} </span> </p>
+                    <p> <span class="option" :class="{correct : selectedQuiz.answer == 'A'}">A</span> <span> {{selectedQuiz.optionA}} </span> </p>
+                    <p> <span class="option" :class="{correct : selectedQuiz.answer == 'B'}">B</span> <span> {{selectedQuiz.optionB}} </span> </p>
+                    <p> <span class="option" :class="{correct : selectedQuiz.answer == 'C'}">C</span> <span> {{selectedQuiz.optionC}} </span> </p>
+                    <p> <span class="option" :class="{correct : selectedQuiz.answer == 'D'}">D</span> <span> {{selectedQuiz.optionD}} </span> </p>
                 </div>
                 <hr>
                 <div>

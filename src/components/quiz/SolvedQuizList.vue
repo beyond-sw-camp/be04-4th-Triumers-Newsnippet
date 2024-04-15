@@ -70,51 +70,5 @@ const goToQuizDetail = (quizId) => {
 </script>
 
 <style scoped>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.date-picker {
-  margin: 20px 0px;
-}
-
-.no-quiz-message {
-  color: red;
-  margin-bottom: 10px;
-}
-
-.quiz-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.quiz-item {
-  background-color: #F4F3F6;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  border-radius: 4px;
-  display: flex;
-  font-size: 15px;
-}
-
-.content {
-  margin: 10px;
-  width: 750px;
-}
-
-.correct, .incorrect{
-  width: 20px;
-  margin: 10px;
-}
-
-.correct {
-  color: green;
-}
-
-.incorrect {
-  color: red;
-}
+@import url('@/assets/css/quiz/SolvedQuizList.css');
 </style>

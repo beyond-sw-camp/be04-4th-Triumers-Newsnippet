@@ -4,7 +4,7 @@
     <div class="my-page">
       <div class="profile-section">
         <div class="profile-picture">
-          <img :src="profilePicture" alt="Profile Picture" @click="showModal = true" />
+          <!-- <img :src="profilePicture" alt="Profile Picture" @click="showModal = true" /> -->
           <div class="user-info">
             <div class="info-item">
               <span class="label">이름</span>
@@ -46,6 +46,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Header from '@/views/Header.vue';
+import axios from 'axios';
 
 const router = useRouter();
 const userData = ref({});
@@ -53,10 +54,19 @@ const userData = ref({});
 // 사용자 정보를 가져오는 함수 (백엔드 API 호출)
 async function fetchUserData() {
   try {
-    const response = await fetch('/api/user');
-    userData.value = await response.json();
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = token;
+      const response = await axios.get('http://localhost:7777/user/my-page');
+      userData.value = response.data;
+    } else {
+      // 토큰이 없을 경우 로그아웃 처리
+      handleLogout();
+    }
   } catch (error) {
     console.error('Error fetching user data:', error);
+    // 에러 발생 시 로그아웃 처리
+    handleLogout();
   }
 }
 
@@ -75,7 +85,7 @@ function goToEditMyInfo() {
 
 const handleLogout = () => {
   localStorage.removeItem('token');
-  router.push('/');
+  router.push('/login');
 };
 
 onMounted(() => {

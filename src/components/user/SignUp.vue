@@ -4,16 +4,31 @@
     <div class="signup-form">
       <h2>Sign Up</h2>
       <div class="form-group">
-        <input v-model="name" placeholder="이름" />
+        <input v-model="user.name" placeholder="이름" />
       </div>
       <div class="form-group">
-        <input v-model="nickname" placeholder="닉네임" />
+        <input v-model="user.nickname" placeholder="닉네임" style="display: inline-block; width: 81%;"/>&nbsp
+        <button v-if="statusNickname === 200" @click="checkNickname" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
+        <button v-else @click="checkNickname" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
+        <div class="description">
+          2-10자, 알파벳, 숫자, 한글(특수문자 불가)
+        </div>
       </div>
       <div class="form-group">
-        <input v-model="email" placeholder="이메일" />
+        <input v-model="user.email" placeholder="이메일" style="display: inline-block; width: 81%;"/>&nbsp
+        <button v-if="statusEmail === 200" @click="checkEmail" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
+        <button v-else @click="checkEmail" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
       </div>
       <div class="form-group">
-        <input v-model="password" type="password" placeholder="비밀번호" />
+        <input v-model="user.password" type="password" placeholder="비밀번호" />
+        <div class="description">
+          8-12자, 숫자, 대문자, 소문자 각각 1개 이상 포함(이외 문자 불가)
+        </div>
+      </div>
+      <div class="form-group">
+        <input v-model="checkPassword" type="password" placeholder="비밀번호 확인" style="display: inline-block; width: 81%;"/>&nbsp
+        <span v-if="statusCheckPassword === 200" class="span beige-v-symbol" style="display: inline-block; width: 15%;">V</span>
+        <span v-else class="span beige-x-symbol" style="display: inline-block; width: 15%;">X</span>
       </div>
       <button @click="signup" class="signup-btn">회원가입</button>
     </div>
@@ -21,20 +36,70 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import axios from 'axios'
 import { useRouter } from 'vue-router';
 import Header from '@/views/Header.vue';
+import { ref, watch } from 'vue';
 
 const router = useRouter();
-const name = ref('');
-const nickname = ref('');
-const email = ref('');
-const password = ref('');
+const user = {
+    name: '',
+    nickname: '',
+    email: '',
+    password: ''
+};
+const checkPassword = ref('');
 
-const signup = () => {
+const statusNickname = ref(0);
+const statusEmail = ref(0);
+const statusCheckPassword = ref(0);
+
+function checkNickname() {
+  // 닉네임 중복 확인 로직 처리
+  return axios.post(`http://localhost:7777/auth/exist/nickname`, user)
+  .then(response => {
+    statusNickname.value = response.status;
+    alert(response.data.message);
+  })
+  .catch(error => {
+    statusNickname.value = error.status;
+    alert(error.response.data.message);
+  });
+}
+
+function checkEmail() {
+  // 이메일 중복 확인 로직 처리
+  return axios.post(`http://localhost:7777/auth/exist/email`, user)
+  .then(response => {
+    statusEmail.value = response.status;
+    alert(response.data.message);
+  })
+  .catch(error => {
+    statusEmail.value = error.status;
+    alert(error.response.data.message);
+  });
+}
+
+// 비밀번호 확인 로직 처리
+watch(checkPassword, async(newVal, oldVal) => {
+  if(newVal === user.password) {
+    statusCheckPassword.value = 200;
+  }
+  else {
+    statusCheckPassword.value = 400;
+  }
+});
+
+async function signup() {
   // 회원가입 로직 처리
-  alert('회원가입 되었습니다.');
-  router.push('/');
+  return axios.post(`http://localhost:7777/auth/signup`, user)
+  .then(response => {
+    alert(response.data.message);
+    router.push('/');
+  })
+  .catch(error => {
+    alert(error.response.data.message);
+  });
 };
 </script>
   
@@ -93,6 +158,13 @@ const signup = () => {
     font-size: 14px;
     transition: background-color 0.3s ease;
   }
+
+  .span {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
   
   .btn-beige {
     background-color: #f5f5dc;
@@ -107,7 +179,7 @@ const signup = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
+    width: 350px;
   }
   
   .form-group {
@@ -135,5 +207,23 @@ const signup = () => {
   
   .signup-btn:hover {
     background-color: #e9e9c9;
+  }
+
+  .beige-v-symbol {
+    background-color: #f5f5dc;
+    color: rgb(22, 1, 255);
+    font-weight: bold;
+  }
+
+  .beige-x-symbol {
+    background-color: #f5f5dc;
+    color: #FF0000;
+    font-weight: bold;
+  }
+
+  .description {
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
   }
   </style>

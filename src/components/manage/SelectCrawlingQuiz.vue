@@ -119,9 +119,9 @@ async function deleteQuiz(id) {
 }
 
 const categoryColors = [
-    "#F0E7F1", "#E8EBF1", "#F7E3E6", "#C0D2D6", "#F4DDD2",
-    "#F5D2DC", "#B9D3C4", "#DFD6E1", "#B2C4D7", "#F0D9B3",
-    "#CBB4C9", "#EABEA1", "#B9CEB5"
+    "#89A9D6", "#93AFD9", "#90ACD9", "#9FB0D4", "#A8B4CC",
+    "#A6A6C6", "#A2AACD", "#A3A5CB", "#9EA2D2", "#A5A8CB",
+    "#A3A0CD", "#A8B5CF", "#8EABD5", "#808080", "#C0C0C0"
 ];
 
 const getCategoryColor = (categoryId) => {

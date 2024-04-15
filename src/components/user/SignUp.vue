@@ -179,7 +179,7 @@ async function signup() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
+    width: 350px;
   }
   
   .form-group {

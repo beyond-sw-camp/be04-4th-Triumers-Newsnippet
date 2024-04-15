@@ -1,5 +1,5 @@
 <template>
-    <p id="nextDate"> {{ nextDate }} 출제 문제 </p>
+    <span id="nextDate"> 📰 {{ nextDate }} 출제 문제 </span>
 
     <div v-if="selectedQuizList" class="crawlingQuiz-container">
         <template v-for="selectedQuiz in selectedQuizList" :key="selectedQuiz.id">
@@ -7,7 +7,7 @@
             <div class="crawlingQuiz-item">
                 <div class="clickDiv" data-bs-toggle="collapse" :data-bs-target="`#crawling${selectedQuiz.id}`"
                     :aria-controls="`#crawling${selectedQuiz.id}`">
-                    <div id="news-category">
+                    <div id="news-category"  :style="{ backgroundColor: getCategoryColor(selectedQuiz.category.id) }">
                         {{ selectedQuiz.category.categoryName }}
                     </div>
                     <p id="questionSelected"> {{ selectedQuiz.content }} </p>
@@ -60,6 +60,16 @@ async function getSelectedQuizList() {
     const data = await response;
     selectedQuizList.value = data;
 }
+
+const categoryColors = [
+    "#F0E7F1", "#E8EBF1", "#F7E3E6", "#C0D2D6", "#F4DDD2",
+    "#F5D2DC", "#B9D3C4", "#DFD6E1", "#B2C4D7", "#F0D9B3",
+    "#CBB4C9", "#EABEA1", "#B9CEB5"
+];
+
+const getCategoryColor = (categoryId) => {
+    return categoryColors[categoryId] || '#D9D9D9';
+};
 </script>
 
 <style scoped>

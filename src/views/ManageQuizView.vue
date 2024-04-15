@@ -1,5 +1,5 @@
 <template>
-    <Header :isLoggedIn="isLoggedIn" @logout="handleLogout"></Header>
+    <Header :isLoggedIn="true"></Header>
 <div id="wrapper">
     <header id="manageQuizMenu">
         <RouterLink id="selectQuiz" to="/manage/selectQuiz" active-class="active" replace active>문제 출제</RouterLink>

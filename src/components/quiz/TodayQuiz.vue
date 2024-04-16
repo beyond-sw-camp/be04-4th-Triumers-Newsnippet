@@ -63,7 +63,9 @@
         </div>
         <p class="explanation">해설: {{ currentQuiz.explanation }}</p>
         <a :href="currentQuiz.newsLink" target="_blank" class="source-link">원문 링크</a>
-        <button @click="nextQuestion" class="next-btn">다음 문제</button>
+        <<button @click="nextQuestion" class="next-btn">
+          {{ currentQuizIndex === quizzes.length - 1 ? '결과 확인' : '다음 문제' }}
+        </button>
         <div class="progress">
           <span class="progress-text">진행률:</span>
           <span class="progress-bar" :style="{ width: `${(currentQuizIndex + 1) / quizzes.length * 100}%` }"></span>

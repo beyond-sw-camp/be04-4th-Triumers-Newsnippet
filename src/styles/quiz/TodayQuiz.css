@@ -158,4 +158,18 @@
     font-size: 15px;
     color: #727896;
   }
-  
+
+
+
+/* 다크 모드 스타일 */
+.dark-mode .progress {
+  background-color: #444444;
+}
+
+.dark-mode .progress-text {
+  color: #ffffff;
+}
+
+.dark-mode .progress-bar {
+  background-color: #007bff;
+}

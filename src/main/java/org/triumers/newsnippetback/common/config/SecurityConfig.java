@@ -69,7 +69,7 @@ public class SecurityConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
                 List<String> allowStringList = Collections.singletonList("*");
-                List<String> exposedHeaders = List.of("Authorization");
+                List<String> exposedHeaders = List.of("Authorization", "UserRole");
                 CorsConfiguration configuration = new CorsConfiguration();
 
                 configuration.setAllowedOriginPatterns(allowStringList);

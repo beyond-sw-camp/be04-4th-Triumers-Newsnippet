@@ -23,10 +23,14 @@
             <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
                 <div>
                     <p id="content">{{ crawlingQuiz.content }}</p>
-                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'A'}">A</span> <span class="optionContent"> {{ crawlingQuiz.optionA }} </span></p>
-                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'B'}">B</span> <span class="optionContent"> {{ crawlingQuiz.optionB }} </span></p>
-                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'C'}">C</span> <span class="optionContent"> {{ crawlingQuiz.optionC }} </span></p>
-                    <p> <span class="option" :class="{correct : crawlingQuiz.answer == 'D'}">D</span> <span class="optionContent"> {{ crawlingQuiz.optionD }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'A' }">A</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionA }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'B' }">B</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionB }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'C' }">C</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionC }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'D' }">D</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionD }} </span></p>
                 </div>
                 <hr>
                 <div>
@@ -49,11 +53,11 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import axios from 'axios';
 
 const date = ref('');
 const crawlingQuizList = ref(null);
 const isLoading = ref(false);
-const tmp = ref(0);
 
 onMounted(async () => {
 
@@ -72,17 +76,14 @@ onMounted(async () => {
 async function getCrawlingQuizListByDate() {
     isLoading.value = true;
     try {
-        const response = fetch('http://localhost:7777/manage/findCrawlingQuiz', {
-            method: "POST", headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                date: date.value
-            })
-        }).then(response => response.json());
-
-        const data = await response;
-        crawlingQuizList.value = data;
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            const response = await axios.post('http://localhost:7777/manage/findCrawlingQuiz', { date: date.value });
+            crawlingQuizList.value = response.data;
+        } else {
+            alert("잘못된 접근입니다.");
+        }
     } catch (error) {
         crawlingQuizList.value = null;
     } finally {
@@ -103,15 +104,31 @@ async function changeSelect(id, index) {
 }
 
 async function addQuiz(id) {
-    const response = fetch(`http://localhost:7777/manage/addQuiz/${id}`).then(response => response.json());
-    const data = await response;
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            const response = await axios.get(`http://localhost:7777/manage/addQuiz/${id}`);
+        } else {
+            alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert("문제 출제에 실패했습니다.");
+    }
 }
 
 async function deleteQuiz(id) {
-    const response = fetch(`http://localhost:7777/manage/deleteQuiz/${id}`, {
-        method: "DELETE"
-    }).then(response => response.json());
-    const data = await response;
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            const response = await axios.delete(`http://localhost:7777/manage/deleteQuiz/${id}`);
+        } else {
+            alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert("문제 삭제에 실패했습니다.");
+    }
 }
 
 const categoryColors = [

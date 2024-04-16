@@ -6,13 +6,13 @@
       <div class="form-group">
         <label for="oldPassword">이전 비밀번호</label>
         <div class="input-wrapper">
-          <input type="password" id="oldPassword" v-model="oldPassword"style="display: inline-block; width: 81%;"/>
+          <input type="password" id="oldPassword" v-model="oldPassword"style="display: inline-block; width: 81%;" class="form-password"/>
         </div>
       </div>
       <div class="form-group">
         <label for="newPassword">새 비밀번호</label>
         <div class="input-wrapper">
-          <input type="password" id="newPassword" v-model="newPassword" style="display: inline-block; width: 81%;"/>
+          <input type="password" id="newPassword" v-model="newPassword" style="display: inline-block; width: 81%;" class="form-password"/>
           <span v-if="isPasswordValid" class="valid-icon">✓</span>
           <span v-else class="invalid-icon">X</span>
         </div>
@@ -24,7 +24,7 @@
       <div class="form-group">
         <label for="password">새 비밀번호 확인</label>
         <div class="input-wrapper">
-          <input type="password" id="checkNewPassword" v-model="checkNewPassword" style="display: inline-block; width: 81%;"/>
+          <input type="password" id="checkNewPassword" v-model="checkNewPassword" style="display: inline-block; width: 81%;" class="form-password"/>
           <span v-if="isPasswordMached" class="valid-icon">✓</span>
           <span v-else class="invalid-icon">X</span>
         </div>
@@ -191,4 +191,25 @@ button:disabled {
   font-size: 12px;
   margin-top: 5px;
 }
+
+.form-group input::placeholder {
+    color: #666; /* placeholder 색상 설정 */
+    font-family: 'ONE-Mobile-Title', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .form-password input::placeholder {
+    color: #666;
+    font-family: 'ONE-Mobile-Title', sans-serif;
+  }
+
+  .form-password {
+    width: 100%;
+    margin-bottom: 1px;
+    font-family: "Roboto", sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    font-weight: 1000;
+    font-style: normal;
+  }
 </style>

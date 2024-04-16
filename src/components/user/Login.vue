@@ -7,7 +7,7 @@
         <input type="email" v-model="user.email" placeholder="이메일" />
       </div>
       <div class="form-group">
-        <input type="password" v-model="user.password" placeholder="비밀번호" />
+        <input type="password" v-model="user.password" placeholder="비밀번호" class="form-password"/>
       </div>
       <button @click="login" class="login-btn">로그인</button>
     </div>
@@ -99,5 +99,26 @@ async function login() {
   
   .login-btn:hover {
     background-color: #e9e9c9;
+  }
+
+  .form-group input::placeholder {
+    color: #666; /* placeholder 색상 설정 */
+    font-family: 'ONE-Mobile-Title', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .form-password input::placeholder {
+    color: #666;
+    font-family: 'ONE-Mobile-Title', sans-serif;
+  }
+
+  .form-password {
+    width: 100%;
+    margin-bottom: 1px;
+    font-family: "Roboto", sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    font-weight: 1000;
+    font-style: normal;
   }
   </style>

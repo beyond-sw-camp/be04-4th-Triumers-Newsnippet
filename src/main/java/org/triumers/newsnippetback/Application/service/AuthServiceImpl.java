@@ -113,6 +113,11 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 
+    @Override
+    public int getUserId() {
+        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId();
+    }
+
     private User userMapper(AuthDTO request) {
         User user = new User();
 

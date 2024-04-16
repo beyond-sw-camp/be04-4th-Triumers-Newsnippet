@@ -41,7 +41,7 @@ public class SolvedServiceImpl implements SolvedService{
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        int userId = solvedRequest.getUserId();
+        int userId = authService.getUserId();
         int quizId = solvedRequest.getQuizId();
         String seletedOption = solvedRequest.getSelectedOption();
 
@@ -87,7 +87,7 @@ public class SolvedServiceImpl implements SolvedService{
     /* 설명. 사용자의 ID와 문제 ID로 문제 내용 불러오기 */
     @Override
     public SolvedDTO findSolvedQuizByUserIdAndQuizId(SolvedRequest solvedRequest) {
-        int userId = solvedRequest.getUserId();
+        int userId = authService.getUserId();
         int quizId = solvedRequest.getQuizId();
 
         Solved solvedQuiz = solvedRepository.findSelectedOptionByUserIdAndQuizId(userId, quizId);
@@ -118,7 +118,7 @@ public class SolvedServiceImpl implements SolvedService{
 
     @Override
     public List<Solved> findCorrectQuizByUserIdAndSolvedDate(SolvedResultRequest solvedResultRequest) {
-        int userId = solvedResultRequest.getUserId();
+        int userId = authService.getUserId();
         boolean isCorrect = solvedResultRequest.isCorrect();
         LocalDate solvedDate = solvedResultRequest.getSolvedDate();
 
@@ -129,8 +129,7 @@ public class SolvedServiceImpl implements SolvedService{
 
     @Override
     public List<SolvedDTO> findSolvedQuizListByUserIdAndDate(SolvedRequest solvedRequest) {
-        System.out.println(solvedRequest);
-        int userId = solvedRequest.getUserId();
+        int userId = authService.getUserId();
         LocalDate solvedDate = solvedRequest.getSolvedDate();
 
         List<Solved> solvedList = solvedRepository.findSolvedQuizByUserIdAndSolvedDate(userId, solvedDate);
@@ -161,6 +160,4 @@ public class SolvedServiceImpl implements SolvedService{
 
         return solvedDTOList;
     }
-
-
 }

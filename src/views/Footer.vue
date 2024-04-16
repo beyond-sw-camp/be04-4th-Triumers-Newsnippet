@@ -8,10 +8,10 @@
         </div>
         <div class="footer-content">
         <div class="footer-links">
-          <router-link to="/" class="footer-link">메인화면</router-link>
+          <router-link to="/" class="footer-link">메인 화면</router-link>
           <router-link to="/policy-service" class="footer-link">이용약관</router-link>
           <router-link to="/policy-about" class="footer-link">서비스 소개</router-link>
-          <router-link to="/policy-privacy" class="footer-link">개인정보처리방침</router-link>
+          <router-link to="/policy-privacy" class="footer-link">개인정보 처리방침</router-link>
         </div>
       </div>
     </footer>
@@ -19,6 +19,8 @@
   
   <style scoped>
   .footer{
+
+    font-family: 'ONE-Mobile-Title';
     align-self: stretch;
     margin-top: 300px;
     width: auto;
@@ -35,6 +37,13 @@
     flex-wrap: wrap; 
 
   }
+
+  @font-face {
+  font-family: 'ONE-Mobile-Title';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
   
   .footer-contact,
   .footer-links {

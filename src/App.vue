@@ -5,34 +5,25 @@
         {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
       </button>
     </div>
-    <ElementLoading :active="isLoading" spinner="spinner" color="#007bff" is-full-screen />
-    <RouterView />
-    <Footer></Footer>
+    <div class="content-wrapper">
+      <RouterView />
+    </div>
+    <Footer />
   </div>
 </template>
 
 <script setup>
 import { RouterView } from 'vue-router';
-import { computed, ref, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import Footer from '@/views/Footer.vue';
 
 const store = useStore();
 const isDarkMode = computed(() => store.state.isDarkMode);
-const isLoading = ref(false);
-
 
 function toggleDarkMode() {
   store.commit('toggleDarkMode');
 }
-
-onMounted(() => {
-  isLoading.value = true; // 앱 마운트 시점에서 로딩 상태 시작
-  setTimeout(() => {
-    isLoading.value = false; // 3초 후에 로딩 상태 종료
-  }, 3000);
-});
-
 </script>
 
 <style scoped>
@@ -48,6 +39,11 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   font-family: 'ONE-Mobile-Title', 'Noto Sans KR';
+}
+
+.content-wrapper {
+  flex-grow: 1;
+  overflow: auto;
 }
 
 .toggle-button-container {

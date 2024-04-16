@@ -106,22 +106,19 @@
     cursor: pointer;
   }
   
-  .progress {
+  /* .progress {
     display: flex;
     align-items: center;
     margin-top: 20px;
-  }
+  } */
   
   .progress-text {
     margin-right: 10px;
   }
   
   .progress-bar {
-    height: 20px;
     background-color: #727896;
     border-radius: 10px;
-    margin-right: 10px;
-    flex-grow: 1;
   }
   
   .category {

@@ -12,5 +12,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  devServer: {
+    port: 30001 // 변경하고자 하는 포트 번호로 설정
   }
 })

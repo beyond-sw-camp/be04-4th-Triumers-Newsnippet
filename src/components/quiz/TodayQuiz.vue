@@ -27,8 +27,8 @@
         <button @click="nextStep" :disabled="!selectedOption" class="next-btn">다음</button>
         <div class="progress">
           <span class="progress-text">진행률:</span>
-          <span class="progress-bar" :style="{ width: `${currentQuizIndex + 1 / quizzes.length * 100}%` }"></span>
-          {{ currentQuizIndex + 1 }}/{{ quizzes.length }}
+          <span class="progress-bar" :style="{ width: `${(currentQuizIndex + 1) / quizzes.length * 100}%` }"></span>
+          <span>{{ currentQuizIndex + 1 }}/{{ quizzes.length }}</span>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
         <div class="progress">
           <span class="progress-text">진행률:</span>
           <span class="progress-bar" :style="{ width: `${(currentQuizIndex + 1) / quizzes.length * 100}%` }"></span>
-          {{ currentQuizIndex + 1 }}/{{ quizzes.length }}
+          <span>{{ currentQuizIndex + 1 }}/{{ quizzes.length }}</span>
         </div>
       </div>
 
@@ -122,19 +122,19 @@ const fetchQuizzes = async () => {
   }
 };
 
-const setCurrentQuiz = () =>{
-    currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
-    currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
-    currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
-    currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
-    currentQuiz.content = quizzes.value[currentQuizIndex.value].content;
-    currentQuiz.optionA = quizzes.value[currentQuizIndex.value].optionA;
-    currentQuiz.optionB = quizzes.value[currentQuizIndex.value].optionB;
-    currentQuiz.optionC = quizzes.value[currentQuizIndex.value].optionC;
-    currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
-    currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
-    currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
-    currentQuiz.correctRate = quizzes.value[currentQuizIndex.value].correctRate;
+const setCurrentQuiz = () => {
+  currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
+  currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
+  currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
+  currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
+  currentQuiz.content = quizzes.value[currentQuizIndex.value].content;
+  currentQuiz.optionA = quizzes.value[currentQuizIndex.value].optionA;
+  currentQuiz.optionB = quizzes.value[currentQuizIndex.value].optionB;
+  currentQuiz.optionC = quizzes.value[currentQuizIndex.value].optionC;
+  currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
+  currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
+  currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
+  currentQuiz.correctRate = quizzes.value[currentQuizIndex.value].correctRate;
 }
 
 const checkAnswerCorrectness = async () => {

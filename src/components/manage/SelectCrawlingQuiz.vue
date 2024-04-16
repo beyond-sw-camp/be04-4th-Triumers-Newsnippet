@@ -2,7 +2,7 @@
     <input id="dateInput" type="date" v-model="date" @update:model-value="getCrawlingQuizListByDate" />
 
     <div v-if="crawlingQuizList && !isLoading" class="crawlingQuiz-container">
-        <template v-for="(crawlingQuiz, index) in crawlingQuizList" :key="crawlingQuiz.id">
+        <template v-for="(crawlingQuiz, index) in pageQuizList" :key="crawlingQuiz.id">
 
             <div class="crawlingQuiz-item">
                 <div class="clickDiv" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`"
@@ -42,12 +42,21 @@
 
             </div>
         </template>
+        <ul class="pagination justify-content-center">
+            <template v-for="num in totalPage">
+            <li class="page-item" @click="changePage(num)">
+                <a class="page-link">{{ num }}</a>
+            </li>
+            </template>
+        </ul>
     </div>
     <div v-else class="crawlingQuiz-container">
         <div id="noData-div">
             <p id="noData">문제 데이터가 없습니다.</p>
         </div>
     </div>
+
+
 </template>
 
 
@@ -57,7 +66,10 @@ import axios from 'axios';
 
 const date = ref('');
 const crawlingQuizList = ref(null);
+const pageQuizList = ref([]);
 const isLoading = ref(false);
+const totalPage = ref(1);
+const pageLength = 5;
 
 onMounted(async () => {
 
@@ -81,6 +93,9 @@ async function getCrawlingQuizListByDate() {
             axios.defaults.headers.common['Authorization'] = token;
             const response = await axios.post('http://localhost:7777/manage/findCrawlingQuiz', { date: date.value });
             crawlingQuizList.value = response.data;
+
+            totalPage.value = Math.ceil(crawlingQuizList.value.length / pageLength);
+            await changePage(1);
         } else {
             alert("잘못된 접근입니다.");
         }
@@ -89,18 +104,23 @@ async function getCrawlingQuizListByDate() {
     } finally {
         isLoading.value = false;
     }
+    
+}
+
+async function changePage(page) {
+    pageQuizList.value = crawlingQuizList.value.slice((page-1)*pageLength, page*pageLength);
 }
 
 async function changeSelect(id, index) {
 
-    const isSelected = !crawlingQuizList.value[index].selected;
+    const isSelected = !pageQuizList.value[index].selected;
 
     if (isSelected)
         addQuiz(id)
     else
         deleteQuiz(id);
 
-    crawlingQuizList.value[index].selected = isSelected;
+        pageQuizList.value[index].selected = isSelected;
 }
 
 async function addQuiz(id) {

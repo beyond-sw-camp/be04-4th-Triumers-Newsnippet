@@ -103,4 +103,11 @@
 .correct {
     background-color: green;
   }
-  
+
+.pagination *{
+    color: #727896;
+}
+
+.pagination *:hover{
+    color: #393B63;
+}

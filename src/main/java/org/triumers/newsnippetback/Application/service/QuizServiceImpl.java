@@ -32,7 +32,7 @@ public class QuizServiceImpl implements QuizService {
         if (solvedCnt == 0) {
             return 0.0;
         }
-        return (double) correctCnt / solvedCnt * 100;
+        return (double) correctCnt / solvedCnt;
     }
 
 

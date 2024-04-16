@@ -7,6 +7,7 @@
     </div>
     <ElementLoading :active="isLoading" spinner="spinner" color="#007bff" is-full-screen />
     <RouterView />
+    <Footer></Footer>
   </div>
 </template>
 
@@ -14,6 +15,7 @@
 import { RouterView } from 'vue-router';
 import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import Footer from '@/views/Footer.vue';
 
 const store = useStore();
 const isDarkMode = computed(() => store.state.isDarkMode);

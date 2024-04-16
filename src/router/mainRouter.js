@@ -14,6 +14,10 @@ import League from '@/components/quiz/League.vue';
 import TodayQuiz from '@/components/quiz/TodayQuiz.vue';
 import SolvedQuizList from '@/components/quiz/SolvedQuizList.vue';
 import SolvedQuizDetail from '@/components/quiz/SolvedQuizDetail.vue';
+import PolicyService from '@/components/policy/service.vue';
+import PolicyPrivacy from '@/components/policy/privacy.vue';
+import PolicyAbout from '@/components/policy/about.vue';
+
 
 
 const router = createRouter({
@@ -72,6 +76,18 @@ const router = createRouter({
                     component: SelectedQuiz
                 }
             ]
+        },
+        {
+            path: '/policy-service',
+            component: PolicyService
+        },
+        {
+            path: '/policy-privacy',
+            component: PolicyPrivacy,
+        },
+        {
+            path: '/policy-about',
+            component: PolicyAbout,
         }
     ]
 });

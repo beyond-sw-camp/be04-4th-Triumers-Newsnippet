@@ -14,11 +14,13 @@
             <div @click="handleNavigation('solved-quiz-list')">풀었던 문제 확인</div>
           </div>
         </div>
-        <div class="menu-item" @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')">
+        <div class="menu-item" @click="alertService">
           리그
-          <div v-show="submenu === 'league'" class="submenu">
+          <!-- 
+            @mouseover="showSubmenu('league')" @mouseout="hideSubmenu('league')"
+            <div v-show="submenu === 'league'" class="submenu">
             <div @click="handleNavigation('league')">전체 리그</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </nav>
@@ -61,6 +63,10 @@ const hideSubmenu = (menu) => {
 const navigateTo = (path) => {
   router.push(`/${path}`);
 };
+
+const alertService = ()=> {
+  alert('준비 중인 서비스입니다.');
+}
 
 const handleNavigation = (path) => {
   if (props.isLoggedIn) {

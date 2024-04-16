@@ -37,6 +37,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import axios from 'axios';
 
 const nextDate = ref('');
 const selectedQuizList = ref(null)
@@ -56,9 +57,18 @@ onMounted(async () => {
 });
 
 async function getSelectedQuizList() {
-    const response = fetch('http://localhost:7777/manage/findSelectedQuiz').then(response => response.json());
-    const data = await response;
-    selectedQuizList.value = data;
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            const response = await axios.get('http://localhost:7777/manage/findSelectedQuiz');
+            selectedQuizList.value = response.data;
+        } else {
+            alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert("문제 불러오기에 실패했습니다.");
+    }
 }
 
 const categoryColors = [
@@ -73,5 +83,5 @@ const getCategoryColor = (categoryId) => {
 </script>
 
 <style scoped>
-@import url('@/assets/css/manage/QuizList.css');
+@import url('@/styles/manage/QuizList.css');
 </style>

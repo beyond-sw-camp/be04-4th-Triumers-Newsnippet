@@ -19,5 +19,5 @@ import Header from '@/views/Header.vue';
 </script>
 
 <style scoped>
-@import url('@/assets/css/manage/ManageQuiz.css');
+@import url('@/styles/manage/ManageQuiz.css');
 </style>

@@ -187,4 +187,26 @@ onMounted(() => {
   border-radius: 20px;
   background-color: #F4F3F6;
 }
+
+
+/* 다크 모드 스타일 */
+.dark-mode .my-content {
+  background-color: #2b2b3f;
+}
+
+.dark-mode .label {
+  color: #b3b3cc;
+}
+
+.dark-mode .value-box {
+  color: #d9d9e6;
+}
+
+.dark-mode .edit-btn {
+  background-color: #393b63;
+}
+
+.dark-mode .edit-btn:hover {
+  background-color: #4c4d7a;
+}
 </style>

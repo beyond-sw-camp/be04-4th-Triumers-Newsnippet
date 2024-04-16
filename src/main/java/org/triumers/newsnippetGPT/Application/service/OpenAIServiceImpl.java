@@ -149,11 +149,13 @@ public class OpenAIServiceImpl implements OpenAIService {
                 response.put("optionA", response.get("optionC"));
                 response.put("optionC", temp);
                 response.put("answer", "C");
+                break;
             case 4:
                 temp = response.get("optionA");
                 response.put("optionA", response.get("optionD"));
                 response.put("optionD", temp);
                 response.put("answer", "D");
+                break;
         }
 
         return response;

@@ -108,6 +108,9 @@
     background-color: green;
   }
 
+.pagination{
+    margin: 20px;
+}
 .pagination *{
     color: #727896;
 }

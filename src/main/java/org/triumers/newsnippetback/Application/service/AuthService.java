@@ -21,4 +21,6 @@ public interface AuthService {
     void modifyPassword(PasswordDTO passwordDTO) throws WrongPasswordException, WrongInputTypeException;
 
     void updateSolvedQuiz(boolean isCorrect);
+
+    public int getUserId();
 }

@@ -1,27 +1,35 @@
 <template>
   <div>
     <Header :isLoggedIn="true"></Header>
-    <div class="edit-my-info">
+    <div class="edit-my-password">
+      <h2>비밀번호 변경</h2>
       <div class="form-group">
-        <label for="name">이름</label>
+        <label for="oldPassword">이전 비밀번호</label>
         <div class="input-wrapper">
-          <input type="text" id="name" v-model="name"/>
+          <input type="password" id="oldPassword" v-model="oldPassword"style="display: inline-block; width: 81%;"/>
         </div>
       </div>
       <div class="form-group">
-        <label for="nickname">닉네임</label>
+        <label for="newPassword">새 비밀번호</label>
         <div class="input-wrapper">
-          <input type="text" id="nickname" v-model="nickname">
-          <span v-if="isNicknameValid" class="valid-icon">✓</span>
+          <input type="password" id="newPassword" v-model="newPassword" style="display: inline-block; width: 81%;"/>
+          <span v-if="isPasswordValid" class="valid-icon">✓</span>
           <span v-else class="invalid-icon">X</span>
         </div>
         <div class="description">
-          2-10자, 알파벳, 숫자, 한글(특수문자 불가)
+          8-12자, 숫자, 대문자, 소문자 각각 1개 이상 포함(이외 문자 불가)
+          </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">새 비밀번호 확인</label>
+        <div class="input-wrapper">
+          <input type="password" id="checkNewPassword" v-model="checkNewPassword" style="display: inline-block; width: 81%;"/>
+          <span v-if="isPasswordMached" class="valid-icon">✓</span>
+          <span v-else class="invalid-icon">X</span>
         </div>
       </div>
-      <button @click="goToEditPassword" :disabled="!isFormValid">비밀번호 변경</button>
-      &nbsp&nbsp&nbsp
-      <button @click="updateUserInfo" :disabled="!isFormValid">변경</button>
+      <button @click="updatePassword" :disabled="!isFormValid">변경</button>
     </div>
   </div>
 </template>
@@ -33,18 +41,17 @@ import Header from '@/views/Header.vue';
 import axios from 'axios';
 
 const router = useRouter();
-const name = ref('');
-const nickname = ref('');
-const userData = ref({});
+const oldPassword = ref('');
+const newPassword = ref('');
+const checkNewPassword = ref('');
 
-// 사용자 정보를 가져오는 함수 (백엔드 API 호출)
+// 로그인 검증
 async function fetchUserData() {
   try {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      const response = await axios.get('http://localhost:7777/user/my-page');
-      userData.value = response.data;
+      await axios.get('http://localhost:7777/user/my-page');
     } else {
       // 토큰이 없을 경우 로그아웃 처리
       handleLogout();
@@ -61,23 +68,27 @@ const handleLogout = () => {
   router.push('/login');
 };
 
-const isNicknameValid = computed(() => {
-  return nickname.value !== userData.value.nickname && checkNicknameValidity(nickname.value);
+const isPasswordValid = computed(() => {
+  return checkPasswordValidity(newPassword.value);
+});
+
+const isPasswordMached = computed(() => {
+  return machedPassword(newPassword.value, checkNewPassword.value);
 });
 
 const isFormValid = computed(() => {
-  return isNicknameValid.value;
+  return isPasswordValid.value && isPasswordMached.value;
 });
 
-async function updateUserInfo() {
+async function updatePassword() {
   if (isFormValid.value) {
     try {
       const requestData = {
-        name: name.value === '' ? null : name.value,
-        nickname: nickname.value === '' ? null : nickname.value
+        oldPassword: oldPassword.value,
+        newPassword: newPassword.value
       };
       
-      const response = await fetch('http://localhost:7777/auth/modify/info', {
+      const response = await fetch('http://localhost:7777/auth/modify/password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,16 +110,14 @@ async function updateUserInfo() {
   }
 }
 
-// 비밀번호 수정 페이지로 이동
-function goToEditPassword() {
-  router.push('/edit-my-password');
+// 비밀번호 유효성 검사 함수
+function checkPasswordValidity(password) {
+  const pattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,12}$/;
+  return pattern.test(password) && password !== '';
 }
 
-// 닉네임 유효성 검사 함수
-function checkNicknameValidity(nickname) {
-  const pattern = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/;
-
-  return pattern.test(nickname) || nickname === '';
+function machedPassword(password, check) {
+  return password === check && checkPasswordValidity(check);
 }
 
 onMounted(() => {
@@ -117,7 +126,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.edit-my-info {
+.edit-my-password {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
@@ -137,7 +146,8 @@ label {
   align-items: center;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -147,6 +157,8 @@ input[type="text"] {
 .valid-icon,
 .invalid-icon {
   margin-left: 5px;
+  width: 15%;
+  display: inline-block;
 }
 
 .valid-icon {
@@ -174,7 +186,6 @@ button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
-
 .description {
   color: #666;
   font-size: 12px;

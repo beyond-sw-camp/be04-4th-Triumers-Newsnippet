@@ -9,6 +9,7 @@ import SignUp from '@/components/user/SignUp.vue';
 import Login from '@/components/user/Login.vue';
 import MyPage from '@/components/user/MyPage.vue';
 import EditMyInfo from '@/components/user/EditMyInfo.vue';
+import EditPassword from '@/components/user/EditPassword.vue';
 import League from '@/components/quiz/League.vue';
 import TodayQuiz from '@/components/quiz/TodayQuiz.vue';
 import SolvedQuizList from '@/components/quiz/SolvedQuizList.vue';
@@ -37,6 +38,10 @@ const router = createRouter({
         {
             path: '/edit-my-info',
             component: EditMyInfo,
+        },
+        {
+            path: '/edit-my-password',
+            component: EditPassword,
         },
         {
             path: '/today-quiz',

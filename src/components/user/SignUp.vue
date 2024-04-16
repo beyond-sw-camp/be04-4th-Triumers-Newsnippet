@@ -8,7 +8,7 @@
       </div>
       <div class="form-group">
         <input v-model="user.nickname" placeholder="닉네임" style="display: inline-block; width: 81%;"/>&nbsp
-        <button v-if="statusNickname === 200" @click="checkNickname" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
+        <button v-if="statusNickname === 200" @click="checkNickname" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">✓</button>
         <button v-else @click="checkNickname" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
         <div class="description">
           2-10자, 알파벳, 숫자, 한글(특수문자 불가)
@@ -16,7 +16,7 @@
       </div>
       <div class="form-group">
         <input v-model="user.email" placeholder="이메일" style="display: inline-block; width: 81%;"/>&nbsp
-        <button v-if="statusEmail === 200" @click="checkEmail" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">V</button>
+        <button v-if="statusEmail === 200" @click="checkEmail" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">✓</button>
         <button v-else @click="checkEmail" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
       </div>
       <div class="form-group">
@@ -27,7 +27,7 @@
       </div>
       <div class="form-group">
         <input v-model="checkPassword" type="password" placeholder="비밀번호 확인" style="display: inline-block; width: 81%;"/>&nbsp
-        <span v-if="statusCheckPassword === 200" class="span beige-v-symbol" style="display: inline-block; width: 15%;">V</span>
+        <span v-if="statusCheckPassword === 200" class="span beige-v-symbol" style="display: inline-block; width: 15%;">✓</span>
         <span v-else class="span beige-x-symbol" style="display: inline-block; width: 15%;">X</span>
       </div>
       <button @click="signup" class="signup-btn">회원가입</button>

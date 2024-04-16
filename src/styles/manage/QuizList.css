@@ -32,6 +32,10 @@
     justify-content: flex-end;
 }
 
+#selectBtn:hover {
+    background-color: #727896;
+}
+
 #selectBtn>p {
     margin: auto 5px;
     padding: 10px 5px;

@@ -1,8 +1,8 @@
 <template>
+  <Header :isLoggedIn="false"></Header>
   <div class="signup-container">
-    <Header :isLoggedIn="false"></Header>
     <div class="signup-form">
-      <h2>Sign Up</h2>
+      <h2 id="signUp-title">Sign Up</h2>
       <div class="form-group">
         <input v-model="user.name" placeholder="이름" />
       </div>
@@ -27,8 +27,8 @@
       </div>
       <div class="form-group">
         <input v-model="checkPassword" type="password" placeholder="비밀번호 확인" style="display: inline-block; width: 81%;" class="form-password"/>&nbsp
-        <span v-if="statusCheckPassword === 200" class="span beige-v-symbol" style="display: inline-block; width: 15%;">✓</span>
-        <span v-else class="span beige-x-symbol" style="display: inline-block; width: 15%;">X</span>
+        <span v-if="statusCheckPassword === 200" class="btn beige-v-symbol" style="display: inline-block; width: 15%;">✓</span>
+        <span v-else class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</span>
       </div>
       <button @click="signup" class="signup-btn">회원가입</button>
     </div>
@@ -108,6 +108,7 @@ async function signup() {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
     padding: 20px;
   }
   
@@ -167,12 +168,12 @@ async function signup() {
   }
   
   .btn-beige {
-    background-color: #f5f5dc;
-    color: #333;
+    background-color: #393B63 ;
+    color: #FFFFFF;
   }
   
   .btn-beige:hover {
-    background-color: #e9e9c9;
+    background-color: #727896;
   }
   
   .signup-form {
@@ -218,8 +219,8 @@ async function signup() {
   .signup-btn {
     width: 100%;
     padding: 10px;
-    background-color: #f5f5dc;
-    color: #333;
+    background-color: #393B63;
+    color: #ffffff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -227,18 +228,18 @@ async function signup() {
   }
   
   .signup-btn:hover {
-    background-color: #e9e9c9;
+    background-color: #727896;
   }
 
   .beige-v-symbol {
-    background-color: #f5f5dc;
-    color: rgb(22, 1, 255);
+    background-color: #727896;
+    color: #ffffff;
     font-weight: bold;
   }
 
   .beige-x-symbol {
-    background-color: #f5f5dc;
-    color: #FF0000;
+    background-color: #727896;
+    color: #ffffff;
     font-weight: bold;
   }
 
@@ -246,5 +247,9 @@ async function signup() {
     color: #666;
     font-size: 12px;
     margin-top: 5px;
+  }
+
+  #signUp-title{
+    margin-bottom: 20px;
   }
   </style>

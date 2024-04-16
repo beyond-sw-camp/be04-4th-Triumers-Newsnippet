@@ -11,6 +11,7 @@ import time
 
 def scheduled_fetch():
     # 웹훅 서버의 URL
+    # gpt_server_url = 'http://3.39.230.208:8080/quiz/generate'
     gpt_server_url = 'http://localhost:8130/quiz/generate'
 
     # 각 카테고리별 RSS 피드 URL

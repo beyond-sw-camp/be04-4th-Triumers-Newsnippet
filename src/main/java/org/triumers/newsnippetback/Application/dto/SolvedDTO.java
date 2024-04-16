@@ -1,4 +1,4 @@
-package org.triumers.newsnippetback.domain.dto;
+package org.triumers.newsnippetback.Application.dto;
 
 import lombok.*;
 

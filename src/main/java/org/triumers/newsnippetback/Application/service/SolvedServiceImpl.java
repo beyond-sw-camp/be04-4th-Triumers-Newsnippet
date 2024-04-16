@@ -9,7 +9,7 @@ import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
 import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedResultRequest;
-import org.triumers.newsnippetback.domain.dto.SolvedDTO;
+import org.triumers.newsnippetback.Application.dto.SolvedDTO;
 import org.triumers.newsnippetback.domain.repository.CategoryRepository;
 import org.triumers.newsnippetback.domain.repository.QuizRepository;
 import org.triumers.newsnippetback.domain.repository.SolvedRepository;
@@ -20,13 +20,15 @@ import java.util.*;
 @Service
 public class SolvedServiceImpl implements SolvedService{
 
+    private final AuthService authService;
     private final SolvedRepository solvedRepository;
     private final QuizRepository quizRepository;
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public SolvedServiceImpl(SolvedRepository solvedRepository, QuizRepository quizRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
+    public SolvedServiceImpl(AuthService authService, SolvedRepository solvedRepository, QuizRepository quizRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
+        this.authService = authService;
         this.solvedRepository = solvedRepository;
         this.quizRepository = quizRepository;
         this.categoryRepository = categoryRepository;
@@ -54,6 +56,9 @@ public class SolvedServiceImpl implements SolvedService{
 
         Solved solved = modelMapper.map(solvedDTO, Solved.class);
         solvedRepository.save(solved);
+
+        // 사용자 정보 업데이트
+        authService.updateSolvedQuiz(solvedDTO.isCorrect());
 
         if (answer == null || solved == null) {
             throw new NoSuchElementException("Quiz or Selected Option not found for quizId: " + quizId);

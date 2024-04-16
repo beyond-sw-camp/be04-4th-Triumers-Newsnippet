@@ -1,4 +1,4 @@
-package org.triumers.newsnippetback.domain.dto;
+package org.triumers.newsnippetback.Application.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

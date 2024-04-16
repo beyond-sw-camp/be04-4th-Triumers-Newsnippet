@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.domain.aggregate.entity.Category;
 import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
-import org.triumers.newsnippetback.domain.dto.QuizDTO;
+import org.triumers.newsnippetback.Application.dto.QuizDTO;
 import org.triumers.newsnippetback.domain.repository.CategoryRepository;
 import org.triumers.newsnippetback.domain.repository.QuizRepository;
 

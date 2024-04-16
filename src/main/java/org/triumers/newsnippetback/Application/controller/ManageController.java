@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.triumers.newsnippetback.Application.service.ManageService;
 import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
-import org.triumers.newsnippetback.domain.dto.CrawlingQuizDTO;
-import org.triumers.newsnippetback.domain.dto.QuizDTO;
+import org.triumers.newsnippetback.Application.dto.CrawlingQuizDTO;
+import org.triumers.newsnippetback.Application.dto.QuizDTO;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

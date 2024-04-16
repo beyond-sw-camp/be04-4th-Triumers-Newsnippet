@@ -11,9 +11,9 @@ import org.triumers.newsnippetback.common.exception.WrongPasswordException;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserStatus;
-import org.triumers.newsnippetback.domain.dto.AuthDTO;
-import org.triumers.newsnippetback.domain.dto.PasswordDTO;
-import org.triumers.newsnippetback.domain.dto.UserDTO;
+import org.triumers.newsnippetback.Application.dto.AuthDTO;
+import org.triumers.newsnippetback.Application.dto.PasswordDTO;
+import org.triumers.newsnippetback.Application.dto.UserDTO;
 import org.triumers.newsnippetback.domain.repository.UserRepository;
 import org.triumers.newsnippetback.domain.service.ValidationAuthService;
 
@@ -99,6 +99,18 @@ public class AuthServiceImpl implements AuthService {
         }
 
         throw new WrongPasswordException();
+    }
+
+    @Override
+    public void updateSolvedQuiz(boolean isCorrect) {
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        user.setSolvedCnt(user.getSolvedCnt() + 1);
+        if (isCorrect) {
+            user.setCorrectCnt(user.getCorrectCnt() + 1);
+        }
+
+        userRepository.save(user);
     }
 
     private User userMapper(AuthDTO request) {

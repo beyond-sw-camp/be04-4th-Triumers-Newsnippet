@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import org.triumers.newsnippetback.Application.service.QuizService;
 import org.triumers.newsnippetback.domain.aggregate.vo.QuizRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.QuizResponse;
-import org.triumers.newsnippetback.domain.dto.QuizDTO;
+import org.triumers.newsnippetback.Application.dto.QuizDTO;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;

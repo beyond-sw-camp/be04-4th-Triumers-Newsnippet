@@ -19,4 +19,6 @@ public interface AuthService {
     void modifyUserInfo(UserDTO userDTO) throws UserNicknameDuplicateException, WrongInputTypeException;
 
     void modifyPassword(PasswordDTO passwordDTO) throws WrongPasswordException, WrongInputTypeException;
+
+    void updateSolvedQuiz(boolean isCorrect);
 }

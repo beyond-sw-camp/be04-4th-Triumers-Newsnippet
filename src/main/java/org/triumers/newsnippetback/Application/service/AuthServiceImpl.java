@@ -101,6 +101,18 @@ public class AuthServiceImpl implements AuthService {
         throw new WrongPasswordException();
     }
 
+    @Override
+    public void updateSolvedQuiz(boolean isCorrect) {
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        user.setSolvedCnt(user.getSolvedCnt() + 1);
+        if (isCorrect) {
+            user.setCorrectCnt(user.getCorrectCnt() + 1);
+        }
+
+        userRepository.save(user);
+    }
+
     private User userMapper(AuthDTO request) {
         User user = new User();
 

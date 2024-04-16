@@ -1,7 +1,11 @@
 <template>
   <div>
     <Header :isLoggedIn="true"></Header>
-    <div class="container">
+    <div v-if="$store.state.isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+    <!-- 로딩 스피너 또는 로딩 표시 -->
+    </div>
+    <div v-else class="container">
       <h2>문제 상세</h2>
       <hr>
       <div class="quiz-container" v-if="quiz">
@@ -55,6 +59,9 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Header from '@/views/Header.vue';
 import axios from 'axios';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -67,6 +74,7 @@ onMounted(fetchSolvedQuiz);
 
 async function fetchSolvedQuiz() {
 
+  store.commit('setLoading', true);
   try {
     const token = localStorage.getItem('token');
     if (token) {
@@ -81,6 +89,8 @@ async function fetchSolvedQuiz() {
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    store.commit('setLoading', false);
   }
 }
 

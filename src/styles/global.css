@@ -13,6 +13,33 @@
   .light-mode{
     background-color: #fffcde;
   }
+
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+  
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(#0000 10%, #333);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+    animation: spin 1s infinite linear;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+
+  .dark-mode .spinner {
+    background: conic-gradient(#0000 10%, #fff);
+  }
   
   /* 다크 모드 스타일 */
   .dark-mode {

@@ -1,7 +1,11 @@
 <template>
   <div>
     <Header :isLoggedIn="true"></Header>
-    <div class="container">
+    <div v-if="$store.state.isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+    <!-- 로딩 스피너 또는 로딩 표시 -->
+    </div>
+    <div v-else class="container">
       <h2>풀었던 문제 확인</h2>
       <hr>
       <div class="date-picker">
@@ -29,6 +33,9 @@ import Header from '@/views/Header.vue';
 import axios from 'axios';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const router = useRouter();
 const selectedDate = ref(new Date());
@@ -39,6 +46,7 @@ onMounted(fetchSolvedQuizList);
 
 async function fetchSolvedQuizList() {
 
+  store.commit('setLoading', true);
   try {
     const token = localStorage.getItem('token');
     if (token) {
@@ -54,6 +62,8 @@ async function fetchSolvedQuizList() {
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    store.commit('setLoading', false);
   }
 }
 

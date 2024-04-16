@@ -108,8 +108,11 @@
     background-color: green;
   }
 
+
 .pagination{
-    margin: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 .pagination *{
     color: #72789690;
@@ -121,4 +124,26 @@
 
 .nowPage{
     color: #393B63;
+}
+
+  
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+}
+  
+  .pagination button.active {
+    background-color: #ccc;
+  }
+  
+  .pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+.dark-mode .crawlingQuiz-container {
+    background-color: #1f1f1f;
 }

@@ -20,13 +20,13 @@
         <button v-else @click="checkEmail" class="btn beige-x-symbol" style="display: inline-block; width: 15%;">X</button>
       </div>
       <div class="form-group">
-        <input v-model="user.password" type="password" placeholder="비밀번호" />
+        <input v-model="user.password" type="password" placeholder="비밀번호" class="form-password"/>
         <div class="description">
           8-12자, 숫자, 대문자, 소문자 각각 1개 이상 포함(이외 문자 불가)
         </div>
       </div>
       <div class="form-group">
-        <input v-model="checkPassword" type="password" placeholder="비밀번호 확인" style="display: inline-block; width: 81%;"/>&nbsp
+        <input v-model="checkPassword" type="password" placeholder="비밀번호 확인" style="display: inline-block; width: 81%;" class="form-password"/>&nbsp
         <span v-if="statusCheckPassword === 200" class="span beige-v-symbol" style="display: inline-block; width: 15%;">✓</span>
         <span v-else class="span beige-x-symbol" style="display: inline-block; width: 15%;">X</span>
       </div>
@@ -192,6 +192,27 @@ async function signup() {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+
+  .form-group input::placeholder {
+    color: #666; /* placeholder 색상 설정 */
+    font-family: 'ONE-Mobile-Title', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .form-password input::placeholder {
+    color: #666;
+    font-family: 'ONE-Mobile-Title', sans-serif;
+  }
+
+  .form-password {
+    width: 100%;
+    margin-bottom: 1px;
+    font-family: "Roboto", sans-serif;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    font-weight: 1000;
+    font-style: normal;
   }
   
   .signup-btn {

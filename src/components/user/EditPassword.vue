@@ -16,6 +16,9 @@
           <span v-if="isPasswordValid" class="valid-icon">✓</span>
           <span v-else class="invalid-icon">X</span>
         </div>
+        <div class="description">
+          8-12자, 숫자, 대문자, 소문자 각각 1개 이상 포함(이외 문자 불가)
+          </div>
       </div>
       
       <div class="form-group">
@@ -182,5 +185,10 @@ button:hover {
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+.description {
+  color: #666;
+  font-size: 12px;
+  margin-top: 5px;
 }
 </style>

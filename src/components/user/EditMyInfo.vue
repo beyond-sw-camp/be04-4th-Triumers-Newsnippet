@@ -15,16 +15,12 @@
           <span v-if="isNicknameValid" class="valid-icon">✓</span>
           <span v-else class="invalid-icon">X</span>
         </div>
-      </div>
-      
-      <div class="form-group">
-        <label for="password">비밀번호</label>
-        <div class="input-wrapper">
-          <input type="password" id="password" v-model="password" />
-          <span v-if="isPasswordValid" class="valid-icon">✓</span>
-          <span v-else class="invalid-icon">X</span>
+        <div class="description">
+          2-10자, 알파벳, 숫자, 한글(특수문자 불가)
         </div>
       </div>
+      <button @click="goToEditPassword" :disabled="!isFormValid">비밀번호 변경</button>
+      &nbsp&nbsp&nbsp
       <button @click="updateUserInfo" :disabled="!isFormValid">변경</button>
     </div>
   </div>
@@ -37,7 +33,6 @@ import Header from '@/views/Header.vue';
 import axios from 'axios';
 
 const router = useRouter();
-const password = ref('');
 const name = ref('');
 const nickname = ref('');
 const userData = ref({});
@@ -70,12 +65,8 @@ const isNicknameValid = computed(() => {
   return nickname.value !== userData.value.nickname && checkNicknameValidity(nickname.value);
 });
 
-const isPasswordValid = computed(() => {
-  return checkPasswordValidity(password.value);
-});
-
 const isFormValid = computed(() => {
-  return isNicknameValid.value && isPasswordValid.value;
+  return isNicknameValid.value;
 });
 
 async function updateUserInfo() {
@@ -108,18 +99,16 @@ async function updateUserInfo() {
   }
 }
 
+// 비밀번호 수정 페이지로 이동
+function goToEditPassword() {
+  router.push('/edit-my-password');
+}
+
 // 닉네임 유효성 검사 함수
 function checkNicknameValidity(nickname) {
   const pattern = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]{2,10}$/;
-  
-  return pattern.test(nickname) || nickname === '';
-}
 
-// 비밀번호 유효성 검사 함수
-function checkPasswordValidity(password) {
-  // 비밀번호 유효성 검사 로직 구현
-  // 예시: 비밀번호 조건을 만족하는 경우 true 반환
-  return true;
+  return pattern.test(nickname) || nickname === '';
 }
 
 onMounted(() => {
@@ -148,8 +137,7 @@ label {
   align-items: center;
 }
 
-input[type="text"],
-input[type="password"] {
+input[type="text"] {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -185,5 +173,11 @@ button:hover {
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.description {
+  color: #666;
+  font-size: 12px;
+  margin-top: 5px;
 }
 </style>

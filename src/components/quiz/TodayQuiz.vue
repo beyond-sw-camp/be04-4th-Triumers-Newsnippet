@@ -77,7 +77,7 @@
           <h2 class="result-title">🎉결과🎉</h2>
           <hr>
           <div id="result-text">
-            <h4 class="totalCount"> {{correctCount}} / {{quizzes.length}} </h4>
+            <h4 class="totalCount"> {{ correctCount }} / {{ quizzes.length }} </h4>
             <p class="correctCount">맞힌 문제 수: {{ correctCount }}</p>
             <p class="incorrectCount">틀린 문제 수: {{ quizzes.length - correctCount }}</p>
           </div>
@@ -103,23 +103,26 @@ const isCorrect = ref(false);
 // 백엔드 db 연결 테스트를 위해 임의로 할당
 const userId = ref(1);
 
-
-// 백엔드 db 연결을 위해 날짜를 2024-04-02로 고정
 const fetchQuizzes = async () => {
-  try {
-    // const response = await axios.post('http://localhost:7777/quiz/test', { date: new Date('2024-04-02') });
-    const response = fetch('http://localhost:7777/quiz/test', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        date: new Date()
-      })
-    }).then(response => response.json());
 
-    const data = await response;
-    quizzes.value = data;
+  try {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = token;
+      const response = await axios.post('http://localhost:7777/quiz/test', { date: new Date() });
+      quizzes.value = response.data;
+
+      setCurrentQuiz();
+
+    } else {
+      alert("잘못된 접근입니다.");
+    }
+  } catch (error) {
+    console.error('문제 데이터 가져오기 실패:', error);
+  }
+};
+
+const setCurrentQuiz = () =>{
     currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
     currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
     currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
@@ -132,34 +135,29 @@ const fetchQuizzes = async () => {
     currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
     currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
     currentQuiz.correctRate = quizzes.value[currentQuizIndex.value].correctRate;
-    // 첫 번째 페이지에서는 정답, 해설, 원문 링크 정보를 설정하지 않음
-  } catch (error) {
-    console.error('문제 데이터 가져오기 실패:', error);
-  }
-};
+}
 
 const checkAnswerCorrectness = async () => {
+
   try {
-
-    const response = fetch('http://localhost:7777/solved/check', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userId.value,
-        quizId: currentQuiz.id,
-        selectedOption: selectedOption.value
-      })
-    }).then(response => response.json());
-
-    const data = await response;
-
-    isCorrect.value = data.correct;
-    if (isCorrect.value) {
-      correctCount.value++;
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = token;
+      const response = await axios.post('http://localhost:7777/solved/check',
+        {
+          userId: userId.value,
+          quizId: currentQuiz.id,
+          selectedOption: selectedOption.value
+        }
+      );
+      const data = response.data;
+      isCorrect.value = data.correct;
+      if (isCorrect.value) {
+        correctCount.value++;
+      }
+    } else {
+      alert("잘못된 접근입니다.");
     }
-
   } catch (error) {
     console.error('정답 확인 및 저장 실패:', error);
   }
@@ -181,24 +179,10 @@ const nextStep = async () => {
   }
 };
 
-
-
 const nextQuestion = async () => {
   if (currentQuizIndex.value < quizzes.value.length - 1) {
     currentQuizIndex.value++;
-
-    currentQuiz.id = quizzes.value[currentQuizIndex.value].id;
-    currentQuiz.date = quizzes.value[currentQuizIndex.value].date;
-    currentQuiz.no = quizzes.value[currentQuizIndex.value].no;
-    currentQuiz.categoryName = quizzes.value[currentQuizIndex.value].categoryName;
-    currentQuiz.content = quizzes.value[currentQuizIndex.value].content;
-    currentQuiz.optionA = quizzes.value[currentQuizIndex.value].optionA;
-    currentQuiz.optionB = quizzes.value[currentQuizIndex.value].optionB;
-    currentQuiz.optionC = quizzes.value[currentQuizIndex.value].optionC;
-    currentQuiz.optionD = quizzes.value[currentQuizIndex.value].optionD;
-    currentQuiz.solvedCnt = quizzes.value[currentQuizIndex.value].solvedCnt;
-    currentQuiz.correctCnt = quizzes.value[currentQuizIndex.value].correctCnt;
-    currentQuiz.correctRate = quizzes.value[currentQuizIndex.value].correctRate;
+    setCurrentQuiz();
     selectedOption.value = null;
     currentStep.value = 1;
   } else {
@@ -213,5 +197,4 @@ onMounted(() => {
 
 <style scoped>
 @import url('@/assets/css/quiz/TodayQuiz.css');
-
 </style>

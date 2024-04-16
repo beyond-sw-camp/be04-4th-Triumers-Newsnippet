@@ -67,23 +67,22 @@ const optionText = ["A", "B", "C", "D"];
 onMounted(fetchSolvedQuiz);
 
 async function fetchSolvedQuiz() {
+
   try {
-    const response = fetch('http://localhost:7777/solved/find', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userId.value,
-        quizId: quizId
-      }),
-    }).then(response => response.json());
-
-    const data = await response;
-    quiz.value = data;
-
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = token;
+      const response = await axios.post('http://localhost:7777/solved/find',
+        {
+          userId: userId.value,
+          quizId: quizId
+        });
+        quiz.value = response.data;
+    } else {
+      alert("잘못된 접근입니다.");
+    }
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 

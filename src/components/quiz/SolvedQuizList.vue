@@ -5,7 +5,8 @@
       <h2>풀었던 문제 확인</h2>
       <hr>
       <div class="date-picker">
-        <VueDatePicker id="datePicker" v-model="selectedDate" format="yyyy-MM-dd" @update:model-value="fetchSolvedQuizList">
+        <VueDatePicker id="datePicker" v-model="selectedDate" format="yyyy-MM-dd"
+          @update:model-value="fetchSolvedQuizList">
         </VueDatePicker>
       </div>
 
@@ -38,25 +39,23 @@ const userId = ref(1);//localStorage.getItem;
 onMounted(fetchSolvedQuizList);
 
 async function fetchSolvedQuizList() {
+
   try {
-    const response = fetch('http://localhost:7777/solved/find/allByDate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userId.value,
-        solvedDate: formatDate(selectedDate.value)
-      }),
-    }).then(response => response.json());
-
-    const data = await response;
-
-    solvedList.value = data;
-    noQuizMessage.value = solvedList.value.length === 0 ? '풀었던 문제가 없습니다.' : '';
-
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = token;
+      const response = await axios.post('http://localhost:7777/solved/find/allByDate',
+        {
+          userId: userId.value,
+          solvedDate: formatDate(selectedDate.value)
+        });
+      solvedList.value = response.data;
+      noQuizMessage.value = solvedList.value.length === 0 ? '풀었던 문제가 없습니다.' : '';
+    } else {
+      alert("잘못된 접근입니다.");
+    }
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 
@@ -66,7 +65,7 @@ function formatDate(date) {
 
 const goToQuizDetail = (quizId) => {
   router.push(`/solved-quiz-detail/${quizId}`);
-};
+}
 </script>
 
 <style scoped>

@@ -83,5 +83,5 @@ const getCategoryColor = (categoryId) => {
 </script>
 
 <style scoped>
-@import url('@/assets/css/manage/QuizList.css');
+@import url('@/styles/manage/QuizList.css');
 </style>

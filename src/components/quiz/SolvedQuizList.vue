@@ -69,5 +69,5 @@ const goToQuizDetail = (quizId) => {
 </script>
 
 <style scoped>
-@import url('@/assets/css/quiz/SolvedQuizList.css');
+@import url('@/styles/quiz/SolvedQuizList.css');
 </style>

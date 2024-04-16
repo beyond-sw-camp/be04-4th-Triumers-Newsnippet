@@ -92,5 +92,5 @@ const goBack = () => {
 </script>
 
 <style scoped>
-@import url('@/assets/css/quiz/SolvedQuizDetail.css');
+@import url('@/styles/quiz/SolvedQuizDetail.css');
 </style>

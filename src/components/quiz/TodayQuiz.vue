@@ -196,5 +196,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url('@/assets/css/quiz/TodayQuiz.css');
+@import url('@/styles/quiz/TodayQuiz.css');
 </style>

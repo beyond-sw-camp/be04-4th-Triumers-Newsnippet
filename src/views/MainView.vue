@@ -111,7 +111,7 @@ checkLoginStatus();
   max-width: 18%;
   max-height: 18%;
   left: 1100px; /* 세 번째 이미지 왼쪽 여백 조절 */
-  bottom: 850px;
+  bottom: 800px;
 }
 
 @keyframes scaleUpDown {

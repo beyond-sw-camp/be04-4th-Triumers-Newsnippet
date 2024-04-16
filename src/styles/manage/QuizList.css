@@ -32,6 +32,10 @@
     justify-content: flex-end;
 }
 
+#selectBtn:hover {
+    background-color: #727896;
+}
+
 #selectBtn>p {
     margin: auto 5px;
     padding: 10px 5px;
@@ -103,4 +107,18 @@
 .correct {
     background-color: green;
   }
-  
+
+.pagination{
+    margin: 20px;
+}
+.pagination *{
+    color: #72789690;
+}
+
+.pagination *:hover{
+    color: #393B63;
+}
+
+.nowPage{
+    color: #393B63;
+}

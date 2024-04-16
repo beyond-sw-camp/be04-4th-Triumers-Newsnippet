@@ -65,21 +65,6 @@
     background-color: #444444;
   }
 
-  /* 진행률 텍스트와 결과 텍스트 스타일 */
-.dark-mode .progress-text, 
-.dark-mode .result-title {
-  color: #ffffff;
-  font-weight: bold;
-}
-
-/* 진행률과 결과 배경 스타일 */
-.dark-mode .progress,
-.dark-mode .result-step {
-  background-color: #333333;
-  padding: 10px;
-  border-radius: 5px;
-}
-
 /* 문제 선택지 스타일 */
 .dark-mode .option {
   background-color: #333333;

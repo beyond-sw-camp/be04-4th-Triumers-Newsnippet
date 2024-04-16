@@ -171,15 +171,15 @@ input[type="password"] {
 
 button {
   padding: 10px 20px;
-  background-color: #f5f5dc;
-  color: #333;
+  background-color: #393B63;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #e9e9c9;
+  background-color: #727896;
 }
 
 button:disabled {

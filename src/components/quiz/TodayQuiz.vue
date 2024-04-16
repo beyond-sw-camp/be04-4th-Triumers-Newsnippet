@@ -63,7 +63,9 @@
         </div>
         <p class="explanation">해설: {{ currentQuiz.explanation }}</p>
         <a :href="currentQuiz.newsLink" target="_blank" class="source-link">원문 링크</a>
-        <button @click="nextQuestion" class="next-btn">다음 문제</button>
+        <button @click="nextQuestion" class="next-btn">
+          {{ currentQuizIndex === quizzes.length - 1 ? '결과 확인' : '다음 문제' }}
+        </button>
         <div class="progress">
           <span class="progress-text">진행률:</span>
           <span class="progress-bar" :style="{ width: `${(currentQuizIndex + 1) / quizzes.length * 100}%` }"></span>
@@ -99,9 +101,8 @@ const selectedOption = ref(null);
 const correctCount = ref(0);
 const currentStep = ref(1);
 const isCorrect = ref(false);
+
 // const userId = ref(null); // 사용자 ID를 가져오는 로직이 필요합니다.
-// 백엔드 db 연결 테스트를 위해 임의로 할당
-const userId = ref(1);
 
 const fetchQuizzes = async () => {
 
@@ -145,7 +146,6 @@ const checkAnswerCorrectness = async () => {
       axios.defaults.headers.common['Authorization'] = token;
       const response = await axios.post('http://localhost:7777/solved/check',
         {
-          userId: userId.value,
           quizId: currentQuiz.id,
           selectedOption: selectedOption.value
         }

@@ -174,7 +174,8 @@ const emit = defineEmits(['logout']);
 }
 
 .btn-beige:hover {
-  background-color: #cac5bf;
+  background-color: #727896;
+  color: #ffffff;
 }
 
 body,

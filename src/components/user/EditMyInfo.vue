@@ -119,7 +119,7 @@ onMounted(() => {
 <style scoped>
 .edit-my-info {
   max-width: 400px;
-  margin: 0 auto;
+  margin: 20px auto;
   padding: 20px;
 }
 
@@ -146,7 +146,7 @@ input[type="text"] {
 
 .valid-icon,
 .invalid-icon {
-  margin-left: 5px;
+  margin-left:10px;
 }
 
 .valid-icon {
@@ -159,15 +159,15 @@ input[type="text"] {
 
 button {
   padding: 10px 20px;
-  background-color: #f5f5dc;
-  color: #333;
+  background-color: #393B63;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #e9e9c9;
+  background-color: #727896;
 }
 
 button:disabled {

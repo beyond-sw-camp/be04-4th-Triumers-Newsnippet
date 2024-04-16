@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <Header :isLoggedIn="true"></Header>
-    <div class="my-page">
+  <Header :isLoggedIn="true"></Header>
+  <div class="my-page">
+    <h2>마이페이지</h2>
+    <div class="my-content">
       <div class="profile-section">
         <div class="profile-picture">
           <!-- <img :src="profilePicture" alt="Profile Picture" @click="showModal = true" /> -->
@@ -22,6 +23,10 @@
         </div>
       </div>
       <div class="stats-section">
+        <div class="stats-item">
+          <span class="label">랭킹</span>
+          <div class="value-box">{{ userData.rank }}</div>
+        </div>
         <div class="stats-item">
           <span class="label">푼 문제</span>
           <div class="value-box">{{ userData.solvedCnt }}개</div>
@@ -101,9 +106,13 @@ onMounted(() => {
   padding: 20px;
 }
 
+.my-page>h2{
+  margin: 20px;
+}
+
 .profile-section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 20px;
 }
 
@@ -128,19 +137,18 @@ onMounted(() => {
 }
 
 .label {
-  width: 80px;
   font-weight: bold;
+  color: #393B63;
 }
 
 .value-box {
-  border: 1px solid #ccc;
-  padding: 5px;
-  flex-grow: 1;
+  margin: 5px;
+  color: #727896;
 }
 
 .stats-section {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -149,16 +157,17 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px;
 }
 
 .button-section {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .edit-btn {
   padding: 8px 16px;
-  background-color: #f5f5dc;
-  color: #333;
+  background-color: #393B63;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -166,6 +175,38 @@ onMounted(() => {
 }
 
 .edit-btn:hover {
-  background-color: #e9e9c9;
+  background-color: #727896;
+}
+
+.my-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 20px;
+  background-color: #F4F3F6;
+}
+
+
+/* 다크 모드 스타일 */
+.dark-mode .my-content {
+  background-color: #2b2b3f;
+}
+
+.dark-mode .label {
+  color: #b3b3cc;
+}
+
+.dark-mode .value-box {
+  color: #d9d9e6;
+}
+
+.dark-mode .edit-btn {
+  background-color: #393b63;
+}
+
+.dark-mode .edit-btn:hover {
+  background-color: #4c4d7a;
 }
 </style>

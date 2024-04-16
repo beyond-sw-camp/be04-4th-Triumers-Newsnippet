@@ -1,130 +1,200 @@
 <template>
+    <input id="dateInput" type="date" v-model="date" @update:model-value="getCrawlingQuizListByDate" />
 
-        crawlingQuiz
-        <input type="date" v-model="date" />
-
-        <div class="crawlingQuiz-container">
-            <template v-for="crawlingQuiz in crawlingQuizList" :key="crawlingQuiz.id">
-                <div class="crawlingQuiz-item">
-                    <div id="news-category">
-                        카테고리
+    <div v-if="$store.state.isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+        <!-- 로딩 스피너 또는 로딩 표시 -->
+    </div>
+    <div v-else-if="crawlingQuizList" class="crawlingQuiz-container">
+        <template v-for="crawlingQuiz in paginatedQuizList" :key="crawlingQuiz.id">
+            <div class="crawlingQuiz-item">
+                <div class="clickDiv" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`"
+                    :aria-controls="`#crawling${crawlingQuiz.id}`">
+                    <div id="news-category" :style="{ backgroundColor: getCategoryColor(crawlingQuiz.category.id) }">
+                        {{ crawlingQuiz.category.categoryName }}
                     </div>
                     <p id="question"> {{ crawlingQuiz.content }} </p>
-
-                    <!-- 버블링 어쩌구 처리해서 버튼만 눌리게 하기 -->
-                    <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id - 1)"> 
-                        <p id="select-text" v-if="crawlingQuiz.selected">출제</p>
-                        <p id="select-text" v-else>미출제</p>
-                    </div>
                 </div>
-            </template>
-        </div>
 
+                <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, crawlingQuiz.selected)"
+                    :class="{ selected: crawlingQuiz.selected, notSelected: !crawlingQuiz.selected }">
+                    <p id="selected-text" v-if="crawlingQuiz.selected">출제</p>
+                    <p id="notSelected-text" v-else>미출제</p>
+                </div>
+            </div>
+
+            <div class="collapse" :id="`crawling${crawlingQuiz.id}`">
+                <div>
+                    <p id="content">{{ crawlingQuiz.content }}</p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'A' }">A</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionA }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'B' }">B</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionB }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'C' }">C</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionC }} </span></p>
+                    <p> <span class="option" :class="{ correct: crawlingQuiz.answer == 'D' }">D</span> <span
+                            class="optionContent"> {{ crawlingQuiz.optionD }} </span></p>
+                </div>
+                <hr>
+                <div>
+                    <p> <span><a :href="`${crawlingQuiz.newsLink}`">원본 링크</a></span> </p>
+                    <p>
+                        {{ crawlingQuiz.explanation }}
+                    </p>
+                </div>
+            </div>
+        </template>
+
+        <div class="pagination">
+            <button @click="goToFirstPage" :disabled="currentPage === 1">&lt;&lt;</button>
+            <button @click="previousPageGroup" :disabled="currentPage === 1">&lt;</button>
+            <template v-for="pageNumber in visiblePageNumbers" :key="pageNumber">
+                <button @click="goToPage(pageNumber)" :class="{ active: pageNumber === currentPage }">
+                    {{ pageNumber }}
+                </button>
+            </template>
+            <button @click="nextPageGroup" :disabled="currentPage === totalPages">&gt;</button>
+            <button @click="goToLastPage" :disabled="currentPage === totalPages">&gt;&gt;</button>
+        </div>
+    </div>
+    <div v-else class="crawlingQuiz-container">
+        <div id="noData-div">
+            <p id="noData">문제 데이터가 없습니다.</p>
+        </div>
+    </div>
 </template>
 
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import axios from 'axios';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const date = ref('');
+const crawlingQuizList = ref(null);
+
+const currentPage = ref(1);
+const pageSize = 10;
+const pageGroupSize = 10;
+
+const paginatedQuizList = computed(() => {
+    const startIndex = (currentPage.value - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return crawlingQuizList.value ? crawlingQuizList.value.slice(startIndex, endIndex) : [];
+});
+
+const totalPages = computed(() => {
+    return crawlingQuizList.value ? Math.ceil(crawlingQuizList.value.length / pageSize) : 0;
+});
+
+const visiblePageNumbers = computed(() => {
+    const startPage = Math.floor((currentPage.value - 1) / pageGroupSize) * pageGroupSize + 1;
+    const endPage = Math.min(startPage + pageGroupSize - 1, totalPages.value);
+    return Array(endPage - startPage + 1)
+        .fill()
+        .map((_, index) => startPage + index);
+});
+
+onMounted(async () => {
+    const getDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+        return year + "-" + month + "-" + day;
+    };
+    date.value = getDate();
+    await getCrawlingQuizListByDate();
+});
+
+async function getCrawlingQuizListByDate() {
+    store.commit('setLoading', true);
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            const response = await axios.post('http://localhost:30001/manage/findCrawlingQuiz', { date: date.value });
+            crawlingQuizList.value = response.data;
+        } else {
+            alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        crawlingQuizList.value = null;
+    } finally {
+        store.commit('setLoading', false);
+    }
+}
+
+async function changeSelect(id, isSelected) {
+    if (isSelected) {
+        await deleteQuiz(id);
+    } else {
+        await addQuiz(id);
+    }
+    await getCrawlingQuizListByDate();
+}
+
+async function addQuiz(id) {
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            await axios.get(`http://localhost:30001/manage/addQuiz/${id}`);
+        } else {
+            alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert("문제 출제에 실패했습니다.");
+    }
+}
+
+async function deleteQuiz(id) {
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = token;
+            await axios.delete(`http://localhost:30001/manage/deleteQuiz/${id}`);
+        } else {
+            alert("잘못된 접근입니다.");
+        }
+    } catch (error) {
+        alert("문제 삭제에 실패했습니다.");
+    }
+}
+
+function goToFirstPage() {
+    currentPage.value = 1;
+}
+
+function goToLastPage() {
+    currentPage.value = totalPages.value;
+}
+
+function previousPageGroup() {
+    currentPage.value = Math.max(currentPage.value - pageGroupSize, 1);
+}
+
+function nextPageGroup() {
+    currentPage.value = Math.min(currentPage.value + pageGroupSize, totalPages.value);
+}
+
+function goToPage(pageNumber) {
+    currentPage.value = pageNumber;
+}
+
+const categoryColors = [
+    "#89A9D6", "#93AFD9", "#90ACD9", "#9FB0D4", "#A8B4CC",
+    "#A6A6C6", "#A2AACD", "#A3A5CB", "#9EA2D2", "#A5A8CB",
+    "#A3A0CD", "#A8B5CF", "#8EABD5", "#808080", "#C0C0C0"
+];
+
+const getCategoryColor = (categoryId) => {
+    return categoryColors[categoryId] || '#D9D9D9';
+};
+</script>
+
 <style scoped>
-
-.crawlingQuiz-container {
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.crawlingQuiz-item {
-    width: 800px;
-    margin: 5px;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #F4F3F6;
-    display: flex;
-    justify-content: center;
-}
-
-#news-category {
-    width: 100px;
-    margin: 20px 10px;
-    padding-top: 5px;
-    background-color: #D9D9D9;
-    border-radius: 50px;
-    text-align: center;
-}
-
-#selectBtn{
-    width: 100px;
-    margin: 10px;
-    border-radius: 10px;
-    text-align: center;
-    background-color: white;
-    justify-content: flex-end;
-}
-
-#question{
-    width: 550px;
-    margin: 10px;
-}
+@import url('@/styles/manage/QuizList.css');
 
 </style>
-
-<script setup>
-import { ref, onMounted, reactive } from "vue";
-import { useRoute } from 'vue-router'
-
-const date = ref(0);
-const changeSelect = (id) => {
-
-    // 삭제인지 추가인지 판단해서 요청보내기, 버튼 변경
-    const isSelected = crawlingQuizList[id].selected;
-    let url = '';
-
-    if(isSelected){
-        url = `http://#{id}`;
-    }
-    else{
-        url = `http://#{id}`;
-    }
-
-    // const res = await fetch(url);
-
-    crawlingQuizList[id].selected = !isSelected;
-}
-
-const crawlingQuizList = reactive(
-    [
-        {
-            "id": 1,
-            "content": "EELS 로봇에 관한 다음 설명 중 옳은 것은 무엇입니까?",
-            "optionA": "EELS 로봇은 지구의 앨버타주에 있는 애서배스카 빙하에서 개발되었습니다.",
-            "optionB": "이 로봇은 머리 쪽에 자율주행용 라이다와 카메라를 장착하고 있어서 스스로 움직일 수 있습니다.",
-            "optionC": "EELS 로봇의 목표는 타이탄 위성에서의 탐사를 위한 것입니다.",
-            "optionD": "이 로봇은 무게가 50kg이며, 액추에이터는 총 24개 달려 있습니다.",
-            "answer": "C",
-            "explanation": "캐나다 앨버타주의 애서배스카 빙하에서 출발한 NASA의 로봇 탐사 임무에 대한 내용을 담고 있습니다. 이 임무는 미 항공우주국이 개발 중인 외계 생명체 탐사로봇인 EELS(일스)를 사용하여 토성의 위성 엔셀라두스에 보내는 것이 목표입니다. 이 로봇은 지구의 극한 환경에서도 작동할 수 있는 고성능을 갖추고 있으며, 엔셀라두스의 얼음 아래에 있는 바다에서 생명체를 찾는 임무를 수행할 예정입니다.",
-            "newsLink": "https://www.ytn.co.kr/_ln/0105_202404012353120871",
-            "newsDate": "2024-04-02",
-            "category": {
-                "id": 9,
-                "categoryName": "IT/과학"
-            },
-            "selected": true
-        },
-        {
-            "id": 2,
-            "content": "중국 전자상거래 기업 알리바바가 1시간 이내에 전 세계로 상품을 배송하는 시도에 나선다고 하는데, 이를 위해 협업하는 로켓 개발 스타트업은?",
-            "optionA": "스페이스 엑스 (Space X)",
-            "optionB": "스페이스 에포크 (Space Epoch)",
-            "optionC": "블루 오리진 (Blue Origin)",
-            "optionD": "로켓랩 (Rocket Lab)",
-            "answer": "B",
-            "explanation": "알리바바가 전 세계 1시간 이내 배송을 추진하기 위해 협업하는 로켓 개발 스타트업은 스페이스 에포크입니다. 이 소식은 2024년 4월 2일에 보도되었습니다. 이는 알리바바의 전 세계적인 물류 서비스를 더욱 확장하기 위한 시도 중 하나로, 스페이스 에포크의 재사용 로켓 XZY-1을 활용하여 1시간 이내에 상품을 운송할 계획입니다.",
-            "newsLink": "https://www.ytn.co.kr/_ln/0104_202404021429256706",
-            "newsDate": "2024-04-02",
-            "category": {
-                "id": 9,
-                "categoryName": "IT/과학"
-            },
-            "selected": false
-        }
-    ]
-);
-</script>

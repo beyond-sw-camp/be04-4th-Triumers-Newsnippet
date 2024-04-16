@@ -30,6 +30,7 @@ async function login() {
   return axios.post(`http://localhost:7777/login`, user)
   .then(response => {
     localStorage.setItem('token', response.headers.get('Authorization'));
+    localStorage.setItem('role', response.headers.get('UserRole'));
     router.push('/');
 
     return response.data;

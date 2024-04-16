@@ -1,5 +1,5 @@
 <template>
-    <Header :isLoggedIn="true"></Header>
+    <Header :isLoggedIn="true" :userRole="userRole"></Header>
     <div id="wrapper">
         <h2>퀴즈 관리</h2>
         <hr>
@@ -16,6 +16,8 @@
 <script setup>
 import { RouterView } from "vue-router";
 import Header from '@/views/Header.vue';
+
+const userRole = localStorage.getItem('userRole');
 </script>
 
 <style scoped>

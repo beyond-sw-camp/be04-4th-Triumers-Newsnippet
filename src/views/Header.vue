@@ -28,9 +28,10 @@
       <div class="auth-buttons">
         <button v-if="!isLoggedIn" @click="navigateTo('signup')" class="btn btn-beige">회원가입</button>
         <button v-if="!isLoggedIn" @click="navigateTo('login')" class="btn btn-beige">로그인</button>
-        <button v-if="isLoggedIn" @click="logout" class="btn btn-beige">로그아웃</button>
-        <button v-if="isLoggedIn" @click="navigateTo('my-page')" class="btn btn-beige">마이페이지</button>
-        <button v-if="isLoggedIn" @click="handleNavigation('manage/selectQuiz')" class="btn btn-beige">퀴즈 관리</button>
+        <button v-if="isLoggedIn || (userRole === 'MANAGER' || userRole === 'ADMIN')" @click="logout" class="btn btn-beige">로그아웃</button>
+        <button v-if="isLoggedIn && (userRole === 'USER')" @click="navigateTo('my-page')" class="btn btn-beige">마이페이지</button>
+        <!-- <button v-if="isLoggedIn" @click="handleNavigation('manage/selectQuiz')" class="btn btn-beige">퀴즈 관리</button> -->
+        <button v-if="isLoggedIn && (userRole === 'MANAGER' || userRole === 'ADMIN')" @click="handleNavigation('manage/selectQuiz')" class="btn btn-beige">퀴즈 관리</button>
       </div>
     </div>
   </header>
@@ -39,6 +40,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+const userRole = localStorage.getItem('role');
 
 const props = defineProps({
   isLoggedIn: {

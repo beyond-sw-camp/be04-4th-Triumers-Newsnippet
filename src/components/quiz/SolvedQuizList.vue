@@ -51,7 +51,7 @@ async function fetchSolvedQuizList() {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      const response = await axios.post('http://localhost:7777/solved/find/allByDate',
+      const response = await axios.post('http://localhost:30001/solved/find/allByDate',
         {
           solvedDate: formatDate(selectedDate.value)
         });

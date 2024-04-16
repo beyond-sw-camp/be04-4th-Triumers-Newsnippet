@@ -62,7 +62,7 @@ async function fetchUserData() {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      const response = await axios.get('http://localhost:7777/user/my-page');
+      const response = await axios.get('http://localhost:30001/user/my-page');
       userData.value = response.data;
     } else {
       // 토큰이 없을 경우 로그아웃 처리

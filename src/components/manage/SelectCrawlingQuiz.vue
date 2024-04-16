@@ -114,7 +114,7 @@ async function getCrawlingQuizListByDate() {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
-            const response = await axios.post('http://localhost:7777/manage/findCrawlingQuiz', { date: date.value });
+            const response = await axios.post('http://localhost:30001/manage/findCrawlingQuiz', { date: date.value });
             crawlingQuizList.value = response.data;
         } else {
             alert("잘못된 접근입니다.");
@@ -140,7 +140,7 @@ async function addQuiz(id) {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
-            await axios.get(`http://localhost:7777/manage/addQuiz/${id}`);
+            await axios.get(`http://localhost:30001/manage/addQuiz/${id}`);
         } else {
             alert("잘못된 접근입니다.");
         }
@@ -154,7 +154,7 @@ async function deleteQuiz(id) {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
-            await axios.delete(`http://localhost:7777/manage/deleteQuiz/${id}`);
+            await axios.delete(`http://localhost:30001/manage/deleteQuiz/${id}`);
         } else {
             alert("잘못된 접근입니다.");
         }

@@ -117,7 +117,7 @@ const fetchQuizzes = async () => {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      const response = await axios.post('http://localhost:7777/quiz/test', { date: new Date() });
+      const response = await axios.post('http://localhost:30001/quiz/test', { date: new Date() });
       quizzes.value = response.data;
 
       setCurrentQuiz();
@@ -154,7 +154,7 @@ const checkAnswerCorrectness = async () => {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      const response = await axios.post('http://localhost:7777/solved/check',
+      const response = await axios.post('http://localhost:30001/solved/check',
         {
           quizId: currentQuiz.id,
           selectedOption: selectedOption.value

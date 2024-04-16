@@ -51,7 +51,7 @@ async function fetchUserData() {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      await axios.get('http://localhost:7777/user/my-page');
+      await axios.get('http://localhost:30001/user/my-page');
     } else {
       // 토큰이 없을 경우 로그아웃 처리
       handleLogout();
@@ -88,7 +88,7 @@ async function updatePassword() {
         newPassword: newPassword.value
       };
       
-      const response = await fetch('http://localhost:7777/auth/modify/password', {
+      const response = await fetch('http://localhost:30001/auth/modify/password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

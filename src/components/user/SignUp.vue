@@ -56,7 +56,7 @@ const statusCheckPassword = ref(0);
 
 function checkNickname() {
   // 닉네임 중복 확인 로직 처리
-  return axios.post(`http://localhost:7777/auth/exist/nickname`, user)
+  return axios.post(`http://localhost:30001/auth/exist/nickname`, user)
   .then(response => {
     statusNickname.value = response.status;
     alert(response.data.message);
@@ -69,7 +69,7 @@ function checkNickname() {
 
 function checkEmail() {
   // 이메일 중복 확인 로직 처리
-  return axios.post(`http://localhost:7777/auth/exist/email`, user)
+  return axios.post(`http://localhost:30001/auth/exist/email`, user)
   .then(response => {
     statusEmail.value = response.status;
     alert(response.data.message);
@@ -92,7 +92,7 @@ watch(checkPassword, async(newVal, oldVal) => {
 
 async function signup() {
   // 회원가입 로직 처리
-  return axios.post(`http://localhost:7777/auth/signup`, user)
+  return axios.post(`http://localhost:30001/auth/signup`, user)
   .then(response => {
     alert(response.data.message);
     router.push('/');

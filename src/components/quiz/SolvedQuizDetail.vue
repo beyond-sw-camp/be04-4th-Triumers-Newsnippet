@@ -79,7 +79,7 @@ async function fetchSolvedQuiz() {
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = token;
-      const response = await axios.post('http://localhost:7777/solved/find',
+      const response = await axios.post('http://localhost:30001/solved/find',
         {
           quizId: quizId
         });

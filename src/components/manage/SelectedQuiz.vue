@@ -84,7 +84,7 @@
       const token = localStorage.getItem('token');
       if (token) {
         axios.defaults.headers.common['Authorization'] = token;
-        const response = await axios.get('http://localhost:7777/manage/findSelectedQuiz');
+        const response = await axios.get('http://localhost:30001/manage/findSelectedQuiz');
         selectedQuizList.value = response.data;
       } else {
         alert("잘못된 접근입니다.");

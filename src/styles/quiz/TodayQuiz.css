@@ -173,3 +173,7 @@
 .dark-mode .progress-bar {
   background-color: #007bff;
 }
+
+.dark-mode .result-title {
+  color: #444444;
+}

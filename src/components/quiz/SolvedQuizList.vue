@@ -34,7 +34,6 @@ const router = useRouter();
 const selectedDate = ref(new Date());
 const solvedList = ref(null);
 const noQuizMessage = ref(null);
-const userId = ref(1);//localStorage.getItem;
 
 onMounted(fetchSolvedQuizList);
 
@@ -46,7 +45,6 @@ async function fetchSolvedQuizList() {
       axios.defaults.headers.common['Authorization'] = token;
       const response = await axios.post('http://localhost:7777/solved/find/allByDate',
         {
-          userId: userId.value,
           solvedDate: formatDate(selectedDate.value)
         });
       solvedList.value = response.data;

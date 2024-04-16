@@ -60,7 +60,6 @@ const route = useRoute();
 const router = useRouter();
 const quizId = route.params.id;
 const quiz = ref(null);
-const userId = ref(1);
 
 const optionText = ["A", "B", "C", "D"];
 
@@ -74,7 +73,6 @@ async function fetchSolvedQuiz() {
       axios.defaults.headers.common['Authorization'] = token;
       const response = await axios.post('http://localhost:7777/solved/find',
         {
-          userId: userId.value,
           quizId: quizId
         });
         quiz.value = response.data;

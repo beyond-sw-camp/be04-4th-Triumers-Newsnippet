@@ -112,9 +112,13 @@
     margin: 20px;
 }
 .pagination *{
-    color: #727896;
+    color: #72789690;
 }
 
 .pagination *:hover{
+    color: #393B63;
+}
+
+.nowPage{
     color: #393B63;
 }

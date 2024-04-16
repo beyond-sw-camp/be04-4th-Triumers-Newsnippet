@@ -44,8 +44,8 @@
         </template>
         <ul class="pagination justify-content-center">
             <template v-for="num in totalPage">
-            <li class="page-item" @click="changePage(num)">
-                <a class="page-link">{{ num }}</a>
+            <li class="page-item" @click="changePage(num)" >
+                <a class="page-link" :class="{nowPage: num === now}">{{ num }}</a>
             </li>
             </template>
         </ul>
@@ -55,7 +55,6 @@
             <p id="noData">문제 데이터가 없습니다.</p>
         </div>
     </div>
-
 
 </template>
 
@@ -70,6 +69,7 @@ const pageQuizList = ref([]);
 const isLoading = ref(false);
 const totalPage = ref(1);
 const pageLength = 5;
+const now = ref(1);
 
 onMounted(async () => {
 
@@ -108,6 +108,7 @@ async function getCrawlingQuizListByDate() {
 }
 
 async function changePage(page) {
+    now.value = page;
     pageQuizList.value = crawlingQuizList.value.slice((page-1)*pageLength, page*pageLength);
 }
 

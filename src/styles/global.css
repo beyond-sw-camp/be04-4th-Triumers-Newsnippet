@@ -4,9 +4,14 @@
 :root {
     --text-color: #393B63;
   }
-  
+
   .light-mode .header .menu-item {
     color: var(--text-color);
+    background-color: #fffcde;
+  }
+
+  .light-mode{
+    background-color: #fffcde;
   }
   
   /* 다크 모드 스타일 */
@@ -64,7 +69,7 @@
     margin: 0;
     padding: 0;
     background-size: 100vh;
-    background-color: #FFFBF8;
+    background-color: #fffbe6;
     min-height: 100vh;
     height: auto;
   }

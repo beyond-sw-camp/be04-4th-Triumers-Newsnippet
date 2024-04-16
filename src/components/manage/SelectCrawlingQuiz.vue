@@ -1,9 +1,12 @@
 <template>
     <input id="dateInput" type="date" v-model="date" @update:model-value="getCrawlingQuizListByDate" />
 
-    <div v-if="crawlingQuizList && !isLoading" class="crawlingQuiz-container">
-        <template v-for="(crawlingQuiz, index) in pageQuizList" :key="crawlingQuiz.id">
-
+    <div v-if="$store.state.isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+        <!-- 로딩 스피너 또는 로딩 표시 -->
+    </div>
+    <div v-else-if="crawlingQuizList" class="crawlingQuiz-container">
+        <template v-for="crawlingQuiz in paginatedQuizList" :key="crawlingQuiz.id">
             <div class="crawlingQuiz-item">
                 <div class="clickDiv" data-bs-toggle="collapse" :data-bs-target="`#crawling${crawlingQuiz.id}`"
                     :aria-controls="`#crawling${crawlingQuiz.id}`">
@@ -13,7 +16,7 @@
                     <p id="question"> {{ crawlingQuiz.content }} </p>
                 </div>
 
-                <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, index)"
+                <div id="selectBtn" @click.stop="changeSelect(crawlingQuiz.id, crawlingQuiz.selected)"
                     :class="{ selected: crawlingQuiz.selected, notSelected: !crawlingQuiz.selected }">
                     <p id="selected-text" v-if="crawlingQuiz.selected">출제</p>
                     <p id="notSelected-text" v-else>미출제</p>
@@ -39,89 +42,97 @@
                         {{ crawlingQuiz.explanation }}
                     </p>
                 </div>
-
             </div>
         </template>
-        <ul class="pagination justify-content-center">
-            <template v-for="num in totalPage">
-            <li class="page-item" @click="changePage(num)" >
-                <a class="page-link" :class="{nowPage: num === now}">{{ num }}</a>
-            </li>
+
+        <div class="pagination">
+            <button @click="goToFirstPage" :disabled="currentPage === 1">&lt;&lt;</button>
+            <button @click="previousPageGroup" :disabled="currentPage === 1">&lt;</button>
+            <template v-for="pageNumber in visiblePageNumbers" :key="pageNumber">
+                <button @click="goToPage(pageNumber)" :class="{ active: pageNumber === currentPage }">
+                    {{ pageNumber }}
+                </button>
             </template>
-        </ul>
+            <button @click="nextPageGroup" :disabled="currentPage === totalPages">&gt;</button>
+            <button @click="goToLastPage" :disabled="currentPage === totalPages">&gt;&gt;</button>
+        </div>
     </div>
     <div v-else class="crawlingQuiz-container">
         <div id="noData-div">
             <p id="noData">문제 데이터가 없습니다.</p>
         </div>
     </div>
-
 </template>
 
-
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from 'axios';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const date = ref('');
 const crawlingQuizList = ref(null);
-const pageQuizList = ref([]);
-const isLoading = ref(false);
-const totalPage = ref(1);
-const pageLength = 5;
-const now = ref(1);
+
+const currentPage = ref(1);
+const pageSize = 10;
+const pageGroupSize = 10;
+
+const paginatedQuizList = computed(() => {
+    const startIndex = (currentPage.value - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return crawlingQuizList.value ? crawlingQuizList.value.slice(startIndex, endIndex) : [];
+});
+
+const totalPages = computed(() => {
+    return crawlingQuizList.value ? Math.ceil(crawlingQuizList.value.length / pageSize) : 0;
+});
+
+const visiblePageNumbers = computed(() => {
+    const startPage = Math.floor((currentPage.value - 1) / pageGroupSize) * pageGroupSize + 1;
+    const endPage = Math.min(startPage + pageGroupSize - 1, totalPages.value);
+    return Array(endPage - startPage + 1)
+        .fill()
+        .map((_, index) => startPage + index);
+});
 
 onMounted(async () => {
-
     const getDate = () => {
-        const today = new Date;
+        const today = new Date();
         const year = today.getFullYear();
         const month = ('0' + (today.getMonth() + 1)).slice(-2);
         const day = ('0' + today.getDate()).slice(-2);
-
         return year + "-" + month + "-" + day;
-    }
+    };
     date.value = getDate();
     await getCrawlingQuizListByDate();
 });
 
 async function getCrawlingQuizListByDate() {
-    isLoading.value = true;
+    store.commit('setLoading', true);
     try {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
             const response = await axios.post('http://localhost:7777/manage/findCrawlingQuiz', { date: date.value });
             crawlingQuizList.value = response.data;
-
-            totalPage.value = Math.ceil(crawlingQuizList.value.length / pageLength);
-            await changePage(1);
         } else {
             alert("잘못된 접근입니다.");
         }
     } catch (error) {
         crawlingQuizList.value = null;
     } finally {
-        isLoading.value = false;
+        store.commit('setLoading', false);
     }
-    
 }
 
-async function changePage(page) {
-    now.value = page;
-    pageQuizList.value = crawlingQuizList.value.slice((page-1)*pageLength, page*pageLength);
-}
-
-async function changeSelect(id, index) {
-
-    const isSelected = !pageQuizList.value[index].selected;
-
-    if (isSelected)
-        addQuiz(id)
-    else
-        deleteQuiz(id);
-
-        pageQuizList.value[index].selected = isSelected;
+async function changeSelect(id, isSelected) {
+    if (isSelected) {
+        await deleteQuiz(id);
+    } else {
+        await addQuiz(id);
+    }
+    await getCrawlingQuizListByDate();
 }
 
 async function addQuiz(id) {
@@ -129,7 +140,7 @@ async function addQuiz(id) {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
-            const response = await axios.get(`http://localhost:7777/manage/addQuiz/${id}`);
+            await axios.get(`http://localhost:7777/manage/addQuiz/${id}`);
         } else {
             alert("잘못된 접근입니다.");
         }
@@ -143,13 +154,33 @@ async function deleteQuiz(id) {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = token;
-            const response = await axios.delete(`http://localhost:7777/manage/deleteQuiz/${id}`);
+            await axios.delete(`http://localhost:7777/manage/deleteQuiz/${id}`);
         } else {
             alert("잘못된 접근입니다.");
         }
     } catch (error) {
         alert("문제 삭제에 실패했습니다.");
     }
+}
+
+function goToFirstPage() {
+    currentPage.value = 1;
+}
+
+function goToLastPage() {
+    currentPage.value = totalPages.value;
+}
+
+function previousPageGroup() {
+    currentPage.value = Math.max(currentPage.value - pageGroupSize, 1);
+}
+
+function nextPageGroup() {
+    currentPage.value = Math.min(currentPage.value + pageGroupSize, totalPages.value);
+}
+
+function goToPage(pageNumber) {
+    currentPage.value = pageNumber;
 }
 
 const categoryColors = [
@@ -161,9 +192,9 @@ const categoryColors = [
 const getCategoryColor = (categoryId) => {
     return categoryColors[categoryId] || '#D9D9D9';
 };
-
 </script>
 
 <style scoped>
 @import url('@/styles/manage/QuizList.css');
+
 </style>

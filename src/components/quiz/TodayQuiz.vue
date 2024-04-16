@@ -1,9 +1,12 @@
 <template>
   <div>
     <Header :isLoggedIn="true"></Header>
-    <div class="quiz-container">
+    <div v-if="$store.state.isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+    <!-- 로딩 스피너 또는 로딩 표시 -->
+    </div>
+    <div v-else class="quiz-container">
       <div v-if="currentStep === 1">
-        <!-- 문제 및 선택지 표시 -->
         <div class="quiz-info">
           <span class="date">{{ currentQuiz.date }}</span>
           <span class="category"> {{ currentQuiz.categoryName }}</span>
@@ -93,6 +96,9 @@
 import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
 import Header from '@/views/Header.vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const quizzes = ref([]);
 const currentQuizIndex = ref(0);
@@ -102,9 +108,10 @@ const correctCount = ref(0);
 const currentStep = ref(1);
 const isCorrect = ref(false);
 
-// const userId = ref(null); // 사용자 ID를 가져오는 로직이 필요합니다.
 
 const fetchQuizzes = async () => {
+
+  store.commit('setLoading', true);
 
   try {
     const token = localStorage.getItem('token');
@@ -120,6 +127,8 @@ const fetchQuizzes = async () => {
     }
   } catch (error) {
     console.error('문제 데이터 가져오기 실패:', error);
+  } finally {
+    store.commit('setLoading', false);
   }
 };
 
@@ -140,6 +149,7 @@ const setCurrentQuiz = () => {
 
 const checkAnswerCorrectness = async () => {
 
+  store.commit('setLoading', true);
   try {
     const token = localStorage.getItem('token');
     if (token) {
@@ -160,6 +170,8 @@ const checkAnswerCorrectness = async () => {
     }
   } catch (error) {
     console.error('정답 확인 및 저장 실패:', error);
+  } finally {
+    store.commit('setLoading', false);
   }
 };
 

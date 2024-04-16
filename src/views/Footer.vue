@@ -9,8 +9,8 @@
         <div class="footer-content">
         <div class="footer-links">
           <router-link to="/" class="footer-link">메인 화면</router-link>
-          <router-link to="/policy-service" class="footer-link">이용약관</router-link>
           <router-link to="/policy-about" class="footer-link">서비스 소개</router-link>
+          <router-link to="/policy-service" class="footer-link">이용약관</router-link>
           <router-link to="/policy-privacy" class="footer-link">개인정보 처리방침</router-link>
         </div>
       </div>

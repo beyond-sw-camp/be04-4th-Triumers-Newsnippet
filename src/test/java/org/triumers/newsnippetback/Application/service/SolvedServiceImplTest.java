@@ -1,29 +1,53 @@
 package org.triumers.newsnippetback.Application.service;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.triumers.newsnippetback.common.exception.UserNotFoundException;
 import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
+import org.triumers.newsnippetback.domain.aggregate.entity.User;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedResultRequest;
 import org.triumers.newsnippetback.Application.dto.SolvedDTO;
+import org.triumers.newsnippetback.domain.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest
 class SolvedServiceImplTest {
+
+    private final int TEST_QUIZ_ID = 1;
+    private final String TEST_RIGHT_OPTION = "C";
+    private final String TEST_WRONG_OPTION = "A";
+
     @Autowired
     private SolvedService solvedService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private PlatformTransactionManager transactionManager;
+
+    @BeforeEach
+    void setUserToken() {
+        setUserToContextByUsername();
+    }
 
     @AfterEach
     void rollback() {
@@ -105,5 +129,54 @@ class SolvedServiceImplTest {
 
         // Then
         Assertions.assertNotNull(solvedList);
+    }
+
+    @DisplayName("퀴즈 정답 제출시 유저 정보 업데이트 테스트")
+    @Test
+    @Transactional
+    void userInfoUpdateWhenCorrect() throws UserNotFoundException {
+        // given
+        User user = userRepository.findByEmail(userService.findByToken().getEmail());
+        int solvedCnt = user.getSolvedCnt();
+        int correctCnt = user.getCorrectCnt();
+        SolvedRequest request = new SolvedRequest(user.getId(), TEST_QUIZ_ID);
+        request.setSolvedDate(LocalDate.now());
+        request.setSelectedOption(TEST_RIGHT_OPTION);
+
+        // when
+        solvedService.findSelectedOptionAndCompareAnswer(request);
+        user = userRepository.findByEmail(userService.findByToken().getEmail());
+
+        // then
+        assertEquals(solvedCnt + 1, user.getSolvedCnt());
+        assertEquals(correctCnt + 1, user.getCorrectCnt());
+    }
+
+    @DisplayName("퀴즈 오답 제출시 유저 정보 업데이트 테스트")
+    @Test
+    @Transactional
+    void userInfoUpdateWhenWrong() throws UserNotFoundException {
+        // given
+        User user = userRepository.findByEmail(userService.findByToken().getEmail());
+        int solvedCnt = user.getSolvedCnt();
+        int correctCnt = user.getCorrectCnt();
+        SolvedRequest request = new SolvedRequest(user.getId(), TEST_QUIZ_ID);
+        request.setSolvedDate(LocalDate.now());
+        request.setSelectedOption(TEST_WRONG_OPTION);
+
+        // when
+        solvedService.findSelectedOptionAndCompareAnswer(request);
+        user = userRepository.findByEmail(userService.findByToken().getEmail());
+
+        // then
+        assertEquals(solvedCnt + 1, user.getSolvedCnt());
+        assertEquals(correctCnt, user.getCorrectCnt());
+    }
+
+    private void setUserToContextByUsername() {
+        CustomUserDetailsService customUserDetailsService = new CustomUserDetailsService(userRepository);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("test@gmail.com");
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()));
     }
 }

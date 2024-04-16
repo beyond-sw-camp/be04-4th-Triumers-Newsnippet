@@ -17,9 +17,9 @@ import org.triumers.newsnippetback.domain.aggregate.enums.Provider;
 import org.triumers.newsnippetback.domain.aggregate.vo.RequestModifyPasswordVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.RequestUserVO;
 import org.triumers.newsnippetback.domain.aggregate.vo.ResponseMessageVO;
-import org.triumers.newsnippetback.domain.dto.AuthDTO;
-import org.triumers.newsnippetback.domain.dto.PasswordDTO;
-import org.triumers.newsnippetback.domain.dto.UserDTO;
+import org.triumers.newsnippetback.Application.dto.AuthDTO;
+import org.triumers.newsnippetback.Application.dto.PasswordDTO;
+import org.triumers.newsnippetback.Application.dto.UserDTO;
 
 @RestController
 @RequestMapping("/auth")

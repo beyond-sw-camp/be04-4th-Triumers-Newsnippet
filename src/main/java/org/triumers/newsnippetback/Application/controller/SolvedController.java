@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.triumers.newsnippetback.Application.service.SolvedService;
 import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
 import org.triumers.newsnippetback.domain.aggregate.vo.*;
-import org.triumers.newsnippetback.domain.dto.SolvedDTO;
+import org.triumers.newsnippetback.Application.dto.SolvedDTO;
 
 import java.util.List;
 import java.util.NoSuchElementException;

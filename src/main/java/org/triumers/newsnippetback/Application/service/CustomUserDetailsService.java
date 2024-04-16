@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
-import org.triumers.newsnippetback.domain.dto.CustomUserDetails;
+import org.triumers.newsnippetback.Application.dto.CustomUserDetails;
 import org.triumers.newsnippetback.domain.repository.UserRepository;
 
 @Service

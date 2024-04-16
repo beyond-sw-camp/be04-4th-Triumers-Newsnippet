@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
 import org.triumers.newsnippetback.domain.aggregate.vo.RequestLoginVO;
-import org.triumers.newsnippetback.domain.dto.CustomUserDetails;
+import org.triumers.newsnippetback.Application.dto.CustomUserDetails;
 
 import java.io.IOException;
 import java.util.Collection;

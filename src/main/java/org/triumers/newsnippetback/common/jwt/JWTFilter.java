@@ -1,20 +1,16 @@
 package org.triumers.newsnippetback.common.jwt;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.ErrorResponseException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
-import org.triumers.newsnippetback.domain.dto.CustomUserDetails;
+import org.triumers.newsnippetback.Application.dto.CustomUserDetails;
 
 import java.io.IOException;
 

@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.triumers.newsnippetback.common.exception.UserNotFoundException;
 import org.triumers.newsnippetback.domain.aggregate.entity.User;
-import org.triumers.newsnippetback.domain.dto.UserDTO;
+import org.triumers.newsnippetback.Application.dto.UserDTO;
 import org.triumers.newsnippetback.domain.repository.UserRepository;
 
 @Service

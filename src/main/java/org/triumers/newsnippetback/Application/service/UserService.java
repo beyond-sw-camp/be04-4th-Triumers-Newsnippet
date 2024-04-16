@@ -1,7 +1,7 @@
 package org.triumers.newsnippetback.Application.service;
 
 import org.triumers.newsnippetback.common.exception.UserNotFoundException;
-import org.triumers.newsnippetback.domain.dto.UserDTO;
+import org.triumers.newsnippetback.Application.dto.UserDTO;
 
 public interface UserService {
 

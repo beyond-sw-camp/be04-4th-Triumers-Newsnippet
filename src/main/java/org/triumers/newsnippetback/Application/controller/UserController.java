@@ -12,7 +12,7 @@ import org.triumers.newsnippetback.common.exception.UserNotFoundException;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserRole;
 import org.triumers.newsnippetback.domain.aggregate.enums.UserStatus;
 import org.triumers.newsnippetback.domain.aggregate.vo.ResponseUserInfoVO;
-import org.triumers.newsnippetback.domain.dto.UserDTO;
+import org.triumers.newsnippetback.Application.dto.UserDTO;
 
 @RestController
 @RequestMapping("/user")

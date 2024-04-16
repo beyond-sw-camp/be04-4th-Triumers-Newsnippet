@@ -9,7 +9,7 @@ import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
 import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedResultRequest;
-import org.triumers.newsnippetback.domain.dto.SolvedDTO;
+import org.triumers.newsnippetback.Application.dto.SolvedDTO;
 import org.triumers.newsnippetback.domain.repository.CategoryRepository;
 import org.triumers.newsnippetback.domain.repository.QuizRepository;
 import org.triumers.newsnippetback.domain.repository.SolvedRepository;

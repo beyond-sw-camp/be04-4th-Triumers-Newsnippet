@@ -12,7 +12,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.triumers.newsnippetback.domain.aggregate.entity.Solved;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedRequest;
 import org.triumers.newsnippetback.domain.aggregate.vo.SolvedResultRequest;
-import org.triumers.newsnippetback.domain.dto.SolvedDTO;
+import org.triumers.newsnippetback.Application.dto.SolvedDTO;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,8 +1,8 @@
 package org.triumers.newsnippetback.Application.service;
 
 import org.triumers.newsnippetback.domain.aggregate.entity.Quiz;
-import org.triumers.newsnippetback.domain.dto.CrawlingQuizDTO;
-import org.triumers.newsnippetback.domain.dto.QuizDTO;
+import org.triumers.newsnippetback.Application.dto.CrawlingQuizDTO;
+import org.triumers.newsnippetback.Application.dto.QuizDTO;
 
 import java.time.LocalDate;
 import java.util.List;

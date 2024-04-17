@@ -1,0 +1,179 @@
+.quiz-container {
+    max-width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    transition: max-width 0.5s ease;
+    /* 부드러운 너비 전환 애니메이션 추가 */
+  }
+  
+  /* 기본 스타일링은 유지하되 색상 조정 */
+  .next-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #727896;
+    /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    /* 텍스트 색상 변경 */
+  }
+  
+  /* 마우스 호버 효과 추가 */
+  .next-btn:hover {
+    background-color: #393B63;
+  }
+  
+  /* 선택된 옵션에 대한 스타일링 추가 */
+  .option.selected {
+    background-color: #e0e0e0;
+    /* 기존의 #ebe4b6 대신 새로운 색상 사용 */
+    font-weight: bold;
+  }
+  
+  .quiz-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  /* .question {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  } */
+  
+  /* 폰트 및 텍스트 스타일 개선 */
+  .question {
+    font-size: 1.4rem;
+    /* 폰트 크기를 더 크게 조정 */
+    line-height: 1.5;
+    /* 줄간격을 조정하여 가독성 향상 */
+    margin: 30px auto;
+  }
+  
+  
+  .options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .option {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* .option.selected {
+    background-color: #ebe4b6;
+    font-weight: bold;
+  } */
+  
+  .option.correct {
+    background-color: #d4edda;
+    border: 3px solid #155724;
+    color: #155724;
+  }
+  
+  .option.incorrect {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .answer-label {
+    font-weight: bold;
+  }
+  
+  .explanation {
+    margin-top: 20px;
+  }
+  
+  .source-link {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .next-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #727896;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* .progress {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  } */
+  
+  .progress-text {
+    margin-right: 10px;
+  }
+  
+  .progress-bar {
+    background-color: #727896;
+    border-radius: 10px;
+  }
+  
+  .category {
+    width: 100px;
+    padding: 3px 0px;
+    margin-left: 100px;
+    border-radius: 50px;
+    background-color: #D9D9D9;
+    text-align: center;
+  }
+  
+  .result-step {
+    width: 300px;
+    margin: auto;
+    min-height: 300px;
+    border-radius: 20px;
+    background-color: #F4F3F6;
+    padding: 20px;
+  }
+  
+  .result-title {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  #result-text{
+    text-align: center;
+  }
+  
+  .totalCount{
+    margin: 30px 0px;
+    color: #393B63;
+  }
+  
+  .correctCount,
+  .incorrectCount{
+    font-size: 15px;
+    color: #727896;
+  }
+
+
+
+/* 다크 모드 스타일 */
+.dark-mode .progress {
+  background-color: #444444;
+}
+
+.dark-mode .progress-text {
+  color: #ffffff;
+}
+
+.dark-mode .progress-bar {
+  background-color: #007bff;
+}
+
+.dark-mode .result-title {
+  color: #444444;
+}

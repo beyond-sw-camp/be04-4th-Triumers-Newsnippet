@@ -1,0 +1,30 @@
+#manageQuizMenu{
+    margin: 20px 0px;
+}
+
+#selectQuiz, #selectedQuiz{
+    margin: 10px;
+    padding: 5px 10px;
+    background-color: #FFFFFF;
+    color: black;
+    text-decoration: none;
+    border-radius: 30px;
+}
+
+.active{
+    transition: all 0.3s;
+    box-shadow: 3px 3px lightgray;
+    border: 1px solid black;
+}
+
+#wrapper{
+    width: 800px;
+    margin: 30px auto;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#manage-title{
+    font-size: 20px;
+    font-weight: bold;
+}

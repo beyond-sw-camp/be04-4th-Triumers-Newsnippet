@@ -317,13 +317,19 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <br>
 
 
-# 4. CI/CD
-## Github Action(TDD): CI
+# 4. CI/CD 및 빌드 배포 문서
+- Github Action(TDD): CI
+- Jenkins: CD
 
-## Jenkins: CD
-
-## 빌드 배포 문서
-
+<details>
+<summary> 📑 빌드 배포 문서 바로가기 </summary>
+<br>
+	
+[빌드 배포 문서 PDF]()
+<br>
+<img src=".\docs\빌드배포문서1.png">
+<img src=".\docs\빌드배포문서2.png">
+</details>
 
 
 ---

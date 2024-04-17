@@ -1,6 +1,6 @@
 
 <div align=center>
-<img src="로고 넣기">
+<img src=".\docs\로고.png">
 </div>
 
 

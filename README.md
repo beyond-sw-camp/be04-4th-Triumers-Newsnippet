@@ -249,7 +249,8 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 📑 API 설계서 </summary>
-[API 설계서]("pdf 링크 복사해서 넣기")
+[Back API 설계서]("https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/back_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf")
+[GPT SERVER API 설계서]("https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/gpt_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf")
 <br>
 <img src=".\docs\back_API_설계서.jpg">
 <img src=".\docs\gpt_API_설계서.png">

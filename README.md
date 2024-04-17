@@ -302,8 +302,11 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 📑 피그마 바로가기 </summary>
-
+<br>
+	
+[피그마 바로가기](https://www.figma.com/file/Rk90igjPS2nmfXEUc8bWlR/Newsnippet?type=design&node-id=5%3A117424&mode=design&t=SbNkaj8K4HfIRSHB-1)
 </details>
+<br>
 
 <details>
 <summary> 📑 실제 구현 화면 </summary>

@@ -310,7 +310,33 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 📑 실제 구현 화면 </summary>
-<img src=".\docs\Newsnippet.gif">
+	<div align=center>
+<br>
+		
+	회원
+<img src=".\docs\newsnippet_user.gif">
+
+<br>
+<br>
+<br>
+
+	문제
+<img src=".\docs\newsnippet_quiz.gif">
+
+<br>
+<br>
+<br>
+
+	관리
+<img src=".\docs\newsnippet_manage.gif">
+
+<br>
+<br>
+<br>
+
+	Footer
+<img src=".\docs\newsnippet_footer.gif">
+	</div>
 </details>
 
 ---

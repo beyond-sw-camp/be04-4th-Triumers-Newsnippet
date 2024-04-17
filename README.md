@@ -218,14 +218,18 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 📑 요구사항 명세서 </summary>
-[요구사항 명세서]("파일 링크 복사해서 넣기")
+<br>
+	
+[요구사항 명세서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EB%AA%85%EC%84%B8%EC%84%9C.pdf)
 <br>
 <img src=".\docs\요구사항명세서.jpg">
 </details>
 
 <details>
 <summary> 📑 기능 명세서 </summary>
-[기능 명세서]("파일 링크 복사해서 넣기")
+<br>
+	
+[기능 명세서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf)
 <br>
 <img src=".\docs\기능명세서.jpg">
 </details>
@@ -242,15 +246,22 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 📑 테이블 정의서 </summary>
-[테이블 정의서]("pdf 파일 링크 복사해서 넣기")
+<br>
+	
+[테이블 정의서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%ED%85%8C%EC%9D%B4%EB%B8%94%EC%A0%95%EC%9D%98%EC%84%9C.pdf)
 <br>
 <img src=".\docs\테이블정의서.jpeg">
 </details>
 
 <details>
 <summary> 📑 API 설계서 </summary>
-[Back API 설계서]("https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/back_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf")
-[GPT SERVER API 설계서]("https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/gpt_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf")
+<br>
+	
+[Back API 설계서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/back_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf)
+<br>
+
+[GPT SERVER API 설계서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/gpt_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf)
+	
 <br>
 <img src=".\docs\back_API_설계서.jpg">
 <img src=".\docs\gpt_API_설계서.png">
@@ -258,7 +269,9 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 📑 단위 테스트 결과 보고서 </summary>
-[테스트케이스]("pdf 링크 복사해서 넣기")
+<br>
+	
+[테스트케이스 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BC%80%EC%9D%B4%EC%8A%A4.pdf)
 <br>
 <img src=".\docs\테스트케이스.jpg">
 </details>
@@ -271,26 +284,30 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 # 3. UI
 <details>
 <summary> 📑 메뉴 구조도 </summary>
-[화면 설계서]("pdf 파일 링크 복사해서 넣기")
+<br>
+	
+[메뉴 구조 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%EB%A9%94%EB%89%B4%EA%B5%AC%EC%A1%B0%EB%8F%84.pdf)
 <br>
 <img src=".\docs\메뉴구조도.jpg">
 </details>
 
 <details>
 <summary> 📑 화면 설계서 </summary>
-[화면 설계서]("pdf 파일 링크 복사해서 넣기")
+<br>
+	
+[화면 설계서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%ED%99%94%EB%A9%B4%EC%84%A4%EA%B3%84%EC%84%9C.pdf)
 <br>
 <img src=".\docs\화면설계서.png">
 </details>
 
 <details>
 <summary> 📑 피그마 바로가기 </summary>
-[피그마]("pdf 파일 링크 복사해서 넣기")
+
 </details>
 
 <details>
 <summary> 📑 실제 구현 화면 </summary>
-[실제 구현 화면]("")
+<img src=".\docs\Newsnippet.gif">
 </details>
 
 ---

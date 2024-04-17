@@ -233,21 +233,21 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 <details>
 <summary> 테이블 정의서 </summary>
-[기능 명세서]("파일 링크 복사해서 넣기")
+[테이블 정의서]("pdf 파일 링크 복사해서 넣기")
 <br>
 <img src="사진 넣을 거면 넣기">
 </details>
 
 <details>
 <summary> API 명세서 </summary>
-[기능 명세서]("파일 링크 복사해서 넣기")
+[API 명세서]("pdf 링크 복사해서 넣기")
 <br>
 <img src="사진 넣을 거면 넣기">
 </details>
 
 <details>
 <summary> 단위 테스트 결과 보고서 </summary>
-[기능 명세서]("파일 링크 복사해서 넣기")
+[단위 테스트 결과 보고서]("pdf 링크 복사해서 넣기")
 <br>
 <img src="사진 넣을 거면 넣기">
 </details>
@@ -260,14 +260,14 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 # 3. UI
 <details>
 <summary> 화면 설계서 </summary>
-[화면 설계서]("파일 링크 복사해서 넣기")
+[화면 설계서]("pdf 파일 링크 복사해서 넣기")
 <br>
 <img src="사진 넣을 거면 넣기">
 </details>
 
 <details>
 <summary> 피그마 바로가기 </summary>
-[피그마]("파일 링크 복사해서 넣기")
+[피그마]("pdf 파일 링크 복사해서 넣기")
 </details>
 
 

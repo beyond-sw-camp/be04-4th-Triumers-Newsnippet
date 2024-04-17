@@ -317,7 +317,7 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <br>
 
 
-# 4. CI/CD 및 빌드 배포 문서
+# 4. CI/CD
 - Github Action(TDD): CI
 - Jenkins: CD
 
@@ -325,7 +325,7 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <summary> 📑 빌드 배포 문서 바로가기 </summary>
 <br>
 	
-[빌드 배포 문서 PDF]()
+[빌드 배포 문서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/CI_CD_%EB%B9%8C%EB%93%9C_%EB%B0%B0%ED%8F%AC_%EB%AC%B8%EC%84%9C.pdf)
 <br>
 <img src=".\docs\빌드배포문서1.png">
 <img src=".\docs\빌드배포문서2.png">

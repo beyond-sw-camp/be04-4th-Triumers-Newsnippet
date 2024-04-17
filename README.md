@@ -252,14 +252,14 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 [API 설계서]("pdf 링크 복사해서 넣기")
 <br>
 <img src=".\docs\back_API_설계서.jpg">
-<img src=".\docs\gpt_API_설계서.jpg">
+<img src=".\docs\gpt_API_설계서.png">
 </details>
 
 <details>
 <summary> 📑 단위 테스트 결과 보고서 </summary>
-[단위 테스트 결과 보고서]("pdf 링크 복사해서 넣기")
+[테스트케이스]("pdf 링크 복사해서 넣기")
 <br>
-<img src="사진 넣을 거면 넣기">
+<img src=".\docs\테스트케이스.jpg">
 </details>
 
 <br>
@@ -268,6 +268,13 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <br>
 
 # 3. UI
+<details>
+<summary> 📑 메뉴 구조도 </summary>
+[화면 설계서]("pdf 파일 링크 복사해서 넣기")
+<br>
+<img src=".\docs\메뉴구조도.jpg">
+</details>
+
 <details>
 <summary> 📑 화면 설계서 </summary>
 [화면 설계서]("pdf 파일 링크 복사해서 넣기")

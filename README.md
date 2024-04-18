@@ -208,7 +208,7 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 ## 💻 시스템 아키텍쳐
 <div align=center>
-<img src=".\docs\Newsnippet_시스템_아키텍처.jpg">
+<img src=".\docs\Newsnippet_시스템_아키텍처.png">
 </div>
 <br>
 

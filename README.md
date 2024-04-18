@@ -307,7 +307,6 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 	
 [피그마 바로가기](https://www.figma.com/file/Rk90igjPS2nmfXEUc8bWlR/Newsnippet?type=design&node-id=5%3A117424&mode=design&t=SbNkaj8K4HfIRSHB-1)
 </details>
-<br>
 
 <details>
 <summary> 📑 실제 구현 화면 </summary>
@@ -357,10 +356,10 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 	이러한 과정을 통해 오류가 나거나 기대하는 값을 반환하지 못하는 코드들을 필터링하여 Remote의 'develop' 브랜치를 쾌적하게 관리할 수 있습니다.
 	<br><br>
 
-	[Step]
+[Step]
 
-	1. Newsnippet-Back Repository에서 Github Action이 동작할 수 있도록 Remote 브랜치에 '.github/workflows' 경로를 추가합니다.
-	2. 해당 경로 내에 gradle.yml파일을 생성합니다.
+1. Newsnippet-Back Repository에서 Github Action이 동작할 수 있도록 Remote 브랜치에 '.github/workflows' 경로를 추가합니다.
+2. 해당 경로 내에 gradle.yml파일을 생성합니다.
 <br>
 	
 gradle.yml
@@ -423,21 +422,21 @@ gradle.yml
 	
 <img src=".\docs\github_action_secret.png">
 
-	3. 적용브랜치 및 빌드 설정을 입력한 gradle.yml파일을 	Repository에 push합니다.
-	4. 이후로 'develop' 브랜치에 push 및 pull_request에 	대한 동작이 감지되면  자동적으로 Github Action이 	동작합니다.
+3. 적용브랜치 및 빌드 설정을 입력한 gradle.yml파일을 	Repository에 push합니다.
+4. 이후로 'develop' 브랜치에 push 및 pull_request에 	대한 동작이 감지되면  자동적으로 Github Action이 	동작합니다.
 <br>
 Fail한 경우
 
 <img src=".\docs\github_action_fail.png">
 
-	Test가 실패하는 경우 빌드가 되지않으며 'develop' 브랜치에 반영되지않습니다.
+Test가 실패하는 경우 빌드가 되지않으며 'develop' 브랜치에 반영되지않습니다.
 
 <br>
 Success한 경우
 
 <img src=".\docs\github_action_success.png">
 
-	정상적으로 수정사항이 'develop' 브랜치에 반영됩니다.
+정상적으로 수정사항이 'develop' 브랜치에 반영됩니다.
 
 <br>
 
@@ -452,10 +451,10 @@ Github Action에서 Pass된 접근에 대하여 Github WebHook을 통해 Jenkins
 Pass된 변경사항들은 Jenkins에서 설정해둔 Docker 이미지 최신화 코드를 통해 Docker hub에 새롭게 갱신되고 컨테이너도 업데이트 되어 변경사항이 자동 반영되어 배포됩니다.
 <br><br>
 
-	[Step]
+[Step]
 
 
-	1. Kubernetese의 매니페스트 설정을 통해 Docker 이미지를 등록하고 Pod의 deployments와 services에 새로 변경한 사항을 반영시키기 위해 Dockerfile을 다음과 같이 수정합니다.
+1. Kubernetese의 매니페스트 설정을 통해 Docker 이미지를 등록하고 Pod의 deployments와 services에 새로 변경한 사항을 반영시키기 위해 Dockerfile을 다음과 같이 수정합니다.
 
 Dockerfile
 ---
@@ -471,21 +470,22 @@ Dockerfile
 	 zip \
 	 unzip \
 	 software-properties-common && \
-	curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo 	"$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
+	curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
 	 add-apt-repository \
-	 "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; 	echo "$ID") \
+	 "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; 	
+  	echo "$ID") \
 	 $(lsb_release -cs) \
 	 stable" && \
 	 apt-get update && \
 	 apt-get -y install docker-ce
 
 	# docker-compose 설치
-	RUN curl -L "https://github.com/docker/compose/releases/download/1.28.5/	docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/	docker-compose && \
+	RUN curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
 	    chmod +x /usr/local/bin/docker-compose && \
 	    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 <br>
 
-	2. 그리고 docker-compose.yml파일을 생성해 줍니다.
+2. 그리고 docker-compose.yml파일을 생성해 줍니다.
 
 docker-compose.yml
 ---
@@ -508,28 +508,29 @@ docker-compose.yml
 	      - '/var/run/docker.sock:/var/run/docker.sock'
 <br>
 
-	3. 프로젝트 경로에서 'docker-compose up --build'를 실행하여 Docker 이미지를 만들고 컨테이너를 실행합니다.
+3. 프로젝트 경로에서 'docker-compose up --build'를 실행하여 Docker 이미지를 만들고 컨테이너를 실행합니다.
+
 <br>
 <img src="./docs/jenkins_docker.png">
 <br><br>
 
-	4. 실행되고 있는 Docker 컨테이너의 연결 포트인 localhost:8080으로 접속하여 	Jenkins 설정 페이지에 접근합니다.
+4. 실행되고 있는 Docker 컨테이너의 연결 포트인 localhost:8080으로 접속하여 Jenkins 설정 페이지에 접근합니다.
 
-	5. Jenkins에 ssh보안 설정을 위해 Jenkins가 동작하고 있는 Docker 컨테이너에 접속합니다.
+5. Jenkins에 ssh보안 설정을 위해 Jenkins가 동작하고 있는 Docker 컨테이너에 접속합니다.
 
-	6. 컨테이너 내에서 발급받은 'ssh-jenkins-github--key'와 'ssh-jenkins-github--key.pub'를 Jenkins의 Security와 Credentials 설정에 추가해줍니다.
+6. 컨테이너 내에서 발급받은 'ssh-jenkins-github--key'와 'ssh-jenkins-github--key.pub'를 Jenkins의 Security와 Credentials 설정에 추가해줍니다.
 
-	7. 그리고 Jenkins가 해당 Repository에 접근 가능하도록 Github Repository의 	Setting > Deploy keys에 'ssh-jenkins-github--key.pub'의 값을 추가합니다.
+7. 그리고 Jenkins가 해당 Repository에 접근 가능하도록 Github Repository의 Setting > Deploy keys에 'ssh-jenkins-github--key.pub'의 값을 추가합니다.
 
-	8. Github Webhook을 통해 Jenkins에서 Repository 변화를 감지할 수 있도록 Webhook을 설정합니다.
+8. Github Webhook을 통해 Jenkins에서 Repository 변화를 감지할 수 있도록 Webhook을 설정합니다.
 <br>
 <img src="./docs/ngrok.png">
-	※ ngrok을 통해 Jenkins 컨테이너를 외부에서 접속할 수 있도록 터널링을 진행합니다.	<br>(해당 URL은 Github Webhook의 URL로 설정)
+※ ngrok을 통해 Jenkins 컨테이너를 외부에서 접속할 수 있도록 터널링을 진행합니다.	<br>(해당 URL은 Github Webhook의 URL로 설정)
 <br><br>
 
-	9. Github의 Repository와 Jenkins 컨테이너와의 통신을 위한 설정을 마쳤으니 	Pipeline을 새로 추가합니다.
+9. Github의 Repository와 Jenkins 컨테이너와의 통신을 위한 설정을 마쳤으니 Pipeline을 새로 추가합니다.
 
-	10. Pipeline의 설정에서 Github Webhook 설정을 체크하고 Script를 작성합니다.
+10. Pipeline의 설정에서 Github Webhook 설정을 체크하고 Script를 작성합니다.
 
 Jenkins-Pipeline-Script
 ---
@@ -557,12 +558,12 @@ Jenkins-Pipeline-Script
 	        stage('Source Build') {
 	            steps {
 	                // 소스파일 체크아웃
-	                git branch: 'main', url: 'https://github.com/Triumers/	Newsnippet-Back.git'
+	                git branch: 'main', url: 'https://github.com/Triumers/Newsnippet-Back.git'
 
 	                // 소스 빌드
 	                // 755권한 필요 (윈도우에서 Git으로 소스 업로드시 권한은 644)
 	                sh "chmod +x ./gradlew"
-	                sh "./gradlew build -P jasypt.encryptor.	password='jasypt_password'"
+	                sh "./gradlew build -P jasypt.encryptor.password='jasypt_password'"
 	            }
 	        }
 	        stage('Container Build') {
@@ -575,7 +576,7 @@ Jenkins-Pipeline-Script
 	                sh "docker build -t ${DOCKERHUB_USERNAME}/newsnippet-back .	"
 
 	                // docker hub로 push
-	                withCredentials([usernamePassword(credentialsId: 	'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USER', 	passwordVariable: 'DOCKERHUB_PASS')]) {
+	                withCredentials([usernamePassword(credentialsId:'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
 	                    sh "echo $DOCKERHUB_PASS | docker login --username 	$DOCKERHUB_USER --password-stdin"
 	                    sh "docker push ${DOCKERHUB_USERNAME}/newsnippet-back"
 	                }

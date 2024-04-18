@@ -345,23 +345,251 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 
 
 # 4. CI/CD
-- Github Action(TDD): CI
-- Jenkins: CD
 
 <details>
-<summary> 📑 빌드 배포 문서 바로가기 </summary>
+<summary> CI: Github Action(TDD) </summary>
+<br>
+	Newsnippet 서비스를 개발하는 과정에서 Github Action을 통해 TDD 개발을 할 수 있는 CI 환경을 구축하고자 했습니다.
+	<br><br>
+	<img src=".\docs\github_action.png">
+	<br><br>
+	'develop' 브랜치 하위 브랜치에서 기능 별 생성한 Test Code의 Pass여부에 따라 Remote의 'develop' 브랜치에 대한 접근 가능여부를 Github Action이 자동적으로 판단할 수 있습니다. 
+	이러한 과정을 통해 오류가 나거나 기대하는 값을 반환하지 못하는 코드들을 필터링하여 Remote의 'develop' 브랜치를 쾌적하게 관리할 수 있습니다.
+	<br><br>
+
+	[Step]
+
+	1. Newsnippet-Back Repository에서 Github Action이 동작할 수 있도록 Remote 브랜치에 '.github/workflows' 경로를 추가합니다.
+	2. 해당 경로 내에 gradle.yml파일을 생성합니다.
 <br>
 	
-[빌드 배포 문서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/CI_CD_%EB%B9%8C%EB%93%9C_%EB%B0%B0%ED%8F%AC_%EB%AC%B8%EC%84%9C.pdf)
+gradle.yml
+---
+	name: Java CI with Gradle
+	on:
+ 		push:
+    		branches: [ "develop" ]	
+  		pull_request:
+    		branches: [ "develop" ]
+
+	jobs:
+  		build:
+
+    		runs-on: ubuntu-latest
+    		permissions:
+      			contents: read
+
+    		steps:
+      			- uses: actions/checkout@v4
+     			- name: Set up JDK
+        			uses: actions/setup-java@v4
+        			with:
+        		  		java-version: '17'
+        		  		distribution: 'corretto'
+
+      			- name: Setup Gradle
+      			  uses: gradle/actions/setup-gradle@v3
+
+      			- name: Build with Gradle
+      	  		  run: ./gradlew build
+      	  		  env:
+      	  			  DB_URL: DB URL = ${{ secrets.DB_URL }}
+      	  			  DB_USER_NAME: USER = ${{ secrets.DB_USER_NAME }}
+      	  			  DB_PASSWORD: PSW = ${{ secrets.DB_PASSWORD }}
+
+
+  	dependency-submission:
+
+    	runs-on: ubuntu-latest
+    	permissions:
+      		contents: write
+
+    	steps:
+      		- uses: actions/checkout@v4
+      		- name: Set up JDK
+        	  uses: actions/setup-java@v4
+        	  with:
+          		java-version: '17'
+          		distribution: 'corretto'
+          		cache: gradle
+
+      		- name: Generate and submit dependency graph
+        	  uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
 <br>
-<img src=".\docs\빌드배포문서1.png">
-<img src=".\docs\빌드배포문서2.png">
+
+※ Repository Setting에서 Secrets and variables > Actions 의 경로로 이동하여 'DB_URL', 'DB_USER_Name', 'DB_PASSWORD'에 대한 정보를 등록해줍니다.
+
+	
+<img src=".\docs\github_action_secret.png">
+
+	3. 적용브랜치 및 빌드 설정을 입력한 gradle.yml파일을 	Repository에 push합니다.
+	4. 이후로 'develop' 브랜치에 push 및 pull_request에 	대한 동작이 감지되면  자동적으로 Github Action이 	동작합니다.
+<br>
+Fail한 경우
+
+<img src=".\docs\github_action_fail.png">
+
+	Test가 실패하는 경우 빌드가 되지않으며 'develop' 브랜치에 반영되지않습니다.
+
+<br>
+Success한 경우
+
+<img src=".\docs\github_action_success.png">
+
+	정상적으로 수정사항이 'develop' 브랜치에 반영됩니다.
+
+<br>
+
+<br>
 </details>
 
+<details>
+<summary> CD: Jenkins </summary>
+<br>
+Github Action에서 Pass된 접근에 대하여 Github WebHook을 통해 Jenkins의 Pipeline의 설정에 따라 자동 배포할 수 있는 CD환경도 구축하고자 했습니다.
+<br>
+Pass된 변경사항들은 Jenkins에서 설정해둔 Docker 이미지 최신화 코드를 통해 Docker hub에 새롭게 갱신되고 컨테이너도 업데이트 되어 변경사항이 자동 반영되어 배포됩니다.
+<br><br>
 
+	[Step]
+
+
+	1. Kubernetese의 매니페스트 설정을 통해 Docker 이미지를 등록하고 Pod의 deployments와 services에 새로 변경한 사항을 반영시키기 위해 Dockerfile을 다음과 같이 수정합니다.
+
+Dockerfile
 ---
+	FROM jenkins/jenkins:jdk17
+
+	USER root
+
+	RUN apt-get update && \
+	 apt-get -y install apt-transport-https \
+	 ca-certificates \
+	 curl \
+	 gnupg2 \
+	 zip \
+	 unzip \
+	 software-properties-common && \
+	curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo 	"$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
+	 add-apt-repository \
+	 "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; 	echo "$ID") \
+	 $(lsb_release -cs) \
+	 stable" && \
+	 apt-get update && \
+	 apt-get -y install docker-ce
+
+	# docker-compose 설치
+	RUN curl -L "https://github.com/docker/compose/releases/download/1.28.5/	docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/	docker-compose && \
+	    chmod +x /usr/local/bin/docker-compose && \
+	    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 <br>
 
+	2. 그리고 docker-compose.yml파일을 생성해 줍니다.
+
+docker-compose.yml
+---
+	version: '3.7'
+
+	services:
+	  jenkins:
+	    build:
+	      context: .
+	      dockerfile: Dockerfile
+	    container_name: 'newsnippet_jenkins'
+	    restart: always
+	    user: root
+	    ports:
+	      - '8080:8080'
+	      - '50000:50000'
+	
+	    volumes:
+	      - './jenkins_home:/var/jenkins_home'
+	      - '/var/run/docker.sock:/var/run/docker.sock'
+<br>
+
+	3. 프로젝트 경로에서 'docker-compose up --build'를 실행하여 Docker 이미지를 만들고 컨테이너를 실행합니다.
+<br>
+<img src="./docs/jenkins_docker.png">
+<br><br>
+
+	4. 실행되고 있는 Docker 컨테이너의 연결 포트인 localhost:8080으로 접속하여 	Jenkins 설정 페이지에 접근합니다.
+
+	5. Jenkins에 ssh보안 설정을 위해 Jenkins가 동작하고 있는 Docker 컨테이너에 접속합니다.
+
+	6. 컨테이너 내에서 발급받은 'ssh-jenkins-github--key'와 'ssh-jenkins-github--key.pub'를 Jenkins의 Security와 Credentials 설정에 추가해줍니다.
+
+	7. 그리고 Jenkins가 해당 Repository에 접근 가능하도록 Github Repository의 	Setting > Deploy keys에 'ssh-jenkins-github--key.pub'의 값을 추가합니다.
+
+	8. Github Webhook을 통해 Jenkins에서 Repository 변화를 감지할 수 있도록 Webhook을 설정합니다.
+<br>
+<img src="./docs/ngrok.png">
+	※ ngrok을 통해 Jenkins 컨테이너를 외부에서 접속할 수 있도록 터널링을 진행합니다.	<br>(해당 URL은 Github Webhook의 URL로 설정)
+<br><br>
+
+	9. Github의 Repository와 Jenkins 컨테이너와의 통신을 위한 설정을 마쳤으니 	Pipeline을 새로 추가합니다.
+
+	10. Pipeline의 설정에서 Github Webhook 설정을 체크하고 Script를 작성합니다.
+
+Jenkins-Pipeline-Script
+---
+	pipeline {
+	    agent any
+
+	    tools {
+	        gradle 'gradle'
+	        jdk 'openJDK17'
+	    }
+
+	    environment {
+	        DOCKERHUB_USERNAME = 'giyeonlee'
+	        GITHUB_URL = 'https://github.com/Triumers/Newsnippet-Back.git'
+	    }
+
+	    stages {
+	        stage('Preparation') {
+	            steps {
+	                script {
+	                    sh 'docker --version' // Docker가 설치되어 있는지 확인
+	                }
+	            }
+	        }
+	        stage('Source Build') {
+	            steps {
+	                // 소스파일 체크아웃
+	                git branch: 'main', url: 'https://github.com/Triumers/	Newsnippet-Back.git'
+
+	                // 소스 빌드
+	                // 755권한 필요 (윈도우에서 Git으로 소스 업로드시 권한은 644)
+	                sh "chmod +x ./gradlew"
+	                sh "./gradlew build -P jasypt.encryptor.	password='jasypt_password'"
+	            }
+	        }
+	        stage('Container Build') {
+	            steps {        
+				
+	                // jar 파일 복사
+	                sh "cp ./build/libs/*.jar ."
+	
+	                // 컨테이너 빌드 및 업로드
+	                sh "docker build -t ${DOCKERHUB_USERNAME}/newsnippet-back .	"
+
+	                // docker hub로 push
+	                withCredentials([usernamePassword(credentialsId: 	'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USER', 	passwordVariable: 'DOCKERHUB_PASS')]) {
+	                    sh "echo $DOCKERHUB_PASS | docker login --username 	$DOCKERHUB_USER --password-stdin"
+	                    sh "docker push ${DOCKERHUB_USERNAME}/newsnippet-back"
+	                }
+	            }
+	        }
+	    }
+	}
+
+11. 저장한 Pipeline을 build를 통해 정상동작하는지 확인합니다.
+
+12. 프로젝트가 진행중인 Repository에서 변화가 감지되면 Jenkins에서 자동 빌드와 배포를 진행합니다.
+</details>
+
+<br><br>
 
 # 5. 회고
 
@@ -396,10 +624,16 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <br>
 <br>
 
-🎸 **이기연**<br>
+🎸 **이기연**<br><br>
+'Newsnippet' 서비스에 대한 기획 과정부터 최종 서비스를 구현하는데까지 다양한 기술적인 시도를 할 수 있었습니다. 데이터 수집을 위한 크롤링, 서비스 개발 및 유지보수를 위해 적용한 CI/CD, Open AI API를 활용한 데이터 가공 등 각 경험들을 통해 앞으로 새로운 기술들을 배우고자하는 마음으로 나아가야겠다는 생각을 하게 되었습니다.<br>
 
-<br>
-<br>
+이번 프로젝트는 기능과 구현해야 할 항목을 명확하게 하기위해 요구사항을 먼저 정리하고 진행하였습니다. 이를통해 체계적인 프로젝트를 진행할 수 있었고, 팀원들이 서비스에 대해 수월하게 이해할 수 있었습니다. 먼저 방향성을 잡고 기준점을 정하는 것이 과업을 진행할 때 얼마나 중요한지 다시 느낄 수 있었습니다.
+
+개인적으로 프로젝트에서 가장 크게 기여한 부분은 CI/CD입니다. Github Action을 통해 TDD 기반 개발을 할 수 있었으며 이전에 경험했던 프로젝트와 비교했을때, 원격 Repository를 관리하는 것이 보다 수월함을 느꼈습니다. 또한 Jenkins의 Pipeline을 통해 Docker에 자동 배포하는 것을 구축하는 과정에서 이슈 추적을 위해 해당 작업이 필요하겠다는 생각을 하게되었습니다. 처음에 설정하는 것들이 많아 까다로웠지만 추후 서비스를 개발하고 유지보수하는 과정에서 해당작업을 하길 잘했다는 생각을 할 것 같았습니다. 
+
+전반적인 프로젝트 관리와 CI/CD, 백엔드 개발을 진행하면서 알고리즘적으로 효율적인 코드를 구현하는 방법에 대해 깊이 있게 생각해보지 못한 부분이 아쉬웠습니다. 효율적인 코드를 연구하여 다음에 경험할 프로젝트에 적용할 수 있도록 개인적인 역량을 키워야겠다고 생각했습니다.
+
+<br><br>
 
 😺 **임원재**<br><br>
 이번 프로젝트를 통해 테스트코드의 고도화와 세세한 QA 리스트 준비 및 테스트 과정의 필요성을 절실히 느꼈다.

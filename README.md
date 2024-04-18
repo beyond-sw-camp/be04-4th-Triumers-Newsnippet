@@ -583,10 +583,13 @@ Jenkins-Pipeline-Script
 	        }
 	    }
 	}
-
+<br>
 11. 저장한 Pipeline을 build를 통해 정상동작하는지 확인합니다.
-
+<br><br>
+<img src="./docs/jenkins_pipeline_success.png">
+<br><br>
 12. 프로젝트가 진행중인 Repository에서 변화가 감지되면 Jenkins에서 자동 빌드와 배포를 진행합니다.
+
 </details>
 
 <br><br>

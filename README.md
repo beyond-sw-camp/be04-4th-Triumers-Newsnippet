@@ -343,7 +343,7 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <br>
 
 
-# 4. CI/CD
+# 4. CI/CD(빌드-배포)
 
 <details>
 <summary> CI: Github Action(TDD) </summary>

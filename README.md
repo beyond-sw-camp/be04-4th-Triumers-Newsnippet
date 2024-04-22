@@ -206,7 +206,7 @@ AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 D
 <br>
 
 ## 💻 시스템 아키텍쳐
-🔗 [시스템 아키텍쳐](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/💻-시스템-아키텍쳐)
+<img src="https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/Newsnippet_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.png">
 
 <br>
 

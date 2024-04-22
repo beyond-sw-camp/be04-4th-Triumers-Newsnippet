@@ -174,61 +174,8 @@
 ---
 <br>
 
-# 2. 문서
-
-## 요구사항 명세서
-🔗 [요구사항 명세서](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/📑-요구사항-명세서)
-
-<details>
-<summary> 📑 기능 명세서 </summary>
-<br>
-	
-[기능 명세서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf)
-<br>
-<img src=".\docs\기능명세서.jpg">
-</details>
-
-<details>
-<summary> 📃 miro를 통한 이벤트스토밍 </summary>
-<img src=".\docs\miro.png">
-</details>
-
-<details>
-<summary> 📃 ERD CLOUD </summary>
-<img src=".\docs\erd.png">
-</details>
-
-<details>
-<summary> 📑 테이블 정의서 </summary>
-<br>
-	
-[테이블 정의서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%ED%85%8C%EC%9D%B4%EB%B8%94%EC%A0%95%EC%9D%98%EC%84%9C.pdf)
-<br>
-<img src=".\docs\테이블정의서.jpeg">
-</details>
-
-<details>
-<summary> 📑 API 설계서 </summary>
-<br>
-	
-[Back API 설계서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/back_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf)
-<br>
-
-[GPT SERVER API 설계서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/gpt_API_%EC%84%A4%EA%B3%84%EC%84%9C.pdf)
-	
-<br>
-<img src=".\docs\back_API_설계서.jpg">
-<img src=".\docs\gpt_API_설계서.png">
-</details>
-
-<details>
-<summary> 📑 단위 테스트 결과 보고서 </summary>
-<br>
-	
-[테스트케이스 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BC%80%EC%9D%B4%EC%8A%A4.pdf)
-<br>
-<img src=".\docs\테스트케이스.jpg">
-</details>
+# 2. 프로젝트 문서
+🔗 [프로젝트 문서](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/2.-프로젝트-문서)
 
 <br>
 

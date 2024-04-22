@@ -1,6 +1,6 @@
 
 <div align=center>
-<img src=".\docs\로고.png">
+<img src="https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/로고.png">
 </div>
 
 

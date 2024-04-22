@@ -162,7 +162,46 @@
 <br>
 
 ## 💻 기술적인 부분
-🔗 [기술적인 부분](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/💻-기술적인-부분)
+- <b>프론트엔드</b>
+	- HTML, CSS, JavaScript를 사용하여 사용자 인터페이스 개발
+	- Vue.js 프레임워크를 활용한 반응형 웹 애플리케이션 구축
+
+- <b>백엔드</b>
+	- Spring Boot를 사용하여 REST API 서버 개발
+	- Java와 Spring 프레임워크 기반의 서버 로직 구현
+	- Spring Security를 활용하여 사용자 인증 및 권한 관리 구현
+
+- <b>데이터베이스</b>
+	- AWS RDS를 사용하여 MariaDB 기반 데이터베이스 서버 배포
+	- 사용자 정보, 퀴즈 데이터 등을 저장하고 관리
+	- Spring Data JPA를 활용한 데이터 접근 및 관리
+
+- <b>인공지능</b>
+	- OpenAI의 API를 활용하여 뉴스 기사 분석 및 퀴즈 생성
+	- 스프링 기반으로 구축된 서버에서 전처리된 뉴스 기사를 다시 한 번 전처리하여 적절한 Prompt 생성
+	- 생성된 Prompt로 OpenAI API에 요청을 보내고, 반환 값을 검증하여 DB에 저장
+
+- <b>웹 스크래핑 및 데이터 추출</b>
+	- Python의 Trafilatura, Beautiful Soup 라이브러리를 사용하여 뉴스 기사 웹 페이지에서 본문 추출
+	- 추출된 기사 본문을 전처리하여 퀴즈 생성에 활용
+
+- <b>DevOps 및 인프라</b>
+	- AWS EC2를 이용하여 REST API 서버 배포
+	- 쿠버네티스를 활용한 애플리케이션 오케스트레이션 및 관리
+	- Docker를 활용한 애플리케이션 컨테이너화 및 배포 자동화
+	- GitHub Actions를 사용하여 CI 파이프라인 구축 및 자동화
+	- Jenkins를 사용하여 CD 파이프라인 구축 및 자동화
+
+- <b>협업 도구</b>
+	- Jira를 사용하여 프로젝트 관리 및 이슈 트래킹
+	- GitHub를 활용한 소스 코드 버전 관리 및 협업
+
+<br>
+위 기술 스택을 바탕으로, Python을 사용하여 뉴스 기사를 수집하고 전처리하였으며, 전처리된 뉴스 기사를 Spring 기반의 서버에서 다시 한 번 가공하여 OpenAI API를 통해 퀴즈를 생성하였습니다. 생성된 퀴즈는 검증 과정을 거쳐 AWS RDS의 MariaDB에 저장되며, Vue.js 기반의 프론트엔드 웹 애플리케이션을 통해 사용자에게 제공됩니다.
+<br>
+AWS EC2를 이용하여 REST API 서버를 배포하였고, 쿠버네티스와 Docker를 활용하여 애플리케이션의 컨테이너화 및 오케스트레이션을 구현하였습니다. GitHub Actions를 통해 CI 파이프라인을, Jenkins를 통해 CD 파이프라인을 구축 및 자동화하였으며, Terraform을 활용하여 인프라 구성과 관리를 자동화하였습니다. 또한, Jira와 GitHub를 통해 효율적인 프로젝트 관리 및 협업을 진행하였습니다. 
+<br>이러한 기술 스택과 아키텍처를 통해 확장성, 안정성, 유지보수성을 고려한 효율적인 시스템을 구축하였습니다.
+<br>
 
 <br>
 

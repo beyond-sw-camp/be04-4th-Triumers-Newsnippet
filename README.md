@@ -10,7 +10,7 @@
 <a href = "https://www.notion.so/3-Somebody-Help-2ec7b0b088ea424284a7039f3be6698d?pvs=4"><img src="https://img.shields.io/badge/Team Notion-ffffff?style=social&logo=Notion&logoColor=black" /></a>
 <br>
 
-<a href = "https://github.com/Triumers"><img src="https://img.shields.io/badge/GitHub Organization-181717?style=social&logo=GitHub&logoColor=black" /></a>
+<a href = "https://github.com/orgs/Triumers/repositories"><img src="https://img.shields.io/badge/GitHub Organization-181717?style=social&logo=GitHub&logoColor=black" /></a>
 <br>
 <br>
 

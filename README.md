@@ -167,9 +167,8 @@
 <br>
 
 ## 💻 시스템 아키텍쳐
-<div align=center>
-<img src=".\docs\Newsnippet_시스템_아키텍처.png">
-</div>
+🔗 [시스템 아키텍쳐](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/💻-시스템-아키텍쳐)
+
 <br>
 
 ---
@@ -177,14 +176,8 @@
 
 # 2. 문서
 
-<details>
-<summary> 📑 요구사항 명세서 </summary>
-<br>
-	
-[요구사항 명세서 PDF](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/blob/main/docs/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%EB%AA%85%EC%84%B8%EC%84%9C.pdf)
-<br>
-<img src=".\docs\요구사항명세서.jpg">
-</details>
+## 요구사항 명세서
+🔗 [요구사항 명세서](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/📑-요구사항-명세서)
 
 <details>
 <summary> 📑 기능 명세서 </summary>

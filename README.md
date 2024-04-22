@@ -95,8 +95,6 @@
 
 ---
 <br>
-<br>
-<br>
 
 # 1. 프로젝트  개요
 🔗 [프로젝트 개요](https://github.com/beyond-sw-camp/be04-4th-Triumers-Newsnippet/wiki/1.-프로젝트-개요)
